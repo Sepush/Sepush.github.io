@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="git,">
 
 
 
@@ -79,13 +79,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="起因在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。 之前我是使用的gitee 来中转，先把项目转到gitee再从gitee上拉取这很麻烦。 前几天在群里看见朋友说可以设置 git socks5 proxy于是试了一下，速度果然提升了有几M的速度我非常满意，基本上是够用了。 设置方法script123456789101112131415161718// 全局代理设置">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git设置代理">
+<meta property="og:url" content="http://yoursite.com/2020/07/30/github-Socket5-Proxy/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="起因在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。 之前我是使用的gitee 来中转，先把项目转到gitee再从gitee上拉取这很麻烦。 前几天在群里看见朋友说可以设置 git socks5 proxy于是试了一下，速度果然提升了有几M的速度我非常满意，基本上是够用了。 设置方法script123456789101112131415161718// 全局代理设置">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-07-29T19:45:21.811Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title">
+<meta name="twitter:title" content="Git设置代理">
+<meta name="twitter:description" content="起因在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。 之前我是使用的gitee 来中转，先把项目转到gitee再从gitee上拉取这很麻烦。 前几天在群里看见朋友说可以设置 git socks5 proxy于是试了一下，速度果然提升了有几M的速度我非常满意，基本上是够用了。 设置方法script123456789101112131415161718// 全局代理设置">
 
 
 
@@ -115,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2020/07/30/github-Socket5-Proxy/">
 
 
 
 
 
-  <title></title>
+  <title>Git设置代理 | </title>
   
 
 
@@ -140,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -234,9 +238,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -266,9 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/30/github-Socket5-Proxy/" itemprop="url">Git设置代理</a></h1>
+          <h1 class="post-title" itemprop="name headline">Git设置代理</h1>
         
 
         <div class="post-meta">
@@ -318,20 +320,10 @@
       
 
       
-        
-          
-          起因在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。
-之前我是使用的gitee 来中转，先把项目转到gitee再从gitee上拉取这很麻烦。
-前几天在群里看见朋友说可以设置 git socks5 proxy于是试了一下，速度果然提升了有几M的速度我非常满意，基本上是够用
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/07/30/github-Socket5-Proxy/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+        <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。</p>
+<p>之前我是使用的<code>gitee</code> 来中转，先把项目转到<code>gitee</code>再从<code>gitee</code>上拉取这很麻烦。</p>
+<p>前几天在群里看见朋友说可以设置 <code>git socks5 proxy</code>于是试了一下，速度果然提升了有几M的速度我非常满意，基本上是够用了。</p>
+<h2 id="设置方法"><a href="#设置方法" class="headerlink" title="设置方法"></a>设置方法</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 全局代理设置 端口号改成本机对应的 我使用了V2代理的默认端口10808</span><br><span class="line">git config --global https.proxy http://127.0.0.1:10808</span><br><span class="line">git config --global https.proxy https://127.0.0.1:10808</span><br><span class="line"></span><br><span class="line">// 为 github 单独设置</span><br><span class="line">git config --global http.https://github.com.proxy https://127.0.0.1:10808</span><br><span class="line">git config --global https.https://github.com.proxy https://127.0.0.1:10808</span><br><span class="line"></span><br><span class="line">// Socks5</span><br><span class="line">git config --global http.https://github.com.proxy socks5://127.0.0.1:10808</span><br><span class="line">git config --global https.https://github.com.proxy socks5://127.0.0.1:10808</span><br><span class="line"></span><br><span class="line">// 取消</span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br><span class="line"></span><br><span class="line">// 查看已有设置</span><br><span class="line">git config --global -l</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -346,272 +338,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/07/2020-07-07git避免每次提交代码输入密码/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sepush">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/wife.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/07/2020-07-07git避免每次提交代码输入密码/" itemprop="url">git避免每次提交代码输入账户和密码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-07T00:37:43+08:00">
-                2020-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/git/" rel="tag"># git</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-          避免每次重复输入账户和密码起因最近有一个作业，需要使用git gitee合作开发（糊屎）在这个过程中我们是使用的同一个账户直接向master提交代码（是不是觉得这样的作法十分的欠揍）anyway 在这个过程中我遇到了 一个问题使用每次 push 的时候都需要输入账户和密码这一度使我觉得非常的难受。于
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/07/07/2020-07-07git避免每次提交代码输入密码/#more" rel="contents">
-              Read more &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/07/2020-07-07git避免每次提交代码输入密码/" rel="next" title="git避免每次提交代码输入账户和密码">
+                <i class="fa fa-chevron-left"></i> git避免每次提交代码输入账户和密码
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/11/hello-blog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sepush">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/wife.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/01/11/hello-blog/" itemprop="url">Start Blog</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-11T00:00:00+08:00">
-                2020-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          hello blog使用hexo + yilia搭建blog
-
-笔记
-配置blog1.安装node.js node.js2.检查版本
-node -v npm -v
-3.利用nmp安装cnmp
-npm install -g cnpm --registry=https://registry.npm.ta
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/01/11/hello-blog/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -621,136 +377,11 @@ npm install -g cnpm --registry=https://registry.npm.ta
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/06/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sepush">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/wife.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content>
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/06/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-06T19:55:28+08:00">
-                2019-05-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/05/06/hello-world/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -758,6 +389,10 @@ npm install -g cnpm --registry=https://registry.npm.ta
 
 
           
+
+  
+
+
 
         </div>
         
@@ -778,8 +413,17 @@ npm install -g cnpm --registry=https://registry.npm.ta
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -848,6 +492,22 @@ npm install -g cnpm --registry=https://registry.npm.ta
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#起因"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置方法"><span class="nav-number">2.</span> <span class="nav-text">设置方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -988,6 +648,10 @@ npm install -g cnpm --registry=https://registry.npm.ta
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
