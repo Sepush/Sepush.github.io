@@ -193,7 +193,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-07 04:14:52" itemprop="dateModified" datetime="2020-09-07T04:14:52+08:00">2020-09-07</time>
+                <time title="Modified: 2020-09-07 04:58:45" itemprop="dateModified" datetime="2020-09-07T04:58:45+08:00">2020-09-07</time>
               </span>
 
           
@@ -207,10 +207,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。</p>
-<p>之前我是使用的<code>gitee</code> 来中转，先把项目转到<code>gitee</code>再从<code>gitee</code>上拉取这很麻烦。</p>
-<p>前几天在群里看见朋友说可以设置 <code>git socks5 proxy</code>于是试了一下，速度果然提升了有几M的速度我非常满意，基本上是够用了。</p>
-<h2 id="设置方法"><a href="#设置方法" class="headerlink" title="设置方法"></a>设置方法</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 全局代理设置 端口号改成本机对应的 我使用了V2代理的默认端口<span class="number">10808</span></span><br><span class="line">git config -<span class="literal">-global</span> https.proxy http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10808</span></span><br><span class="line">git config -<span class="literal">-global</span> https.proxy https://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10808</span></span><br><span class="line"></span><br><span class="line">// 为 github 单独设置</span><br><span class="line">git config -<span class="literal">-global</span> http.https://github.com.proxy https://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10808</span></span><br><span class="line">git config -<span class="literal">-global</span> https.https://github.com.proxy https://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10808</span></span><br><span class="line"></span><br><span class="line">// Socks5</span><br><span class="line">git config -<span class="literal">-global</span> http.https://github.com.proxy socks5://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10808</span></span><br><span class="line">git config -<span class="literal">-global</span> https.https://github.com.proxy socks5://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">10808</span></span><br><span class="line"></span><br><span class="line">// 取消</span><br><span class="line">git config -<span class="literal">-global</span> -<span class="literal">-unset</span> http.proxy</span><br><span class="line">git config -<span class="literal">-global</span> -<span class="literal">-unset</span> https.proxy</span><br><span class="line"></span><br><span class="line">// 查看已有设置</span><br><span class="line">git config -<span class="literal">-global</span> <span class="literal">-l</span></span><br></pre></td></tr></table></figure>
+          <p>在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。之前我是使用的<code>gitee</code> 来中转，先把项目转到<code>gitee</code>再从<code>gitee</code>上拉取这很麻烦。前几天在群里看见朋友说可以设置 <code>git socks5 proxy</code>于是试了一下, 速度果然提升了有几M的速度我非常满意，基本上是够用了。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/30/github-Socket5-Proxy/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -260,7 +265,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-07 04:14:50" itemprop="dateModified" datetime="2020-09-07T04:14:50+08:00">2020-09-07</time>
+                <time title="Modified: 2020-09-07 04:53:55" itemprop="dateModified" datetime="2020-09-07T04:53:55+08:00">2020-09-07</time>
               </span>
 
           
@@ -274,11 +279,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="避免每次重复输入账户和密码"><a href="#避免每次重复输入账户和密码" class="headerlink" title="避免每次重复输入账户和密码"></a>避免每次重复输入账户和密码</h1><h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>最近有一个作业，需要使用git gitee合作开发（糊屎）在这个过程中我们是使用的同一个账户直接向master提交代码（是不是觉得这样的作法十分的欠揍）anyway 在这个过程中我遇到了 一个问题使用每次 push 的时候都需要输入账户和密码这一度使我觉得非常的难受。于是去寻找了一点解决方法。<br>1·设置 SSH key<br>2·创建用户信息<br>我使用的是第二种方法</p>
-<h3 id="具体解决方法"><a href="#具体解决方法" class="headerlink" title="具体解决方法"></a>具体解决方法</h3><p>创建用户信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote rm origin</span><br><span class="line">&#x2F;&#x2F;gitee</span><br><span class="line">git remote add origin https:&#x2F;&#x2F;username:password@gitee.com&#x2F;username&#x2F;projecttname.git</span><br></pre></td></tr></table></figure>
-<p>使用这样的方法后 就可以避免每次push都要输入密码的烦恼了。</p>
-
+          <p>最近有一个作业，需要使用git gitee合作开发（糊屎）在这个过程中我们是使用的同一个账户直接向master提交代码（是不是觉得这样的作法十分的欠揍）anyway 在这个过程中我遇到了 一个问题使用每次 push 的时候都需要输入账户和密码这一度使我觉得非常的难受。于是去寻找了一点解决方法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/07/git%E8%AE%BE%E7%BD%AE%E4%BB%A3%E7%90%86/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -328,7 +337,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-07 04:24:52" itemprop="dateModified" datetime="2020-09-07T04:24:52+08:00">2020-09-07</time>
+                <time title="Modified: 2020-09-07 05:02:07" itemprop="dateModified" datetime="2020-09-07T05:02:07+08:00">2020-09-07</time>
               </span>
 
           
@@ -342,53 +351,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="hello-blog"><a href="#hello-blog" class="headerlink" title="hello blog"></a><strong><em>hello blog</em></strong></h1><p>使用hexo + yilia搭建blog</p>
-<hr>
-<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><hr>
-<h3 id="配置blog"><a href="#配置blog" class="headerlink" title="配置blog"></a>配置blog</h3><p>1.安装node.js <a target="_blank" rel="noopener" href="https://nodejs.org/en/">node.js</a><br>2.检查版本</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node <span class="literal">-v</span> npm <span class="literal">-v</span></span><br></pre></td></tr></table></figure>
-
-<p>3.利用nmp安装cnmp</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install <span class="literal">-g</span> cnpm -<span class="literal">-registry</span>=https://registry.npm.taobao.org</span><br><span class="line">cnpm //检查是否安装好</span><br><span class="line">cnpm <span class="literal">-v</span></span><br></pre></td></tr></table></figure>
-
-<p>4.安装hexo</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cnpm install <span class="literal">-g</span> hexo<span class="literal">-cli</span></span><br><span class="line">hexo <span class="literal">-v</span></span><br></pre></td></tr></table></figure>
-
-<p>5.初始化</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//on windows</span><br><span class="line"><span class="built_in">chdir</span> //查看当前目录</span><br><span class="line">mkdir blog / <span class="built_in">md</span> blog</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">hexo init</span><br><span class="line"><span class="built_in">dir</span></span><br><span class="line">hexo <span class="literal">-s</span> //可以在localhost:<span class="number">4000</span> 查看</span><br><span class="line">hexo <span class="literal">-n</span> <span class="string">&quot;文件名&quot;</span></span><br><span class="line"><span class="built_in">chdir</span></span><br><span class="line"><span class="built_in">cd</span> source/_posts/</span><br><span class="line"><span class="built_in">dir</span></span><br></pre></td></tr></table></figure>
-
-<p>6.使用vs code 打开 要编辑的文件</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ../../   //回退两级目录</span><br><span class="line">hexo clean //清理</span><br><span class="line">hexo g //生成</span><br><span class="line">hexo s //开始</span><br></pre></td></tr></table></figure>
-
-<p>7.部署到GitHub</p>
-<p>新建仓库 用户名.github.io<br>在blog目录下安装一个git插件</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -<span class="literal">-save</span> hexo<span class="literal">-deployer</span><span class="literal">-git</span></span><br></pre></td></tr></table></figure>
-
-
-<p>修改配置文件 _config.yml<br>在文件最底部 Deployment</p>
-<pre><code>type: git
-repo: 仓库地址
-branch: master
-
-部署
-
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d </span><br></pre></td></tr></table></figure></code></pre>
-<p>输入账号</p>
-<p>输入密码</p>
-<hr>
-<h3 id="更换blog主题"><a href="#更换blog主题" class="headerlink" title="更换blog主题"></a>更换blog主题</h3><p>1.克隆主题</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo<span class="literal">-theme</span><span class="literal">-next</span> themes/next</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>2.修改_config.yml</p>
-<p>把theme：修改为next</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br><span class="line">ctl + c</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>完工惹 以后就可以愉快的写blog了(划水(误 前面划掉(之后会自己定制一套个人博客(先开一个坑 不知道什么时候填</p>
-<p>Reference:<a target="_blank" rel="noopener" href="https://www.codesheep.cn/">CodeSheep</a></p>
-<hr>
-
+          <p>使用 hexo + NexT 搭建blog</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/11/hello-blog/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -438,7 +409,7 @@ branch: master
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-07-17 00:06:46" itemprop="dateModified" datetime="2019-07-17T00:06:46+08:00">2019-07-17</time>
+                <time title="Modified: 2020-09-07 04:59:16" itemprop="dateModified" datetime="2020-09-07T04:59:16+08:00">2020-09-07</time>
               </span>
 
           
@@ -453,19 +424,14 @@ branch: master
 
       
           <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/deployment.html">Deployment</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/06/hello-world/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
