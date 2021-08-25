@@ -14,7 +14,8 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="使用 hexo + NexT 搭建blog">
+  <meta name="description" content="使用 hexo + NexT 搭建blog
+">
   <meta name="author" content="Sepush">
   <meta name="keywords" content="">
   
@@ -185,7 +186,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      286 字
+      282 字
     </span>
   
 
@@ -195,7 +196,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      3
        分钟
     </span>
   
@@ -229,23 +230,14 @@
             
             <div class="markdown-body">
               <p>使用 hexo + NexT 搭建blog</p>
-<span id="more"></span>
-<hr>
-<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><h3 id="配置blog"><a href="#配置blog" class="headerlink" title="配置blog"></a>配置blog</h3><p>1.安装node.js <a target="_blank" rel="noopener" href="https://nodejs.org/en/">node.js</a><br>2.检查版本</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><span id="more"></span></h2><h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><h3 id="配置blog"><a href="#配置blog" class="headerlink" title="配置blog"></a>配置blog</h3><p>1.安装node.js <a target="_blank" rel="noopener" href="https://nodejs.org/en/">node.js</a><br>2.检查版本</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">node <span class="hljs-literal">-v</span> npm <span class="hljs-literal">-v</span><br></code></pre></td></tr></table></figure>
-<p>3.利用nmp安装cnmp</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell">npm install <span class="hljs-literal">-g</span> cnpm -<span class="hljs-literal">-registry</span>=https://registry.npm.taobao.org<br>cnpm //检查是否安装好<br>cnpm <span class="hljs-literal">-v</span><br></code></pre></td></tr></table></figure>
-
-<p>4.安装hexo</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">cnpm install <span class="hljs-literal">-g</span> hexo<span class="hljs-literal">-cli</span> // npm i <span class="hljs-literal">-g</span> hexo<span class="hljs-literal">-cli</span><br>hexo <span class="hljs-literal">-v</span><br></code></pre></td></tr></table></figure>
-
-<p>5.初始化</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs powershell">//on windows<br><span class="hljs-built_in">chdir</span> //查看当前目录<br>mkdir blog / <span class="hljs-built_in">md</span> blog<br><span class="hljs-built_in">cd</span> blog<br>hexo init<br><span class="hljs-built_in">dir</span><br>hexo <span class="hljs-literal">-s</span> //可以在localhost:<span class="hljs-number">4000</span> 查看<br>hexo <span class="hljs-literal">-n</span> <span class="hljs-string">&quot;文件名&quot;</span><br><span class="hljs-built_in">chdir</span><br><span class="hljs-built_in">cd</span> source/_posts/<br><span class="hljs-built_in">dir</span><br></code></pre></td></tr></table></figure>
-<p>6.使用vs code 打开 要编辑的文件</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">cd</span> ../../   //回退两级目录<br>hexo clean //清理<br>hexo g //生成<br>hexo s //开始<br></code></pre></td></tr></table></figure>
+<p>3.利用nmp安装cnmp<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs powershell">npm install <span class="hljs-literal">-g</span> cnpm -<span class="hljs-literal">-registry</span>=https://registry.npm.taobao.org<br>cnpm //检查是否安装好<br>cnpm <span class="hljs-literal">-v</span><br></code></pre></td></tr></table></figure></p>
+<p>4.安装hexo<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">cnpm install <span class="hljs-literal">-g</span> hexo<span class="hljs-literal">-cli</span> // npm i <span class="hljs-literal">-g</span> hexo<span class="hljs-literal">-cli</span><br>hexo <span class="hljs-literal">-v</span><br></code></pre></td></tr></table></figure></p>
+<p>5.初始化<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs powershell">//on windows<br><span class="hljs-built_in">chdir</span> //查看当前目录<br>mkdir blog / <span class="hljs-built_in">md</span> blog<br><span class="hljs-built_in">cd</span> blog<br>hexo init<br><span class="hljs-built_in">dir</span><br>hexo <span class="hljs-literal">-s</span> //可以在localhost:<span class="hljs-number">4000</span> 查看<br>hexo <span class="hljs-literal">-n</span> <span class="hljs-string">&quot;文件名&quot;</span><br><span class="hljs-built_in">chdir</span><br><span class="hljs-built_in">cd</span> source/_posts/<br><span class="hljs-built_in">dir</span><br></code></pre></td></tr></table></figure></p>
+<p>6.使用vs code 打开 要编辑的文件<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">cd</span> ../../   //回退两级目录<br>hexo clean //清理<br>hexo g //生成<br>hexo s //开始<br></code></pre></td></tr></table></figure></p>
 <p>7.部署到GitHub</p>
-<p>新建仓库 用户名.github.io<br>在blog目录下安装一个git插件</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">cnpm install -<span class="hljs-literal">-save</span> hexo<span class="hljs-literal">-deployer</span><span class="hljs-literal">-git</span><br></code></pre></td></tr></table></figure>
+<p>新建仓库 用户名.github.io<br>在blog目录下安装一个git插件<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">cnpm install -<span class="hljs-literal">-save</span> hexo<span class="hljs-literal">-deployer</span><span class="hljs-literal">-git</span><br></code></pre></td></tr></table></figure></p>
 <p>修改配置文件 _config.yml<br>在文件最底部 Deployment</p>
 <pre><code>type: git
 repo: 仓库地址
@@ -254,15 +246,12 @@ branch: master
 部署
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">hexo d <br></code></pre></td></tr></table></figure>
-</code></pre>
-<p>输入账号</p>
+</code></pre><p>输入账号</p>
 <p>输入密码</p>
 <hr>
-<h3 id="更换blog主题"><a href="#更换blog主题" class="headerlink" title="更换blog主题"></a>更换blog主题</h3><p>1.克隆主题</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">git clone https://github.com/iissnan/hexo<span class="hljs-literal">-theme</span><span class="hljs-literal">-next</span> themes/next<br><br></code></pre></td></tr></table></figure>
+<h3 id="更换blog主题"><a href="#更换blog主题" class="headerlink" title="更换blog主题"></a>更换blog主题</h3><p>1.克隆主题<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell">git clone https://github.com/iissnan/hexo<span class="hljs-literal">-theme</span><span class="hljs-literal">-next</span> themes/next<br><br></code></pre></td></tr></table></figure></p>
 <p>2.修改_config.yml</p>
-<p>把theme：修改为next</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell">hexo clean<br>hexo g<br>hexo s<br>ctl + c<br>hexo d<br></code></pre></td></tr></table></figure>
+<p>把theme：修改为next<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell">hexo clean<br>hexo g<br>hexo s<br>ctl + c<br>hexo d<br></code></pre></td></tr></table></figure></p>
 <hr>
 <p>完工惹 以后就可以愉快的写blog了(划水(误 前面划掉(之后会自己定制一套个人博客(先开一个坑 不知道什么时候填</p>
 <hr>
@@ -445,9 +434,55 @@ branch: master
 
 
 
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
 
 
 
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
 
 
 

@@ -228,9 +228,7 @@
             <h1 style="display: none">Git设置代理</h1>
             
             <div class="markdown-body">
-              <p>在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。之前我是使用的<code>gitee</code> 来中转，先把项目转到<code>gitee</code>再从<code>gitee</code>上拉取这很麻烦。前几天在群里看见朋友说可以设置 <code>git socks5 proxy</code>于是试了一下, 速度果然提升了有几M的速度我非常满意，基本上是够用了。</p>
-<span id="more"></span>
-
+              <p>在国内从github上拉取项目实在是太慢了,就算你是千兆的网也就几十K的样子。之前我是使用的<code>gitee</code> 来中转，先把项目转到<code>gitee</code>再从<code>gitee</code>上拉取这很麻烦。前几天在群里看见朋友说可以设置 <code>git socks5 proxy</code>于是试了一下, 速度果然提升了有几M的速度我非常满意，基本上是够用了。<br><span id="more"></span></p>
 <h2 id="设置方法"><a href="#设置方法" class="headerlink" title="设置方法"></a>设置方法</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs powershell">// 全局代理设置 端口号改成本机对应的 我使用了V2代理的默认端口<span class="hljs-number">10808</span><br>git config -<span class="hljs-literal">-global</span> https.proxy http://<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">10808</span><br>git config -<span class="hljs-literal">-global</span> https.proxy https://<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">10808</span><br><br>// 为 github 单独设置<br>git config -<span class="hljs-literal">-global</span> http.https://github.com.proxy https://<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">10808</span><br>git config -<span class="hljs-literal">-global</span> https.https://github.com.proxy https://<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">10808</span><br><br>// Socks5<br>git config -<span class="hljs-literal">-global</span> http.https://github.com.proxy socks5://<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">10808</span><br>git config -<span class="hljs-literal">-global</span> https.https://github.com.proxy socks5://<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">10808</span><br><br>// 取消<br>git config -<span class="hljs-literal">-global</span> -<span class="hljs-literal">-unset</span> http.proxy<br>git config -<span class="hljs-literal">-global</span> -<span class="hljs-literal">-unset</span> https.proxy<br><br>// 查看已有设置<br>git config -<span class="hljs-literal">-global</span> <span class="hljs-literal">-l</span><br></code></pre></td></tr></table></figure>
             </div>
             <hr>
@@ -416,9 +414,55 @@
 
 
 
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js" ></script>
+
+  
 
 
 
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
 
 
 
