@@ -1,8 +1,42 @@
 ---
-import Welcome from "../components/Welcome.astro";
-import Layout from "../layouts/Layout.astro";
+import { Counter as ReactCounter } from '../components/react/Counter'
+import VueCounter from '../components/vue/Counter.vue'
+import Welcome from '../components/Welcome.astro'
+import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
   <Welcome />
+  <main
+    p="x-6 y-8"
+    max-w="4xl"
+    mx="auto"
+  >
+    <div
+      grid="~ cols-1 md:cols-2 gap-8"
+      m="b-8"
+    >
+      <section
+        bg="white"
+        p="6"
+        rounded="xl"
+        shadow="lg hover:xl"
+        transition="all duration-300"
+        border="1 gray-200"
+      >
+        <ReactCounter message="Hello from React!" client:load />
+      </section>
+
+      <section
+        bg="white"
+        p="6"
+        rounded="xl"
+        shadow="lg hover:xl"
+        transition="all duration-300"
+        border="1 gray-200"
+      >
+        <VueCounter message="Hello from Vue!" client:load />
+      </section>
+    </div>
+  </main>
 </Layout>
