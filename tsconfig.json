@@ -3,7 +3,11 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "react",
-    "types": ["@types/react", "@types/react-dom"],
+    "types": [
+      "@types/react",
+      "@types/react-dom",
+      "@unocss/preset-attributify"
+    ],
     "verbatimModuleSyntax": true
   },
   "include": [

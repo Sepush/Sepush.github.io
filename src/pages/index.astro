@@ -8,32 +8,32 @@ import Layout from '../layouts/Layout.astro';
 <Layout>
   <Welcome />
   <main
-    p="x-6 y-8"
-    max-w="4xl"
     mx="auto"
+    max-w="4xl"
+    p="x-6 y-8"
   >
     <div
-      grid="~ cols-1 md:cols-2 gap-8"
+      grid="~ cols-1 gap-8 md:cols-2"
       m="b-8"
     >
       <section
+        border="~ gray-200"
+        rounded="xl"
         bg="white"
         p="6"
-        rounded="xl"
         shadow="lg hover:xl"
         transition="all duration-300"
-        border="1 gray-200"
       >
         <ReactCounter message="Hello from React!" client:load />
       </section>
 
       <section
+        border="~ gray-200"
+        rounded="xl"
         bg="white"
         p="6"
-        rounded="xl"
         shadow="lg hover:xl"
         transition="all duration-300"
-        border="1 gray-200"
       >
         <VueCounter message="Hello from Vue!" client:load />
       </section>
