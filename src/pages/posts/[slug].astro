@@ -1,0 +1,346 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import TagList from '../../components/TagList.astro';
+import SocialShare from '../../components/SocialShare.astro';
+import Toc from '../../components/Toc.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props as Props;
+const { Content, headings } = await post.render();
+
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+}
+---
+
+<Layout title={`${post.data.title} - Artea`} description={post.data.description}>
+  <div class="min-h-screen">
+    <!-- 主内容区 -->
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      <!-- 文章头部 -->
+      <header class="mb-12">
+        <!-- 返回按钮 -->
+        <nav class="mb-8">
+          <a 
+            href="/posts" 
+            class="inline-flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors text-sm"
+          >
+            <span class="i-tabler-arrow-left text-sm"></span>
+            <span>返回文章列表</span>
+          </a>
+        </nav>
+
+        <!-- 文章标题 -->
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
+          {post.data.title}
+        </h1>
+
+        <!-- 文章描述 -->
+        {post.data.description && (
+          <p class="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl">
+            {post.data.description}
+          </p>
+        )}
+
+        <!-- 文章元信息 -->
+        <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500 mb-8">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+              <span class="i-tabler-user text-white text-sm"></span>
+            </div>
+            <span>{post.data.author}</span>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <span class="i-tabler-calendar text-gray-400"></span>
+            <time datetime={post.data.pubDate.toISOString()}>
+              {formatDate(post.data.pubDate)}
+            </time>
+          </div>
+
+          {post.data.updatedDate && (
+            <div class="flex items-center gap-2">
+              <span class="i-tabler-edit text-gray-400"></span>
+              <span>更新于 {formatDate(post.data.updatedDate)}</span>
+            </div>
+          )}
+        </div>
+
+        <!-- 标签 -->
+        <TagList 
+          tags={post.data.tags || []}
+          variant="primary"
+          size="sm"
+          showIcon={false}
+        />
+      </header>
+
+      <!-- 文章内容 -->
+      <article class="prose prose-lg prose-gray max-w-none mb-16">
+        <Content />
+      </article>
+
+      <!-- 文章底部 -->
+      <footer class="pt-8 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="text-sm text-gray-500">
+            <span>如果这篇文章对你有帮助，欢迎分享给更多人！</span>
+          </div>
+          
+          <div class="flex items-center gap-3">
+            <SocialShare 
+              title={post.data.title}
+              url={Astro.url.href}
+              platforms={['twitter']}
+              size="sm"
+            />
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- 浮动目录 -->
+    <Toc 
+      headings={headings}
+      maxDepth={3}
+      position="fixed"
+    />
+  </div>
+</Layout>
+
+<style>
+  /* 文章内容样式 */
+  .prose {
+    color: #374151;
+    line-height: 1.8;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    color: #111827;
+    font-weight: 600;
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+    scroll-margin-top: 6rem;
+  }
+
+  .prose h1 {
+    font-size: 2.25rem;
+    margin-top: 0;
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .prose h2 {
+    font-size: 1.875rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f3f4f6;
+    position: relative;
+  }
+
+  .prose h2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 3rem;
+    height: 2px;
+    background: linear-gradient(90deg, #10b981, #059669);
+  }
+
+  .prose h3 {
+    font-size: 1.5rem;
+    color: #1f2937;
+  }
+
+  .prose h4 {
+    font-size: 1.25rem;
+    color: #374151;
+  }
+
+  .prose p {
+    margin-bottom: 1.75rem;
+    text-align: justify;
+  }
+
+  .prose a {
+    color: #059669;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .prose a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #10b981, #059669);
+    transition: width 0.3s ease;
+  }
+
+  .prose a:hover::after {
+    width: 100%;
+  }
+
+  .prose a:hover {
+    color: #047857;
+  }
+
+  .prose ul,
+  .prose ol {
+    margin-bottom: 2rem;
+    padding-left: 1.75rem;
+  }
+
+  .prose li {
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+  }
+
+  .prose blockquote {
+    border-left: 4px solid #10b981;
+    background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+  }
+
+  .prose blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -0.5rem;
+    left: 1rem;
+    font-size: 4rem;
+    color: #10b981;
+    opacity: 0.3;
+    font-family: serif;
+  }
+
+  .prose code {
+    background: linear-gradient(135deg, #f0fdf4 0%, #f3f4f6 100%);
+    color: #047857;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+    font-size: 0.875em;
+    font-weight: 500;
+    border: 1px solid #d1fae5;
+  }
+
+  .prose pre {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: #f1f5f9;
+    padding: 2rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 2rem 0;
+    font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+    line-height: 1.7;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #475569;
+  }
+
+  .prose pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+  }
+
+  .prose img {
+    border-radius: 8px;
+    margin: 2rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .prose img:hover {
+    transform: scale(1.01);
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .prose th,
+  .prose td {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+  }
+
+  .prose th {
+    background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%);
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .prose tr:nth-child(even) {
+    background-color: #f9fafb;
+  }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .prose {
+      font-size: 1rem;
+    }
+    
+    .prose h1 {
+      font-size: 2rem;
+    }
+    
+    .prose h2 {
+      font-size: 1.5rem;
+    }
+    
+    .prose h3 {
+      font-size: 1.25rem;
+    }
+
+    .prose p {
+      text-align: left;
+    }
+  }
+
+  /* 平滑滚动 */
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

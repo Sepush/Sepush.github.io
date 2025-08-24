@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import TagList from '../components/TagList.astro';
+
+const notes = await getCollection('notes', ({ data }) => {
+  return !data.draft;
+});
+
+// 按发布日期排序
+const sortedNotes = notes.sort((a, b) => 
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+}
+---
+
+<Layout title="笔记 - Artea" description="笔记列表">
+  <div class="max-w-4xl mx-auto px-6 py-8">
+    <!-- Notes List -->
+    <div class="space-y-6">
+      {sortedNotes.map((note) => (
+        <article class="group border-b border-gray-100 pb-6 last:border-b-0 hover:bg-gray-50/50 transition-colors duration-200 rounded-lg px-4 py-4">
+          <div class="flex flex-col gap-3">
+            <!-- Date and Tags -->
+            <div class="flex items-center gap-3 text-sm">
+              <time 
+                datetime={note.data.pubDate.toISOString()}
+                class="text-gray-500"
+              >
+                {formatDate(note.data.pubDate)}
+              </time>
+              <TagList 
+                tags={note.data.tags || []}
+                variant="default"
+                size="sm"
+                showHash={false}
+              />
+              {note.data.mood && (
+                <div class="flex items-center gap-1 text-xs text-gray-500">
+                  <span class="i-tabler-mood-smile text-xs"></span>
+                  <span>{note.data.mood}</span>
+                </div>
+              )}
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-xl font-semibold text-gray-900 group-hover:text-primary-700 transition-colors duration-200">
+              <a href={`/notes/${note.slug}`} class="block">
+                {note.data.title}
+              </a>
+            </h2>
+
+            <!-- Content Preview -->
+            {note.data.content && (
+              <p class="text-gray-600 leading-relaxed line-clamp-2">
+                {note.data.content}
+              </p>
+            )}
+
+            <!-- Read more -->
+            <div class="flex items-center justify-between pt-2">
+              <a 
+                href={`/notes/${note.slug}`}
+                class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+              >
+                <span>阅读笔记</span>
+                <span class="i-tabler-arrow-right text-xs"></span>
+              </a>
+
+              <div class="flex items-center gap-3">
+                {note.data.location && (
+                  <div class="flex items-center gap-1 text-xs text-gray-500">
+                    <span class="i-tabler-map-pin text-xs"></span>
+                    <span>{note.data.location}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Empty State -->
+    {sortedNotes.length === 0 && (
+      <div class="text-center py-16">
+        <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+          <span class="i-tabler-note text-2xl text-gray-400"></span>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">暂无笔记</h3>
+        <p class="text-gray-600">
+          笔记正在准备中...
+        </p>
+      </div>
+    )}
+  </div>
+</Layout>

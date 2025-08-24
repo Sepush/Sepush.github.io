@@ -1,0 +1,89 @@
+---
+export interface ShareLink {
+  platform: string;
+  url: string;
+  icon: string;
+  color: string;
+}
+
+export interface Props {
+  title: string;
+  url: string;
+  platforms?: string[];
+  size?: 'sm' | 'md';
+  showLabels?: boolean;
+  className?: string;
+}
+
+const { 
+  title,
+  url,
+  platforms = ['twitter'],
+  size = 'sm',
+  showLabels = true,
+  className = ''
+} = Astro.props;
+
+// 平台配置
+const platformConfigs = {
+  twitter: {
+    platform: 'Twitter',
+    url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+    icon: 'i-tabler-brand-x',
+    color: 'bg-blue-500 hover:bg-blue-600'
+  },
+  facebook: {
+    platform: 'Facebook',
+    url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    icon: 'i-tabler-brand-facebook',
+    color: 'bg-blue-600 hover:bg-blue-700'
+  },
+  linkedin: {
+    platform: 'LinkedIn',
+    url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    icon: 'i-tabler-brand-linkedin',
+    color: 'bg-blue-700 hover:bg-blue-800'
+  },
+  email: {
+    platform: 'Email',
+    url: `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`,
+    icon: 'i-tabler-mail',
+    color: 'bg-gray-500 hover:bg-gray-600'
+  }
+};
+
+const shareLinks = platforms.map(platform => platformConfigs[platform]).filter(Boolean);
+
+// 尺寸配置
+const sizeClasses = {
+  sm: {
+    button: 'px-2 py-1 text-xs',
+    icon: 'text-xs',
+  },
+  md: {
+    button: 'px-3 py-2 text-sm',
+    icon: 'text-sm',
+  },
+};
+---
+
+{shareLinks.length > 0 && (
+  <div class={`flex items-center gap-3 ${className}`}>
+    <span class={`text-gray-500 ${size === 'sm' ? 'text-sm' : 'text-base'}`}>分享到：</span>
+    <div class="flex items-center gap-2">
+      {shareLinks.map((link) => (
+        <a 
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class={`flex items-center gap-1 ${link.color} text-white rounded transition-colors ${sizeClasses[size].button}`}
+          title={`分享到 ${link.platform}`}
+          aria-label={`Share on ${link.platform}`}
+        >
+          <span class={`${link.icon} ${sizeClasses[size].icon}`}></span>
+          {showLabels && <span>{link.platform}</span>}
+        </a>
+      ))}
+    </div>
+  </div>
+)}

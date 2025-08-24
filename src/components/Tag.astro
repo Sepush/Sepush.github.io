@@ -1,0 +1,51 @@
+---
+export interface Props {
+  tag: string;
+  variant?: 'default' | 'primary' | 'accent';
+  size?: 'sm' | 'md';
+  showIcon?: boolean;
+  showHash?: boolean;
+  href?: string;
+}
+
+const { 
+  tag, 
+  variant = 'default', 
+  size = 'sm',
+  showIcon = false,
+  showHash = false,
+  href 
+} = Astro.props;
+
+// 样式配置
+const variantClasses = {
+  default: 'bg-gray-100 text-gray-600 hover:bg-gray-200',
+  primary: 'bg-primary-50 text-primary-700 hover:bg-primary-100',
+  accent: 'bg-accent-50 text-accent-700 hover:bg-accent-100',
+};
+
+const sizeClasses = {
+  sm: 'px-2 py-1 text-xs',
+  md: 'px-3 py-1 text-sm',
+};
+
+const iconSize = {
+  sm: 'text-xs',
+  md: 'text-sm',
+};
+
+const baseClasses = 'inline-flex items-center gap-1 rounded-full font-medium transition-colors duration-200';
+const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`;
+---
+
+{href ? (
+  <a href={href} class={`${classes} hover:no-underline`}>
+    {showIcon && <span class={`i-tabler-tag ${iconSize[size]}`}></span>}
+    {showHash && '#'}{tag}
+  </a>
+) : (
+  <span class={classes}>
+    {showIcon && <span class={`i-tabler-tag ${iconSize[size]}`}></span>}
+    {showHash && '#'}{tag}
+  </span>
+)}

@@ -1,0 +1,102 @@
+---
+const pathname = Astro.url.pathname;
+
+const navItems = [
+  { name: "Home", href: "/", icon: "i-tabler-home" },
+  { name: "Posts", href: "/posts", icon: "i-tabler-article" },
+  { name: "Notes", href: "/notes", icon: "i-tabler-note" },
+  { name: "Friends", href: "/friends", icon: "i-tabler-users" },
+];
+---
+
+<header
+  id="header"
+  class="w-full bg-white/40 backdrop-blur-md sticky top-0 z-50 transition-all duration-300"
+>
+  <div class="max-w-6xl mx-auto px-6 py-1.5">
+    <div class="flex items-center justify-between">
+      <a class="flex items-center gap-4 hover:text-primary-600" href="/"
+        >Artea</a
+      >
+
+      <nav class="hidden md:flex items-center gap-2">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              class={`group relative flex items-center gap-1.5 px-2.5 py-1 text-sm font-normal transition-all duration-300 ${
+                pathname === item.href
+                  ? "text-primary-700"
+                  : "text-gray-600 hover:text-primary-600 hover:bg-white/30"
+              }`}
+            >
+              <span
+                class={`${item.icon} text-base transition-transform duration-300 group-hover:scale-110`}
+              />
+              <span>{item.name}</span>
+            </a>
+          ))
+        }
+      </nav>
+
+      <button
+        id="mobile-menu-button"
+        class="md:hidden flex items-center justify-center w-8 h-8 rounded-lg bg-white/40 hover:bg-white/60 transition-all duration-300"
+        aria-label="Toggle menu"
+      >
+        <span class="i-tabler-menu-2 text-base text-gray-600"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-white/40 backdrop-blur-md">
+    <nav class="max-w-6xl mx-auto px-6 py-1.5 space-y-0.5">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class={`relative flex items-center gap-2.5 px-3 py-1.5 text-sm font-normal transition-all duration-300 ${
+              pathname === item.href
+                ? "text-primary-700"
+                : "text-gray-600 hover:text-primary-600 hover:bg-white/30"
+            }`}
+          >
+            <span class={`${item.icon} text-base`} />
+            <span>{item.name}</span>
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<script>
+  const menuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const header = document.getElementById("header");
+
+  menuButton?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("hidden");
+  });
+
+  let lastScrollY = window.scrollY;
+
+  const updateHeaderStyle = () => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > 10) {
+      header?.classList.add("border-b", "border-white/20", "shadow-sm");
+      header?.classList.remove("bg-white/40");
+      header?.classList.add("bg-white/70");
+    } else {
+      header?.classList.remove("border-b", "border-white/20", "shadow-sm");
+      header?.classList.remove("bg-white/70");
+      header?.classList.add("bg-white/40");
+    }
+
+    lastScrollY = currentScrollY;
+  };
+
+  window.addEventListener("scroll", updateHeaderStyle);
+  updateHeaderStyle();
+</script>

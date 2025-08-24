@@ -1,0 +1,257 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+  maxDepth?: number;
+  className?: string;
+  position?: 'fixed' | 'static';
+}
+
+const {
+  headings,
+  maxDepth = 3,
+  className = '',
+  position = 'fixed'
+} = Astro.props;
+
+// 过滤标题，只保留指定深度以内的标题
+const tocItems = headings.filter((h) => h.depth <= maxDepth);
+
+// 生成位置相关的类名
+const positionClasses = position === 'fixed' 
+  ? 'fixed right-6 top-1/2 transform -translate-y-1/2 hidden xl:block z-10'
+  : 'relative';
+---
+
+{tocItems.length > 0 && (
+  <aside class={`${positionClasses} ${className}`}>
+    <div class="toc-wrapper">
+      <div class="toc-header">
+        <span class="toc-title">目录</span>
+      </div>
+      
+      <nav class="toc-content">
+        {tocItems.map((heading) => (
+          <a 
+            href={`#${heading.slug}`}
+            class={`toc-item toc-depth-${heading.depth}`}
+            data-depth={heading.depth}
+          >
+            <span class="toc-text">{heading.text}</span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </aside>
+)}
+
+<style>
+  .toc-wrapper {
+    width: 220px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .toc-wrapper:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .toc-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    background: #fafafa;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .toc-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .toc-content {
+    padding: 8px 0;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+
+  .toc-item {
+    display: block;
+    padding: 6px 20px;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+
+  .toc-item:hover {
+    color: #374151;
+    background: #f9fafb;
+  }
+
+  .toc-item.active {
+    color: #111827;
+    background: #f0f9ff;
+    border-left-color: #3b82f6;
+    font-weight: 500;
+  }
+
+  /* 层级样式 */
+  .toc-depth-1 {
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .toc-depth-2 {
+    padding-left: 32px;
+    font-size: 12px;
+  }
+
+  .toc-depth-3 {
+    padding-left: 44px;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  .toc-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* 滚动条 */
+  .toc-content::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .toc-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toc-content::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 2px;
+  }
+
+  .toc-content::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  /* 响应式 */
+  @media (max-width: 1439px) {
+    .toc-wrapper {
+      width: 200px;
+    }
+  }
+
+  /* 深色模式 */
+  @media (prefers-color-scheme: dark) {
+    .toc-wrapper {
+      background: #1f2937;
+      border-color: #374151;
+    }
+
+    .toc-header {
+      background: #111827;
+      border-bottom-color: #374151;
+    }
+
+    .toc-title {
+      color: #f3f4f6;
+    }
+
+    .toc-item {
+      color: #9ca3af;
+    }
+
+    .toc-item:hover {
+      color: #f3f4f6;
+      background: #374151;
+    }
+
+    .toc-item.active {
+      color: #f3f4f6;
+      background: #1e40af;
+      border-left-color: #60a5fa;
+    }
+
+    .toc-depth-1 {
+      color: #e5e7eb;
+    }
+
+    .toc-depth-3 {
+      color: #6b7280;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const tocItems = document.querySelectorAll('.toc-item');
+    
+    if (!headings.length || !tocItems.length) return;
+    
+    // 添加 ID 到标题
+    headings.forEach((heading, index) => {
+      if (!heading.id) {
+        heading.id = `heading-${index}`;
+      }
+    });
+
+    // 观察器配置
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          tocItems.forEach(item => item.classList.remove('active'));
+          
+          const activeItem = document.querySelector(`.toc-item[href="#${entry.target.id}"]`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+          }
+        }
+      });
+    }, {
+      rootMargin: '-80px 0px -70%',
+      threshold: 0.1
+    });
+    
+    headings.forEach(heading => observer.observe(heading));
+
+    // 点击事件
+    tocItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = item.getAttribute('href');
+        if (href) {
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.pushState(null, '', href);
+          }
+        }
+      });
+    });
+
+    // URL 锚点处理
+    if (window.location.hash) {
+      setTimeout(() => {
+        const target = document.querySelector(window.location.hash);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
+  });
+</script>

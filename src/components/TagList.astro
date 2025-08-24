@@ -1,0 +1,48 @@
+---
+import Tag from './Tag.astro';
+
+export interface Props {
+  tags: string[];
+  variant?: 'default' | 'primary' | 'accent';
+  size?: 'sm' | 'md';
+  showIcon?: boolean;
+  showHash?: boolean;
+  maxVisible?: number;
+  className?: string;
+  tagHref?: (tag: string) => string;
+}
+
+const { 
+  tags = [],
+  variant = 'default',
+  size = 'sm',
+  showIcon = false,
+  showHash = false,
+  maxVisible,
+  className = '',
+  tagHref
+} = Astro.props;
+
+const visibleTags = maxVisible ? tags.slice(0, maxVisible) : tags;
+const remainingCount = maxVisible && tags.length > maxVisible ? tags.length - maxVisible : 0;
+---
+
+{tags.length > 0 && (
+  <div class={`flex flex-wrap gap-2 ${className}`}>
+    {visibleTags.map((tag) => (
+      <Tag 
+        tag={tag} 
+        variant={variant}
+        size={size}
+        showIcon={showIcon}
+        showHash={showHash}
+        href={tagHref ? tagHref(tag) : undefined}
+      />
+    ))}
+    {remainingCount > 0 && (
+      <span class={`inline-flex items-center px-2 py-1 text-xs text-gray-400 ${size === 'sm' ? 'text-xs' : 'text-sm'}`}>
+        +{remainingCount}...
+      </span>
+    )}
+  </div>
+)}

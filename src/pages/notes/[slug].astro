@@ -1,0 +1,230 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import TagList from '../../components/TagList.astro';
+import SocialShare from '../../components/SocialShare.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note },
+  }));
+}
+
+interface Props {
+  note: CollectionEntry<'notes'>;
+}
+
+const { note } = Astro.props as Props;
+const { Content } = await note.render();
+
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+}
+
+function formatTime(date: Date) {
+  return new Intl.DateTimeFormat('zh-CN', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
+}
+---
+
+<Layout title={`${note.data.title} - Artea`} description="随笔笔记">
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <!-- 返回按钮 -->
+    <nav class="mb-8">
+      <a 
+        href="/notes" 
+        class="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 transition-colors"
+      >
+        <span class="i-tabler-arrow-left"></span>
+        <span>返回笔记列表</span>
+      </a>
+    </nav>
+
+    <!-- 笔记内容 -->
+    <article class="bg-white rounded-2xl shadow-sm border border-primary-100 overflow-hidden">
+      <!-- 头部信息条 -->
+      <div class="bg-gradient-to-r from-primary-50 to-accent-50 px-6 py-4 border-b border-primary-100">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4 text-sm text-gray-600">
+            <div class="flex items-center gap-1">
+              <span class="i-tabler-calendar text-primary-600"></span>
+              <time datetime={note.data.pubDate.toISOString()}>
+                {formatDate(note.data.pubDate)}
+              </time>
+            </div>
+
+            {note.data.mood && (
+              <div class="flex items-center gap-1">
+                <span class="i-tabler-mood-smile text-primary-600"></span>
+                <span>{note.data.mood}</span>
+              </div>
+            )}
+
+            {note.data.location && (
+              <div class="flex items-center gap-1">
+                <span class="i-tabler-map-pin text-primary-600"></span>
+                <span>{note.data.location}</span>
+              </div>
+            )}
+          </div>
+
+          <div class="text-xs text-gray-500">
+            #{note.slug}
+          </div>
+        </div>
+      </div>
+
+      <!-- 主要内容 -->
+      <div class="p-6">
+        <!-- 标题 -->
+        <header class="mb-6">
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            {note.data.title}
+          </h1>
+
+          <!-- 标签 -->
+          <TagList 
+            tags={note.data.tags || []}
+            variant="primary"
+            size="sm"
+            showIcon={true}
+          />
+        </header>
+
+        <!-- 笔记内容 -->
+        <div class="prose prose-lg max-w-none text-gray-700">
+          <Content />
+        </div>
+      </div>
+
+      <!-- 底部 -->
+      <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+        <div class="flex items-center justify-between text-sm text-gray-500">
+          <div class="flex items-center gap-2">
+            <span class="i-tabler-clock"></span>
+            <span>记录于 {formatTime(note.data.pubDate)}</span>
+          </div>
+          
+          <SocialShare 
+            title={note.data.title}
+            url={Astro.url.href}
+            platforms={['twitter']}
+            size="sm"
+          />
+        </div>
+      </div>
+    </article>
+
+    <!-- 导航到其他笔记 -->
+    <nav class="mt-8 flex justify-between">
+      <a 
+        href="/notes"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-primary-200 rounded-lg hover:bg-primary-50 transition-colors"
+      >
+        <span class="i-tabler-list"></span>
+        <span>所有笔记</span>
+      </a>
+      
+      <a 
+        href="/"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors"
+      >
+        <span class="i-tabler-home"></span>
+        <span>回到首页</span>
+      </a>
+    </nav>
+  </div>
+</Layout>
+
+<style>
+  /* 笔记内容样式 */
+  .prose {
+    color: #374151;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3 {
+    color: #111827;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose h1 {
+    font-size: 1.5rem;
+  }
+
+  .prose h2 {
+    font-size: 1.25rem;
+  }
+
+  .prose h3 {
+    font-size: 1.125rem;
+  }
+
+  .prose ul,
+  .prose ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  .prose li {
+    margin-bottom: 0.25rem;
+  }
+
+  .prose blockquote {
+    border-left: 3px solid oklch(0.74 0.12 145);
+    padding-left: 1rem;
+    margin: 1.25rem 0;
+    font-style: italic;
+    color: #6b7280;
+    background-color: oklch(0.98 0.01 145);
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .prose code {
+    background-color: oklch(0.95 0.02 145);
+    color: oklch(0.42 0.28 145);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+    font-size: 0.875em;
+  }
+
+  .prose a {
+    color: oklch(0.58 0.20 145);
+    text-decoration: underline;
+    text-decoration-color: oklch(0.74 0.12 145);
+    text-underline-offset: 2px;
+    transition: all 0.2s ease;
+  }
+
+  .prose a:hover {
+    color: oklch(0.50 0.24 145);
+    text-decoration-color: oklch(0.58 0.20 145);
+  }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .prose {
+      font-size: 0.95rem;
+    }
+  }
+</style>

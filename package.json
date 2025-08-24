@@ -13,6 +13,8 @@
     "lint:fix": "oxlint --fix --react-plugin --vue-plugin --import-plugin --tsconfig ./tsconfig.json"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.3.4",
     "@astrojs/react": "^4.3.0",
     "@astrojs/vue": "^5.1.0",
     "@types/react": "^19.1.8",
@@ -20,6 +22,7 @@
     "astro": "^5.10.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "typescript": "^5.9.2",
     "vue": "^3.5.17"
   },
   "devDependencies": {
