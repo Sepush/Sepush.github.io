@@ -45,7 +45,13 @@ importers:
       '@iconify-json/tabler':
         specifier: ^1.2.19
         version: 1.2.19
+      '@iconify/utils':
+        specifier: ^3.0.1
+        version: 3.0.1
       '@unocss/preset-attributify':
+        specifier: ^66.4.2
+        version: 66.4.2
+      '@unocss/preset-icons':
         specifier: ^66.4.2
         version: 66.4.2
       '@unocss/reset':
@@ -72,6 +78,9 @@ packages:
 
   '@antfu/utils@8.1.1':
     resolution: {integrity: sha512-Mex9nXf9vR6AhcXmMrlz/HVgYYZpVGJ6YlPgwl7UnaFpnshXs6EK/oa5Gpf3CzENMjkvEx2tQtntGnb7UtSTOQ==}
+
+  '@antfu/utils@9.2.0':
+    resolution: {integrity: sha512-Oq1d9BGZakE/FyoEtcNeSwM7MpDO2vUBi11RWBZXf75zPsbUVWmUs03EqkRFrcgbXyKTas0BdZWC1wcuSoqSAw==}
 
   '@astrojs/check@0.9.4':
     resolution: {integrity: sha512-IOheHwCtpUfvogHHsvu0AbeRZEnjJg3MopdLddkJE70mULItS/Vh37BHcI00mcOJcH1vhD3odbpvWokpxam7xA==}
@@ -472,6 +481,9 @@ packages:
 
   '@iconify/utils@2.3.0':
     resolution: {integrity: sha512-GmQ78prtwYW6EtzXRU1rY+KwOKfz32PD7iJh6Iyqw68GiKuoZ2A6pRtzWONz5VQJbp50mEjXh/7NkumtrAgRKA==}
+
+  '@iconify/utils@3.0.1':
+    resolution: {integrity: sha512-A78CUEnFGX8I/WlILxJCuIJXloL0j/OJ9PSchPAfCargEIKmUBWvvEMmKWB5oONwiUqlNt+5eRufdkLxeHIWYw==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -931,6 +943,9 @@ packages:
 
   '@unocss/preset-icons@66.3.2':
     resolution: {integrity: sha512-E72sTaLjmIPExM0d32MMvjp040BP9xJ/xbpL/J4LqTMebo6PYE+is2+SmLkENrN7P3lSeDY3RI7iHyWLCoI/qw==}
+
+  '@unocss/preset-icons@66.4.2':
+    resolution: {integrity: sha512-qJx9gmesrvrmoTe9Mqoidihad8hm2MSD4QAezhfDSAyllioJOgyT0Bev/IEWAbehe9jtqYIh8v1oCerBPbGn6Q==}
 
   '@unocss/preset-mini@66.3.2':
     resolution: {integrity: sha512-9jaJ3Kk7qTUHY84PIUU53yl1BaFYnoFYu22TGLqd9bV6/OihsZ454sTRmpkjXFWGPWENEv6vfs1BQANliMZGIA==}
@@ -2831,6 +2846,8 @@ snapshots:
 
   '@antfu/utils@8.1.1': {}
 
+  '@antfu/utils@9.2.0': {}
+
   '@astrojs/check@0.9.4(typescript@5.9.2)':
     dependencies:
       '@astrojs/language-server': 2.15.4(typescript@5.9.2)
@@ -3339,6 +3356,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@iconify/utils@3.0.1':
+    dependencies:
+      '@antfu/install-pkg': 1.1.0
+      '@antfu/utils': 9.2.0
+      '@iconify/types': 2.0.0
+      debug: 4.4.1
+      globals: 15.15.0
+      kolorist: 1.8.0
+      local-pkg: 1.1.1
+      mlly: 1.7.4
+    transitivePeerDependencies:
+      - supports-color
+
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
       '@img/sharp-libvips-darwin-arm64': 1.0.4
@@ -3771,6 +3801,14 @@ snapshots:
     dependencies:
       '@iconify/utils': 2.3.0
       '@unocss/core': 66.3.2
+      ofetch: 1.4.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@unocss/preset-icons@66.4.2':
+    dependencies:
+      '@iconify/utils': 3.0.1
+      '@unocss/core': 66.4.2
       ofetch: 1.4.1
     transitivePeerDependencies:
       - supports-color

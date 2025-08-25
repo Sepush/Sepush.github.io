@@ -2,12 +2,23 @@ import {
   defineConfig,
   presetAttributify,
   presetIcons,
-  presetWind3,
+  presetUno,
   transformerAttributifyJsx,
   transformerDirectives,
 } from 'unocss'
 
 export default defineConfig({
+  content: {
+    filesystem: [
+      'src/**/*.{astro,vue,tsx,ts,js}',
+    ],
+  },
+  safelist: [
+    'i-tabler-brand-github',
+    'i-tabler-brand-x', 
+    'i-tabler-mail',
+    'i-tabler-rss',
+  ],
   theme: {
     colors: {
       primary: {
@@ -60,23 +71,18 @@ export default defineConfig({
     },
   },
   shortcuts: [
-    // 现代化按钮
     { 'btn-primary': 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-elegant hover:shadow-float transform hover:-translate-y-0.5' },
     { 'btn-secondary': 'bg-white/80 backdrop-blur-sm border border-primary-200 hover:border-primary-300 text-primary-700 px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-elegant hover:shadow-float transform hover:-translate-y-0.5' },
     
-    // 现代化卡片
     { 'card-modern': 'bg-white/80 backdrop-blur-sm rounded-2xl shadow-elegant hover:shadow-float transition-all duration-500 border border-white/20' },
     { 'card-glass': 'bg-white/60 backdrop-blur-md rounded-2xl border border-white/30 shadow-elegant' },
     { 'card-float': 'bg-white rounded-2xl shadow-float hover:shadow-glow transition-all duration-500 transform hover:-translate-y-1' },
     
-    // 渐变背景
     { 'bg-gradient-primary': 'bg-gradient-to-br from-primary-50 via-surface-50 to-accent-50' },
     { 'bg-gradient-hero': 'bg-gradient-to-br from-primary-100 via-surface-100 to-accent-100' },
     
-    // 现代化文本
     { 'text-gradient': 'bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent' },
     
-    // 图标样式
     { 'icon-modern': 'p-3 rounded-xl bg-gradient-to-br from-primary-100 to-accent-100 text-primary-600 shadow-elegant' },
   ],
   transformers: [
@@ -84,9 +90,12 @@ export default defineConfig({
     transformerAttributifyJsx(),
   ],
   presets: [
+    presetUno(),
     presetAttributify(),
-    presetWind3(),
     presetIcons({
+      collections: {
+        tabler: () => import('@iconify-json/tabler/icons.json').then(i => i.default as any),
+      },
       extraProperties: {
         'display': 'inline-block',
         'vertical-align': 'middle',

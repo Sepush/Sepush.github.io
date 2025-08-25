@@ -18,4 +18,9 @@ export default defineConfig({
       injectReset: true,
     }),
   ],
+  markdown:{
+    shikiConfig:{
+      theme: 'vitesse-light'
+    }
+  }
 })

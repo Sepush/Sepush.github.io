@@ -19,10 +19,8 @@ const {
   position = 'fixed'
 } = Astro.props;
 
-// 过滤标题，只保留指定深度以内的标题
 const tocItems = headings.filter((h) => h.depth <= maxDepth);
 
-// 生成位置相关的类名
 const positionClasses = position === 'fixed' 
   ? 'fixed right-6 top-1/2 transform -translate-y-1/2 hidden xl:block z-10'
   : 'relative';
@@ -205,14 +203,12 @@ const positionClasses = position === 'fixed'
     
     if (!headings.length || !tocItems.length) return;
     
-    // 添加 ID 到标题
     headings.forEach((heading, index) => {
       if (!heading.id) {
         heading.id = `heading-${index}`;
       }
     });
 
-    // 观察器配置
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -231,7 +227,6 @@ const positionClasses = position === 'fixed'
     
     headings.forEach(heading => observer.observe(heading));
 
-    // 点击事件
     tocItems.forEach(item => {
       item.addEventListener('click', (e) => {
         e.preventDefault();
@@ -246,7 +241,6 @@ const positionClasses = position === 'fixed'
       });
     });
 
-    // URL 锚点处理
     if (window.location.hash) {
       setTimeout(() => {
         const target = document.querySelector(window.location.hash);

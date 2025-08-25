@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import TagList from '../components/TagList.astro';
+import Empty from '../components/Empty.astro';
 
 const posts = await getCollection('posts', ({ data }) => {
   return !data.draft;
@@ -75,15 +76,12 @@ function formatDate(date: Date) {
 
     <!-- Empty State -->
     {sortedPosts.length === 0 && (
-      <div class="text-center py-16">
-        <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-          <span class="i-tabler-article text-2xl text-gray-400"></span>
-        </div>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">暂无文章</h3>
-        <p class="text-gray-600">
-          文章正在准备中...
-        </p>
-      </div>
+      <Empty 
+        title="暂无文章"
+        message="文章正在创作中～敬请期待精彩内容，或者先看看其他页面吧！"
+        icon="i-tabler-article"
+        showNavLinks={true}
+      />
     )}
   </div>
 </Layout>

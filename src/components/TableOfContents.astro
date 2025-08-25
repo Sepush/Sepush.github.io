@@ -19,10 +19,8 @@ const {
   position = 'fixed'
 } = Astro.props;
 
-// 过滤标题，只保留指定深度以内的标题
 const tocItems = headings.filter((h) => h.depth <= maxDepth);
 
-// 生成位置相关的类名
 const positionClasses = position === 'fixed' 
   ? 'fixed right-6 top-1/2 transform -translate-y-1/2 hidden xl:block z-10'
   : 'relative';
@@ -87,8 +85,6 @@ const positionClasses = position === 'fixed'
     background: white;
     border-radius: 2px;
   }
-
-  /* 滚动条样式 */
   .toc::-webkit-scrollbar {
     width: 4px;
   }
