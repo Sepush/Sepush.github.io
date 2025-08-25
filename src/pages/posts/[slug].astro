@@ -32,11 +32,8 @@ function formatDate(date: Date) {
 
 <Layout title={`${post.data.title} - Artea`} description={post.data.description}>
   <div class="min-h-screen">
-    <!-- 主内容区 -->
     <main class="max-w-4xl mx-auto px-6 py-12">
-      <!-- 文章头部 -->
       <header class="mb-12">
-        <!-- 返回按钮 -->
         <nav class="mb-8">
           <a 
             href="/posts" 
@@ -47,19 +44,16 @@ function formatDate(date: Date) {
           </a>
         </nav>
 
-        <!-- 文章标题 -->
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
           {post.data.title}
         </h1>
 
-        <!-- 文章描述 -->
         {post.data.description && (
           <p class="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl">
             {post.data.description}
           </p>
         )}
 
-        <!-- 文章元信息 -->
         <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500 mb-8">
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
@@ -83,7 +77,6 @@ function formatDate(date: Date) {
           )}
         </div>
 
-        <!-- 标签 -->
         <TagList 
           tags={post.data.tags || []}
           variant="primary"
@@ -92,12 +85,10 @@ function formatDate(date: Date) {
         />
       </header>
 
-      <!-- 文章内容 -->
-      <article class="prose prose-lg prose-gray max-w-none mb-16">
+      <article class="prose max-w-none mb-16">
         <Content />
       </article>
 
-      <!-- 文章底部 -->
       <footer class="pt-8 border-t border-gray-200">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div class="text-sm text-gray-500">
@@ -116,7 +107,6 @@ function formatDate(date: Date) {
       </footer>
     </main>
 
-    <!-- 浮动目录 -->
     <Toc 
       headings={headings}
       maxDepth={3}
