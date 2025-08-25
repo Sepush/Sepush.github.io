@@ -1,4 +1,3 @@
-// 网站作者的社交链接配置
 export const authorSocialLinks = [
   {
     platform: "GitHub",
@@ -9,6 +8,11 @@ export const authorSocialLinks = [
     platform: "Twitter",
     url: "https://x.com/Sepush2",
     icon: "i-tabler-brand-x",
+  },
+  {
+    platform: "Telegram",
+    url: "https://t.me/SepushZhang",
+    icon: "i-tabler-brand-telegram",
   },
   {
     platform: "Email",
@@ -22,7 +26,6 @@ export const authorSocialLinks = [
   },
 ];
 
-// 社交分享平台配置
 export const sharePlatforms = {
   twitter: 'twitter',
   facebook: 'facebook',

@@ -1,64 +1,40 @@
 ---
-title: "欢迎来到我的博客"
-description: "这是第一篇文章，介绍博客的基本功能和特色"
+title: "最终还是决定写博客"
 pubDate: 2024-08-24
-tags: ["博客", "介绍", "个人"]
+tags: ["介绍", "杂文", "draft"]
 ---
 
-# 欢迎来到我的博客
+## 起因
 
-欢迎来到我的个人网站！这里是我分享技术心得、记录学习过程和展示项目的地方。
+最终还是决定写博客，用文字记录一下自己的学习和生活。
 
-## 关于这个网站
+我日常会用 Notion 写一些文字，整理自己的思路和灵感，但几乎不会发在公开的空间，技术方面很多想写的东西感觉都是前人之叙备矣。
 
-这个网站使用 **Astro** 构建，具有以下特点：
+但最终我还是决定搭建一个博客把自己写的一些文章整理一下慢慢发出来。
 
-- 🚀 **快速**：使用 Astro 的静态站点生成
-- 🎨 **美观**：基于 UnoCSS 的设计系统
-- 📱 **响应式**：适配各种设备屏幕
-- 🔧 **现代**：TypeScript + 组件化开发
+## 技术选型
+
+这个网站主要使用 **Astro** 构建，几个月前帮朋友解决一些问题开始接触的 Astro,踩了一些坑， 探索和学习了一些特性和用法，用来写写博客感觉是极好的选择。
+
+站点的这个版本是使用 GitHub Copilot Vibe Coding 的
+
+```typescript
+const techStack = {
+  framework: ['Astro', 'React', 'Vue'],
+  styling: 'UnoCSS',
+  language: 'TypeScript',
+  icons: 'UnoCSS preset icons',
+  deployment: 'GitHub Pages'
+}
+```
+
 
 ## 内容结构
 
 网站主要包含以下几个部分：
 
-### Posts 技术文章
-这里会分享我的技术经验、学习心得和项目总结。主要涵盖：
+- Posts 会发一些长一点的文章（当然也不会有多长），可能有技术，生活，读书笔记，思考
+- Notes 会记录一些短一点的不足以写成文章的可能就几句话
+- Friends 会放一些关系不错的朋友博客友链
 
-- 前端开发技术
-- 后端架构设计
-- 开源项目分享
-- 编程最佳实践
-
-### Notes 随笔笔记
-这里记录一些简短的想法、灵感和日常感悟：
-
-- 技术思考片段
-- 生活感悟
-- 读书笔记
-- 项目点子
-
-### Friends 友情链接
-这里会推荐一些优秀的朋友和值得关注的网站。
-
-## 技术栈
-
-```typescript
-const techStack = {
-  framework: 'Astro',
-  styling: 'UnoCSS',
-  language: 'TypeScript',
-  icons: 'Tabler Icons',
-  deployment: 'GitHub Pages'
-}
-```
-
-## 联系我
-
-如果你对我的文章或项目感兴趣，欢迎通过以下方式联系我：
-
-- GitHub: [@artea](https://github.com/artea)
-- Twitter: [@artea](https://twitter.com/artea)
-- Email: hello@artea.com
-
-感谢你的访问，希望你能在这里找到有价值的内容！
+博客没有实现评论功能，也没有打算实现。如果想找我聊天在主页能找到我的各种联系方式，欢迎找我聊天。

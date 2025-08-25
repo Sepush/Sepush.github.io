@@ -16,6 +16,7 @@ export default defineConfig({
   safelist: [
     'i-tabler-brand-github',
     'i-tabler-brand-x', 
+    'i-tabler-brand-telegram',
     'i-tabler-mail',
     'i-tabler-rss',
   ],
@@ -84,6 +85,11 @@ export default defineConfig({
     { 'text-gradient': 'bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent' },
     
     { 'icon-modern': 'p-3 rounded-xl bg-gradient-to-br from-primary-100 to-accent-100 text-primary-600 shadow-elegant' },
+    
+    // 添加 prose 相关的类
+    { 'prose': 'max-w-none leading-7 text-gray-700' },
+    { 'prose-lg': 'text-lg leading-8' },
+    { 'prose-xl': 'text-xl leading-9' },
   ],
   transformers: [
     transformerDirectives(),
