@@ -6,6 +6,7 @@ import { defineConfig } from 'astro/config'
 import UnoCSS from 'unocss/astro'
 
 export default defineConfig({
+  site: 'https://sepush.github.io',
   integrations: [
     react({
       include: ['**/react/**/*', '**/*.jsx', '**/*.tsx'],
