@@ -1,8 +1,8 @@
 ---
+import { SocialLinks} from "../components/social";
+import { arteaSocialLinks } from "../config/social";
+import About from "../content/about.md";
 import Layout from "../layouts/Layout.astro";
-import SocialLinks from "../components/SocialLinks.astro";
-import { authorSocialLinks } from "../config/social";
-import About from '../content/about.md';
 ---
 
 <Layout title="Home">
@@ -25,10 +25,9 @@ import About from '../content/about.md';
     </div>
 
     <div class="text-center">
-      <SocialLinks 
-        links={authorSocialLinks}
+      <SocialLinks
+        links={arteaSocialLinks}
         size="md"
-        variant="horizontal"
       />
     </div>
   </div>

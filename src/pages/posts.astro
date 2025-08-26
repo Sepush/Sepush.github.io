@@ -1,87 +1,86 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import TagList from '../components/TagList.astro';
-import Empty from '../components/Empty.astro';
+import Empty from "../components/Empty.astro";
+import { TagGroup } from "../components/tag";
+import Layout from "../layouts/Layout.astro";
+import {  getPosts, isDevEnv, formatDate } from "../utils";
 
-const posts = await getCollection('posts', ({ data }) => {
-  return !data.draft;
-});
+const posts = await getPosts();
+const showDrafts = isDevEnv();
 
-// 按发布日期排序
-const sortedPosts = posts.sort((a, b) => 
+const sortedPosts = posts.sort((a, b) =>
   new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
 );
-
-function formatDate(date: Date) {
-  return new Intl.DateTimeFormat('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(date);
-}
 ---
 
 <Layout title="文章 - Artea" description="文章列表">
   <div class="max-w-4xl mx-auto px-6 py-8">
-    <!-- Posts List -->
-    <div class="space-y-6">
-      {sortedPosts.map((post) => (
-        <article class="group border-b border-gray-100 pb-6 last:border-b-0 hover:bg-gray-50/50 transition-colors duration-200 rounded-lg px-4 py-4">
-          <div class="flex flex-col gap-3">
-            <!-- Date and Tags -->
-            <div class="flex items-center gap-3 text-sm">
-              <time 
-                datetime={post.data.pubDate.toISOString()}
-                class="text-gray-500"
-              >
-                {formatDate(post.data.pubDate)}
-              </time>
-              <TagList 
-                tags={post.data.tags || []}
-                variant="default"
-                size="sm"
-                showHash={false}
-              />
-            </div>
+    {
+      sortedPosts.length === 0 ? (
+        <Empty
+          title="暂无文章"
+          message="文章正在创作中～敬请期待精彩内容，或者先看看其他页面吧！"
+          icon="i-tabler-article"
+          showNavLinks={true}
+        />
+      ) : (
+        <div class="space-y-6">
+          {
+            sortedPosts.map((post) => {
+              const postTags = post.data.tags.map((tag) => {
+                return {
+                  tag,
+                };
+              });
+              return (
+              <article class="group border-b border-gray-100 pb-6 last:border-b-0 hover:bg-gray-50/50 transition-colors duration-200 rounded-lg px-4 py-4">
+                <div class="flex flex-col gap-3">
+                  <!-- Date and Tags -->
+                  <div class="flex items-center gap-3 text-sm">
+                    <time
+                      datetime={post.data.pubDate.toISOString()}
+                      class="text-gray-500"
+                    >
+                      {formatDate(post.data.pubDate)}
+                    </time>
+                    <TagGroup tags={postTags} />
+                  </div>
 
-            <!-- Title -->
-            <h2 class="text-xl font-semibold text-gray-900 group-hover:text-primary-700 transition-colors duration-200">
-              <a href={`/posts/${post.slug}`} class="block">
-                {post.data.title}
-              </a>
-            </h2>
+                  <h2 class="text-xl font-semibold text-gray-900 group-hover:text-primary-700 transition-colors duration-200">
+                    <a href={`/posts/${post.slug}`} class="block flex items-center gap-2">
+                      <span>{post.data.title}</span>
+                      {showDrafts && post.data.draft && (
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-600 bg-orange-100 rounded-full">
+                          <span class="i-tabler-edit text-xs mr-1"></span>
+                          草稿
+                        </span>
+                      )}
+                    </a>
+                  </h2>
 
-            <!-- Description -->
-            {post.data.description && (
-              <p class="text-gray-600 leading-relaxed line-clamp-2">
-                {post.data.description}
-              </p>
-            )}
+                  {
+                    post.data.description && (
+                      <p class="text-gray-600 leading-relaxed line-clamp-2">
+                        {post.data.description}
+                      </p>
+                    )
+                  }
 
-            <!-- Read more -->
-            <div class="pt-2">
-              <a 
-                href={`/posts/${post.slug}`}
-                class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
-              >
-                <span>阅读文章</span>
-                <span class="i-tabler-arrow-right text-xs"></span>
-              </a>
-            </div>
-          </div>
-        </article>
-      ))}
-    </div>
-
-    <!-- Empty State -->
-    {sortedPosts.length === 0 && (
-      <Empty 
-        title="暂无文章"
-        message="文章正在创作中～敬请期待精彩内容，或者先看看其他页面吧！"
-        icon="i-tabler-article"
-        showNavLinks={true}
-      />
-    )}
+                  <div class="pt-2">
+                    <a
+                      href={`/posts/${post.slug}`}
+                      class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+                    >
+                      <span>阅读文章</span>
+                      <span class="i-tabler-arrow-right text-xs"></span>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+            })
+          }
+        </div>
+      )
+    }
   </div>
 </Layout>

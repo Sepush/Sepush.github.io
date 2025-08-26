@@ -1,12 +1,10 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import TagList from '../../components/TagList.astro';
-import SocialShare from '../../components/SocialShare.astro';
+import { type CollectionEntry, getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
-  const notes = await getCollection('notes');
-  
+  const notes = await getCollection("notes");
+
   return notes.map((note) => ({
     params: { slug: note.slug },
     props: { note },
@@ -14,24 +12,24 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  note: CollectionEntry<'notes'>;
+  note: CollectionEntry<"notes">;
 }
 
 const { note } = Astro.props as Props;
 const { Content } = await note.render();
 
 function formatDate(date: Date) {
-  return new Intl.DateTimeFormat('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  return new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   }).format(date);
 }
 
 function formatTime(date: Date) {
-  return new Intl.DateTimeFormat('zh-CN', {
-    hour: '2-digit',
-    minute: '2-digit',
+  return new Intl.DateTimeFormat("zh-CN", {
+    hour: "2-digit",
+    minute: "2-digit",
   }).format(date);
 }
 ---
@@ -39,47 +37,56 @@ function formatTime(date: Date) {
 <Layout title={`${note.data.title} - Artea`} description="随笔笔记">
   <div class="min-h-screen bg-gradient-primary">
     <div class="max-w-4xl mx-auto px-4 py-12">
-      <!-- 返回按钮 -->
       <nav class="mb-12">
-        <a 
-          href="/notes" 
+        <a
+          href="/notes"
           class="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 transition-all duration-200 group"
         >
-          <span class="i-tabler-arrow-left group-hover:-translate-x-1 transition-transform duration-200"></span>
+          <span
+            class="i-tabler-arrow-left group-hover:-translate-x-1 transition-transform duration-200"
+          ></span>
           <span class="font-medium">返回笔记</span>
         </a>
       </nav>
 
-      <!-- 笔记内容 -->
       <article class="card-modern overflow-hidden">
-        <!-- 标题区域 -->
         <header class="px-8 pt-8 pb-6">
           <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
             {note.data.title}
           </h1>
 
-          <!-- 元信息 -->
           <div class="flex flex-wrap items-center gap-6 text-sm text-gray-600 mb-6">
             <div class="flex items-center gap-2">
               <span class="i-tabler-calendar w-4 h-4 text-primary-500"></span>
-              <time datetime={note.data.pubDate.toISOString()} class="font-medium">
+              <time
+                datetime={note.data.pubDate.toISOString()}
+                class="font-medium"
+              >
                 {formatDate(note.data.pubDate)}
               </time>
             </div>
 
-            {note.data.mood && (
-              <div class="flex items-center gap-2">
-                <span class="i-tabler-mood-smile w-4 h-4 text-accent-500"></span>
-                <span class="font-medium">{note.data.mood}</span>
-              </div>
-            )}
+            {
+              note.data.mood && (
+                <div class="flex items-center gap-2">
+                  <span
+                    class="i-tabler-mood-smile w-4 h-4 text-accent-500"
+                  ></span>
+                  <span class="font-medium">{note.data.mood}</span>
+                </div>
+              )
+            }
 
-            {note.data.location && (
-              <div class="flex items-center gap-2">
-                <span class="i-tabler-map-pin w-4 h-4 text-primary-400"></span>
-                <span class="font-medium">{note.data.location}</span>
-              </div>
-            )}
+            {
+              note.data.location && (
+                <div class="flex items-center gap-2">
+                  <span
+                    class="i-tabler-map-pin w-4 h-4 text-primary-400"
+                  ></span>
+                  <span class="font-medium">{note.data.location}</span>
+                </div>
+              )
+            }
 
             <div class="flex items-center gap-2 ml-auto">
               <span class="i-tabler-clock w-4 h-4 text-gray-400"></span>
@@ -87,24 +94,29 @@ function formatTime(date: Date) {
             </div>
           </div>
 
-          <!-- 标签 -->
-          {note.data.tags && note.data.tags.length > 0 && (
-            <div class="flex flex-wrap gap-2">
-              {note.data.tags.map((tag) => (
-                <span class="px-3 py-1 bg-primary-50 text-primary-700 rounded-lg text-xs font-medium border border-primary-100">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
+          {
+            note.data.tags && note.data.tags.length > 0
+              && (
+              <div class="flex flex-wrap gap-2">
+                {
+                  note.data.tags.map((tag) => (
+                    <span
+                      class="px-3 py-1 bg-primary-50 text-primary-700 rounded-lg text-xs font-medium border border-primary-100"
+                    >
+                      #{tag}
+                    </span>
+                  ))
+                }
+              </div>
+            )
+          }
         </header>
 
-        <!-- 分隔线 -->
-        <div class="h-px bg-gradient-to-r from-transparent via-primary-200 to-transparent mx-8"></div>
+        <div class="h-px bg-gradient-to-r from-transparent via-primary-200 to-transparent mx-8">
+        </div>
 
-        <!-- 笔记内容 -->
         <div class="px-8 py-8">
-          <div class="note-content">
+          <div class="prose max-w-none">
             <Content />
           </div>
         </div>
@@ -113,250 +125,4 @@ function formatTime(date: Date) {
   </div>
 </Layout>
 
-<style>
-  /* 笔记内容样式 */
-  .note-content {
-    color: #475569;
-    line-height: 1.8;
-    font-size: 1.125rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  }
 
-  .note-content :global(p) {
-    margin-bottom: 1.75rem;
-    text-align: justify;
-  }
-
-  .note-content :global(h1),
-  .note-content :global(h2),
-  .note-content :global(h3),
-  .note-content :global(h4) {
-    color: #1e293b;
-    font-weight: 700;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    letter-spacing: -0.025em;
-  }
-
-  .note-content :global(h1) {
-    font-size: 2rem;
-    color: oklch(0.53 0.21 145);
-  }
-
-  .note-content :global(h2) {
-    font-size: 1.75rem;
-    border-left: 4px solid oklch(0.67 0.15 145);
-    padding-left: 1rem;
-    margin-left: -1rem;
-    color: oklch(0.53 0.21 145);
-  }
-
-  .note-content :global(h3) {
-    font-size: 1.5rem;
-    color: oklch(0.60 0.18 145);
-  }
-
-  .note-content :global(h4) {
-    font-size: 1.25rem;
-    color: oklch(0.67 0.15 145);
-  }
-
-  .note-content :global(ul),
-  .note-content :global(ol) {
-    margin-bottom: 1.75rem;
-    padding-left: 2rem;
-  }
-
-  .note-content :global(li) {
-    margin-bottom: 0.5rem;
-    position: relative;
-  }
-
-  .note-content :global(ul li::marker) {
-    color: oklch(0.67 0.15 145);
-  }
-
-  .note-content :global(ol li::marker) {
-    color: oklch(0.67 0.15 145);
-    font-weight: 600;
-  }
-
-  .note-content :global(blockquote) {
-    border-left: 4px solid oklch(0.67 0.15 145);
-    background: oklch(0.98 0.015 145);
-    padding: 1.5rem;
-    margin: 2rem 0;
-    border-radius: 0.75rem;
-    font-style: italic;
-    color: oklch(0.53 0.21 145);
-    position: relative;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  }
-
-  .note-content :global(blockquote::before) {
-    content: '"';
-    position: absolute;
-    top: 0.5rem;
-    left: 1rem;
-    font-size: 3rem;
-    color: oklch(0.67 0.15 145);
-    opacity: 0.3;
-    font-family: serif;
-    line-height: 1;
-  }
-
-  .note-content :global(code) {
-    background: oklch(0.95 0.03 145);
-    color: oklch(0.46 0.24 145);
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.375rem;
-    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
-    font-size: 0.9em;
-    font-weight: 500;
-    border: 1px solid oklch(0.88 0.06 145);
-  }
-
-  .note-content :global(pre) {
-    background: linear-gradient(135deg, oklch(0.25 0.30 145) 0%, oklch(0.39 0.27 145) 100%);
-    color: oklch(0.98 0.015 145);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    overflow-x: auto;
-    margin: 2rem 0;
-    border: 1px solid oklch(0.39 0.27 145);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-
-  .note-content :global(pre code) {
-    background: transparent;
-    color: inherit;
-    padding: 0;
-    border: none;
-    border-radius: 0;
-  }
-
-  .note-content :global(a) {
-    color: oklch(0.67 0.15 145);
-    text-decoration: none;
-    font-weight: 500;
-    position: relative;
-    transition: all 0.2s ease;
-  }
-
-  .note-content :global(a::after) {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, oklch(0.67 0.15 145), oklch(0.62 0.20 160));
-    transition: width 0.3s ease;
-  }
-
-  .note-content :global(a:hover) {
-    color: oklch(0.53 0.21 145);
-  }
-
-  .note-content :global(a:hover::after) {
-    width: 100%;
-  }
-
-  .note-content :global(img) {
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    margin: 2rem auto;
-    display: block;
-    max-width: 100%;
-    height: auto;
-  }
-
-  .note-content :global(table) {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  }
-
-  .note-content :global(th),
-  .note-content :global(td) {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid oklch(0.88 0.06 145);
-  }
-
-  .note-content :global(th) {
-    background: oklch(0.95 0.03 145);
-    font-weight: 600;
-    color: oklch(0.46 0.24 145);
-  }
-
-  .note-content :global(tr:hover) {
-    background-color: oklch(0.98 0.015 145);
-  }
-
-  .note-content :global(hr) {
-    border: none;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, oklch(0.88 0.06 145), transparent);
-    margin: 3rem 0;
-  }
-
-  /* 响应式设计 */
-  @media (max-width: 768px) {
-    .note-content {
-      font-size: 1rem;
-      line-height: 1.7;
-    }
-
-    .note-content :global(h1) {
-      font-size: 1.75rem;
-    }
-
-    .note-content :global(h2) {
-      font-size: 1.5rem;
-    }
-
-    .note-content :global(h3) {
-      font-size: 1.25rem;
-    }
-
-    .note-content :global(blockquote) {
-      padding: 1rem;
-      margin: 1.5rem 0;
-    }
-
-    .note-content :global(pre) {
-      padding: 1rem;
-      margin: 1.5rem 0;
-      border-radius: 0.5rem;
-    }
-  }
-
-  /* 选中文本样式 */
-  .note-content :global(::selection) {
-    background: oklch(0.88 0.06 145 / 0.3);
-    color: oklch(0.39 0.27 145);
-  }
-
-  /* 滚动条样式 */
-  .note-content :global(pre::-webkit-scrollbar) {
-    height: 8px;
-  }
-
-  .note-content :global(pre::-webkit-scrollbar-track) {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-  }
-
-  .note-content :global(pre::-webkit-scrollbar-thumb) {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-  }
-
-  .note-content :global(pre::-webkit-scrollbar-thumb:hover) {
-    background: rgba(255, 255, 255, 0.5);
-  }
-</style>

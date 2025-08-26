@@ -3,9 +3,9 @@
 declare global {
   namespace astroHTML.JSX {
     interface HTMLAttributes {
-      [key: string]: any
+      [key: string]: any;
     }
   }
 }
 
-export {}
+export {};

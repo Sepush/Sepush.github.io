@@ -1,36 +1,29 @@
-export const authorSocialLinks = [
+import type { SocialLink } from "../components/social";
+
+export const arteaSocialLinks: SocialLink[] = [
   {
-    platform: "GitHub",
+    platform: "github",
     url: "https://github.com/sepush",
     icon: "i-tabler-brand-github",
   },
   {
-    platform: "Twitter",
+    platform: "x",
     url: "https://x.com/Sepush2",
     icon: "i-tabler-brand-x",
   },
   {
-    platform: "Telegram",
+    platform: "telegram",
     url: "https://t.me/SepushZhang",
     icon: "i-tabler-brand-telegram",
   },
   {
-    platform: "Email",
+    platform: "email",
     url: "mailto:sepush@outlook.com",
     icon: "i-tabler-mail",
   },
   {
-    platform: "RSS",
+    platform: "rss",
     url: "/rss.xml",
     icon: "i-tabler-rss",
   },
 ];
-
-export const sharePlatforms = {
-  twitter: 'twitter',
-  facebook: 'facebook',
-  linkedin: 'linkedin',
-  email: 'email',
-} as const;
-
-export type SharePlatform = keyof typeof sharePlatforms;

@@ -16,8 +16,7 @@ const navItems = [
   <div class="max-w-6xl mx-auto px-6 py-1.5">
     <div class="flex items-center justify-between">
       <a class="flex items-center gap-4 hover:text-primary-600" href="/"
-        >Artea</a
-      >
+      >Artea</a>
 
       <nav class="hidden md:flex items-center gap-2">
         {
@@ -71,32 +70,32 @@ const navItems = [
 </header>
 
 <script>
-  const menuButton = document.getElementById("mobile-menu-button");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const header = document.getElementById("header");
+const menuButton = document.getElementById("mobile-menu-button");
+const mobileMenu = document.getElementById("mobile-menu");
+const header = document.getElementById("header");
 
-  menuButton?.addEventListener("click", () => {
-    mobileMenu?.classList.toggle("hidden");
-  });
+menuButton?.addEventListener("click", () => {
+  mobileMenu?.classList.toggle("hidden");
+});
 
-  let lastScrollY = window.scrollY;
+let lastScrollY = window.scrollY;
 
-  const updateHeaderStyle = () => {
-    const currentScrollY = window.scrollY;
+const updateHeaderStyle = () => {
+  const currentScrollY = window.scrollY;
 
-    if (currentScrollY > 10) {
-      header?.classList.add("border-b", "border-white/20", "shadow-sm");
-      header?.classList.remove("bg-white/40");
-      header?.classList.add("bg-white/70");
-    } else {
-      header?.classList.remove("border-b", "border-white/20", "shadow-sm");
-      header?.classList.remove("bg-white/70");
-      header?.classList.add("bg-white/40");
-    }
+  if (currentScrollY > 10) {
+    header?.classList.add("border-b", "border-white/20", "shadow-sm");
+    header?.classList.remove("bg-white/40");
+    header?.classList.add("bg-white/70");
+  } else {
+    header?.classList.remove("border-b", "border-white/20", "shadow-sm");
+    header?.classList.remove("bg-white/70");
+    header?.classList.add("bg-white/40");
+  }
 
-    lastScrollY = currentScrollY;
-  };
+  lastScrollY = currentScrollY;
+};
 
-  window.addEventListener("scroll", updateHeaderStyle);
-  updateHeaderStyle();
+window.addEventListener("scroll", updateHeaderStyle);
+updateHeaderStyle();
 </script>

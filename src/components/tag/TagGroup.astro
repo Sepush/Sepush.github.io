@@ -1,0 +1,40 @@
+---
+import type { TagProps } from "./interface";
+import Tag from "./Tag.astro";
+
+export interface Props {
+  tags: TagProps[];
+  maxVisible?: number;
+  className?: string;
+}
+
+const {
+  tags = [],
+  maxVisible,
+  className = "",
+} = Astro.props;
+
+const visibleTags = maxVisible ? tags.slice(0, maxVisible) : tags;
+const remainingCount = maxVisible && tags.length > maxVisible
+  ? tags.length - maxVisible
+  : 0;
+---
+
+{
+  tags.length > 0 && (
+    <div class={`flex flex-wrap gap-2 ${className}`}>
+      {visibleTags.map((tag) => <Tag {...tag} />)}
+      {
+        remainingCount > 0 && (
+          <span
+            class={`inline-flex items-center px-2 py-1 text-xs text-gray-400 ${
+              visibleTags[0]?.size === "sm" ? "text-xs" : "text-sm"
+            }`}
+          >
+            +{remainingCount}
+          </span>
+        )
+      }
+    </div>
+  )
+}

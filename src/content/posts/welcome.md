@@ -1,7 +1,8 @@
 ---
 title: "最终还是决定写博客"
 pubDate: 2024-08-24
-tags: ["介绍", "杂文", "draft"]
+tags: ["介绍", "杂文"]
+draft: true
 ---
 
 ## 起因
@@ -20,14 +21,13 @@ tags: ["介绍", "杂文", "draft"]
 
 ```typescript
 const techStack = {
-  framework: ['Astro', 'React', 'Vue'],
-  styling: 'UnoCSS',
-  language: 'TypeScript',
-  icons: 'UnoCSS preset icons',
-  deployment: 'GitHub Pages'
-}
+  framework: ["Astro", "React", "Vue"],
+  styling: "UnoCSS",
+  language: "TypeScript",
+  icons: "UnoCSS preset icons",
+  deployment: "GitHub Pages",
+};
 ```
-
 
 ## 内容结构
 

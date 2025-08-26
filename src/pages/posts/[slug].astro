@@ -1,13 +1,13 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import TagList from '../../components/TagList.astro';
-import SocialShare from '../../components/SocialShare.astro';
-import Toc from '../../components/Toc.astro';
+import { type CollectionEntry, getCollection } from "astro:content";
+import { SocialShare } from "../../components/social";
+import { TagGroup } from "../../components/tag";
+import Toc from "../../components/Toc.astro";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
-  
+  const posts = await getCollection("posts");
+
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
@@ -15,28 +15,37 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  post: CollectionEntry<'posts'>;
+  post: CollectionEntry<"posts">;
 }
 
 const { post } = Astro.props as Props;
 const { Content, headings } = await post.render();
 
+const postTags = post.data.tags.map((tag) => {
+  return {
+    tag,
+  };
+});
+
 function formatDate(date: Date) {
-  return new Intl.DateTimeFormat('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  return new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   }).format(date);
 }
 ---
 
-<Layout title={`${post.data.title} - Artea`} description={post.data.description}>
+<Layout
+  title={`${post.data.title} - Artea`}
+  description={post.data.description}
+>
   <div class="min-h-screen">
     <main class="max-w-4xl mx-auto px-6 py-12">
       <header class="mb-12">
         <nav class="mb-8">
-          <a 
-            href="/posts" 
+          <a
+            href="/posts"
             class="inline-flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors text-sm"
           >
             <span class="i-tabler-arrow-left text-sm"></span>
@@ -48,11 +57,13 @@ function formatDate(date: Date) {
           {post.data.title}
         </h1>
 
-        {post.data.description && (
-          <p class="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl">
-            {post.data.description}
-          </p>
-        )}
+        {
+          post.data.description && (
+            <p class="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl">
+              {post.data.description}
+            </p>
+          )
+        }
 
         <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500 mb-8">
           <div class="flex items-center gap-2">
@@ -61,7 +72,7 @@ function formatDate(date: Date) {
             </div>
             <span>{post.data.author}</span>
           </div>
-          
+
           <div class="flex items-center gap-2">
             <span class="i-tabler-calendar text-gray-400"></span>
             <time datetime={post.data.pubDate.toISOString()}>
@@ -69,20 +80,17 @@ function formatDate(date: Date) {
             </time>
           </div>
 
-          {post.data.updatedDate && (
-            <div class="flex items-center gap-2">
-              <span class="i-tabler-edit text-gray-400"></span>
-              <span>更新于 {formatDate(post.data.updatedDate)}</span>
-            </div>
-          )}
+          {
+            post.data.updatedDate && (
+              <div class="flex items-center gap-2">
+                <span class="i-tabler-edit text-gray-400" />
+                <span>更新于 {formatDate(post.data.updatedDate)}</span>
+              </div>
+            )
+          }
         </div>
 
-        <TagList 
-          tags={post.data.tags || []}
-          variant="primary"
-          size="sm"
-          showIcon={false}
-        />
+        <TagGroup tags={postTags} />
       </header>
 
       <article class="prose max-w-none mb-16">
@@ -92,14 +100,14 @@ function formatDate(date: Date) {
       <footer class="pt-8 border-t border-gray-200">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div class="text-sm text-gray-500">
-            <span>如果这篇文章对你有帮助，欢迎分享给更多人！</span>
+            <span>如果觉得这篇文章有点意思，欢迎分享给更多人！</span>
           </div>
-          
+
           <div class="flex items-center gap-3">
-            <SocialShare 
+            <SocialShare
               title={post.data.title}
               url={Astro.url.href}
-              platforms={['twitter']}
+              platforms={["x"]}
               size="sm"
             />
           </div>
@@ -107,10 +115,6 @@ function formatDate(date: Date) {
       </footer>
     </main>
 
-    <Toc 
-      headings={headings}
-      maxDepth={3}
-      position="fixed"
-    />
+    <Toc headings={headings} maxDepth={3} position="fixed" />
   </div>
 </Layout>

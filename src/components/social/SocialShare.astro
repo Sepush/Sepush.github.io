@@ -1,0 +1,72 @@
+---
+import { platformConfigs } from "./config";
+import type { SocialPlatform } from "./interface";
+import { createShareUrl } from "./utis";
+
+export interface Props {
+  title: string;
+  url: string;
+  platforms?: SocialPlatform[];
+  size?: "sm" | "md";
+  showLabels?: boolean;
+  className?: string;
+}
+
+const {
+  title,
+  url,
+  platforms = ["x"],
+  size = "sm",
+  showLabels = false,
+  className = "",
+} = Astro.props;
+
+const shareLinks = platforms
+  .filter((platform) => platformConfigs[platform])
+  .map((platform) => ({
+    ...platformConfigs[platform],
+    url: createShareUrl(platform, title, url),
+  }));
+
+const sizeClasses = {
+  sm: {
+    button: "px-2 py-1 text-xs",
+    icon: "text-xs",
+  },
+  md: {
+    button: "px-3 py-2 text-sm",
+    icon: "text-sm",
+  },
+};
+---
+
+{
+  shareLinks.length > 0 && (
+    <div class={`flex items-center gap-3 ${className}`}>
+      <span class={`text-gray-500 ${size === "sm" ? "text-sm" : "text-base"}`}>
+        分享到：
+      </span>
+      <div class="flex items-center gap-2">
+        {shareLinks.map((link) => {
+          return (
+            link && (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={`flex items-center gap-1 ${link.color} text-white rounded transition-colors ${
+                  sizeClasses[size].button
+                }`}
+                title={`分享到 ${link.platform}`}
+                aria-label={`Share on ${link.platform}`}
+              >
+                <span class={`${link.icon} ${sizeClasses[size].icon}`} />
+                {showLabels && <span>{link.platform}</span>}
+              </a>
+            )
+          );
+        })}
+      </div>
+    </div>
+  )
+}
