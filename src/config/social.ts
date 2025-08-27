@@ -37,7 +37,7 @@ interface Friend {
 export const friends: Friend[] = [
   {
     name: "Cee",
-    description: "前端工程师,擅长数据可视化",
+    description: "前端工程师 擅长数据可视化",
     socialLinks: [
       {
         platform: "github",
@@ -53,6 +53,22 @@ export const friends: Friend[] = [
         platform: "x",
         url: "https://x.com/zqqcee",
         icon: "i-tabler-brand-x",
+      },
+    ],
+  },
+  {
+    name: "Hong97",
+    description: "前端工程师 喜欢 Coding 做好看的东西",
+    socialLinks: [
+      {
+        platform: "github",
+        url: "https://github.com/hongding0211",
+        icon: "i-tabler-brand-github",
+      },
+      {
+        platform: "website",
+        url: "https://hong97.ltd",
+        icon: "i-tabler-link",
       },
     ],
   },
