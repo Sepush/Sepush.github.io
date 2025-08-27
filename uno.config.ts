@@ -19,6 +19,7 @@ export default defineConfig({
     "i-tabler-brand-telegram",
     "i-tabler-mail",
     "i-tabler-rss",
+    "i-tabler-link",
   ],
   theme: {
     colors: {

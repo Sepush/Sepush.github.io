@@ -1,10 +1,52 @@
 ---
 import Empty from "../components/Empty.astro";
+import { SocialLinks } from "../components/social";
+import { friends } from "../config/social";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="朋友 - Artea" description="朋友列表">
-  <div class="max-w-4xl mx-auto px-6 py-8">
-    <Empty />
+  <div class="max-w-4xl mx-auto px-6 py-16">
+    <div class="mb-16">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        友人
+      </h1>
+    </div>
+
+    {
+      friends.length > 0 ? (
+        <div class="space-y-8">
+          {
+            friends.map((friend, index) => (
+              <div class="border-l-4 border-gray-900 pl-6 py-2" key={index}>
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                      {friend.name}
+                    </h3>
+                    {
+                      friend.description && (
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                          {friend.description}
+                        </p>
+                      )
+                    }
+                  </div>
+                  <div class="flex-end min-w-0">
+                    <div class="flex gap-3">
+                      <SocialLinks
+                        links={friend.socialLinks}
+                        size="sm"
+                        className="gap-3"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      ) : <Empty />
+    }
   </div>
 </Layout>

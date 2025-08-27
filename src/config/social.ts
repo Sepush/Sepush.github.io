@@ -27,3 +27,33 @@ export const arteaSocialLinks: SocialLink[] = [
     icon: "i-tabler-rss",
   },
 ];
+
+interface Friend {
+  name: string;
+  description?: string;
+  socialLinks: SocialLink[];
+}
+
+export const friends: Friend[] = [
+  {
+    name: "Cee",
+    description: "前端工程师,擅长数据可视化",
+    socialLinks: [
+      {
+        platform: "github",
+        url: "https://github.com/zqqcee",
+        icon: "i-tabler-brand-github",
+      },
+      {
+        platform: "website",
+        url: "https://luckycc.cc/",
+        icon: "i-tabler-link",
+      },
+      {
+        platform: "x",
+        url: "https://x.com/zqqcee",
+        icon: "i-tabler-brand-x",
+      },
+    ],
+  },
+];
