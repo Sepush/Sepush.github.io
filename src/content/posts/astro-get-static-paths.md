@@ -2,7 +2,6 @@
 title: "Astro getStaticPaths"
 pubDate: 2024-08-27
 tags: ["Astro"]
-draft: true
 ---
 
 ## 前置知识
@@ -19,7 +18,6 @@ draft: true
 来看这样一个情节：
 
 我们在构建一个 Blog 有一个文章列表页，然后每一篇文章有一个文章详情页。
-
 然后我们就可能会很自然的写出下面这样的代码：
 
 ```astro

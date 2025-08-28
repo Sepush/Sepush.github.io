@@ -12,8 +12,8 @@
 .prose h6 {
   color: var(--a-color-heading-primary);
   font-weight: var(--a-font-semibold);
-  margin-top: var(--a-spacing-lg);
-  margin-bottom: var(--a-spacing-md);
+  margin-top: var(--a-spacing-md);
+  margin-bottom: var(--a-spacing-sm);
   line-height: var(--a-leading-tight);
   scroll-margin-top: 6rem;
   letter-spacing: -0.025em;
@@ -68,7 +68,7 @@
 }
 
 .prose p {
-  margin-bottom: var(--a-spacing-lg);
+  margin-bottom: var(--a-spacing-xs);
   text-align: justify;
 }
 
@@ -105,13 +105,13 @@
 
 .prose ul,
 .prose ol {
-  margin-bottom: var(--a-spacing-xl);
+  margin-bottom: var(--a-spacing-lg);
   padding-left: var(--a-spacing-xl);
 }
 
 .prose li {
-  margin-bottom: var(--a-spacing-sm);
-  line-height: var(--a-leading-normal);
+  margin-bottom: var(--a-spacing-xs);
+  line-height: var(--a-leading-tight);
 }
 
 .prose ul {
@@ -212,7 +212,6 @@
 }
 
 .prose code {
-  padding: 0.25rem var(--a-spacing-xs);
   border-radius: 4px;
   font-family: var(--a-font-mono);
   font-size: var(--a-text-sm);
@@ -226,7 +225,7 @@
   overflow-x: auto;
   margin: var(--a-spacing-xs) 0;
   font-family: var(--a-font-mono);
-  line-height: var(--a-leading-normal);
+  line-height: var(--a-leading-tight);
   box-shadow: var(--a-shadow-md);
 }
 
@@ -395,11 +394,11 @@
   .prose .katex {
     font-size: 1em;
   }
-  
+
   .prose .katex-display > .katex {
     padding: var(--a-spacing-sm) var(--a-spacing-md);
   }
-  
+
   .prose .math-display .katex-display {
     padding: var(--a-spacing-md);
   }
