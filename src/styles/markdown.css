@@ -230,7 +230,7 @@
   line-height: var(--a-leading-tight);
   box-shadow: var(--a-shadow-md);
   max-width: 100%;
-  touch-action: pan-x;
+  touch-action: manipulation;
 }
 
 .prose pre code {
@@ -333,7 +333,7 @@
     margin: var(--a-spacing-md) 0;
     font-size: var(--a-text-xs);
     line-height: 1.4;
-    touch-action: pan-x;
+    touch-action: manipulation;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--a-color-accent-border) transparent;
@@ -356,7 +356,7 @@
     display: block;
     overflow-x: auto;
     white-space: nowrap;
-    touch-action: pan-x;
+    touch-action: manipulation;
   }
 
   .prose img {
