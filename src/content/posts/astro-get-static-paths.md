@@ -1,6 +1,6 @@
 ---
 title: "Astro getStaticPaths"
-pubDate: 2024-08-27
+pubDate: 2025-08-27
 tags: ["Astro"]
 ---
 

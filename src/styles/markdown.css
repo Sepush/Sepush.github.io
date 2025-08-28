@@ -217,6 +217,8 @@
   font-size: var(--a-text-sm);
   font-weight: var(--a-font-normal);
   border: 1px solid var(--a-color-accent-border);
+  padding: 0.1em 0.3em;
+  word-break: break-word;
 }
 
 .prose pre {
@@ -227,6 +229,8 @@
   font-family: var(--a-font-mono);
   line-height: var(--a-leading-tight);
   box-shadow: var(--a-shadow-md);
+  max-width: 100%;
+  touch-action: pan-x;
 }
 
 .prose pre code {
@@ -303,18 +307,21 @@
 @media (max-width: 768px) {
   .prose {
     font-size: var(--a-text-base);
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
 
   .prose h1 {
-    font-size: var(--a-text-xl);
-  }
-
-  .prose h2 {
     font-size: var(--a-text-2xl);
   }
 
-  .prose h3 {
+  .prose h2 {
     font-size: var(--a-text-xl);
+  }
+
+  .prose h3 {
+    font-size: var(--a-text-lg);
   }
 
   .prose p {
@@ -322,13 +329,39 @@
   }
 
   .prose pre {
-    padding: var(--a-spacing-md);
-    margin: var(--a-spacing-lg) 0;
+    padding: var(--a-spacing-sm);
+    margin: var(--a-spacing-md) 0;
+    font-size: var(--a-text-xs);
+    line-height: 1.4;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--a-color-accent-border) transparent;
+  }
+
+  .prose code {
+    font-size: var(--a-text-xs);
+    max-width: 100%;
+    display: inline-block;
+    word-break: break-all;
   }
 
   .prose blockquote {
     padding: var(--a-spacing-md) var(--a-spacing-lg);
     margin: var(--a-spacing-lg) 0;
+  }
+
+  .prose table {
+    font-size: var(--a-text-sm);
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    touch-action: pan-x;
+  }
+
+  .prose img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
