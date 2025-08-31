@@ -1,3 +1,4 @@
+/// <reference types="astro/client" />
 /// <reference types="unocss/preset-attributify" />
 
 declare global {

@@ -1,11 +1,5 @@
-import {
-  defineConfig,
-  presetAttributify,
-  presetIcons,
-  presetUno,
-  transformerAttributifyJsx,
-  transformerDirectives,
-} from "unocss";
+import { presetWind3 } from "@unocss/preset-wind3";
+import { defineConfig, presetAttributify, presetIcons, transformerAttributifyJsx, transformerDirectives } from "unocss";
 
 export default defineConfig({
   content: {
@@ -20,6 +14,8 @@ export default defineConfig({
     "i-tabler-mail",
     "i-tabler-rss",
     "i-tabler-link",
+    "i-tabler-menu-2",
+    "i-tabler-x",
   ],
   theme: {
     colors: {
@@ -111,7 +107,7 @@ export default defineConfig({
     transformerAttributifyJsx(),
   ],
   presets: [
-    presetUno(),
+    presetWind3(),
     presetAttributify(),
     presetIcons({
       collections: {

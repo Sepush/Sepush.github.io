@@ -436,3 +436,91 @@
     padding: var(--a-spacing-md);
   }
 }
+
+/* Footnotes Styles */
+.prose .footnotes {
+  margin-top: var(--a-spacing-2xl);
+  padding-top: var(--a-spacing-lg);
+  border-top: 2px solid var(--a-color-border);
+  font-size: var(--a-text-sm);
+}
+
+.prose .footnotes h2 {
+  font-size: var(--a-text-lg);
+  font-weight: var(--a-font-semibold);
+  color: var(--a-color-heading-light);
+  margin-bottom: var(--a-spacing-md);
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.prose .footnotes h2::after {
+  display: none;
+}
+
+.prose .footnotes ol {
+  padding-left: var(--a-spacing-lg);
+  counter-reset: footnote-counter;
+}
+
+.prose .footnotes li {
+  margin-bottom: var(--a-spacing-sm);
+  color: var(--a-color-text-secondary);
+  line-height: var(--a-leading-relaxed);
+}
+
+.prose .footnotes li p {
+  margin-bottom: var(--a-spacing-xs);
+  display: inline;
+}
+
+.prose .footnotes li:target {
+  background-color: var(--a-color-accent-bg);
+  padding: var(--a-spacing-xs) var(--a-spacing-sm);
+  border-radius: var(--a-radius-md);
+  margin-left: calc(-1 * var(--a-spacing-sm));
+  margin-right: calc(-1 * var(--a-spacing-sm));
+}
+
+/* Footnote references in text */
+.prose a[data-footnote-ref] {
+  color: var(--a-color-accent);
+  font-weight: var(--a-font-bold);
+  text-decoration: none;
+  font-size: var(--a-text-xs);
+  vertical-align: super;
+  line-height: 0;
+  position: relative;
+  padding: 0 var(--a-spacing-2xs);
+}
+
+.prose a[data-footnote-ref]::after {
+  display: none;
+}
+
+.prose a[data-footnote-ref]:hover {
+  color: var(--a-color-accent-light);
+  background-color: var(--a-color-accent-bg);
+  border-radius: var(--a-radius-sm);
+}
+
+/* Footnote back references */
+.prose a[data-footnote-backref] {
+  color: var(--a-color-text-tertiary);
+  text-decoration: none;
+  font-weight: var(--a-font-normal);
+  margin-left: var(--a-spacing-xs);
+}
+
+.prose a[data-footnote-backref]::after {
+  display: none;
+}
+
+.prose a[data-footnote-backref]:hover {
+  color: var(--a-color-accent);
+}
+
+.prose a[data-footnote-backref]::before {
+  content: "↩";
+  font-size: var(--a-text-sm);
+}

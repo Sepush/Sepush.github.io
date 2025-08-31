@@ -29,36 +29,25 @@ const sortedNotes = notes.sort(
               return (
               <article class="group border-b border-gray-100 pb-6 last:border-b-0 hover:bg-gray-50/50 transition-colors duration-200 rounded-lg px-4 py-4">
                 <div class="flex flex-col gap-3">
-                  <div class="flex items-center gap-3 text-sm">
-                    <time
-                      datetime={note.data.pubDate.toISOString()}
-                      class="text-gray-500"
-                    >
-                      {formatDate(note.data.pubDate)}
-                    </time>
-                    <TagGroup tags={noteTags} />
-                    {
-                      note.data.mood && (
-                        <div class="flex items-center gap-1 text-xs text-gray-500">
-                          <span class="i-tabler-mood-smile text-xs" />
-                          <span>{note.data.mood}</span>
-                        </div>
-                      )
-                    }
-                  </div>
-
+                  <!-- Title -->
                   <h2 class="text-xl font-semibold text-gray-900 group-hover:text-primary-700 transition-colors duration-200">
-                    <a href={`/notes/${note.slug}`} class="block flex items-center gap-2">
+                    <a
+                      href={`/notes/${note.slug}`}
+                      class="block flex items-center gap-2"
+                    >
                       <span>{note.data.title}</span>
-                      {showDrafts && note.data.draft && (
-                        <span class="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-600 bg-orange-100 rounded-full">
-                          <span class="i-tabler-edit text-xs mr-1"></span>
-                          草稿
-                        </span>
-                      )}
+                      {
+                        showDrafts && note.data.draft && (
+                          <span
+                            class="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-600 bg-orange-100 rounded-full"
+                          >
+                            <span class="i-tabler-edit text-xs mr-1"></span>
+                            草稿
+                          </span>
+                        )
+                      }
                     </a>
                   </h2>
-
                   {
                     note.data.content && (
                       <p class="text-gray-600 leading-relaxed line-clamp-2">
@@ -66,15 +55,33 @@ const sortedNotes = notes.sort(
                       </p>
                     )
                   }
-                  <div class="flex items-center justify-between pt-2">
-                    <a
-                      href={`/notes/${note.slug}`}
-                      class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
-                    >
-                      <span>阅读笔记</span>
-                      <span class="i-tabler-arrow-right text-xs" />
-                    </a>
-                    <div class="flex items-center gap-3">
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 text-sm pt-2">
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <TagGroup tags={noteTags} />
+                      {
+                        note.data.mood && (
+                          <div class="flex items-center gap-1 text-xs text-gray-500">
+                            <span class="i-tabler-mood-smile text-xs" />
+                            <span>{note.data.mood}</span>
+                          </div>
+                        )
+                      }
+                      <time
+                        datetime={note.data.pubDate.toISOString()}
+                        class="text-gray-500 flex-shrink-0 order-last"
+                      >
+                        {formatDate(note.data.pubDate)}
+                      </time>
+                    </div>
+
+                    <div class="flex items-center justify-between sm:justify-end gap-3">
+                      <a
+                        href={`/notes/${note.slug}`}
+                        class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+                      >
+                        <span>阅读笔记</span>
+                        <span class="i-tabler-arrow-right text-xs" />
+                      </a>
                       {
                         note.data.location && (
                           <div class="flex items-center gap-1 text-xs text-gray-500">
@@ -87,7 +94,7 @@ const sortedNotes = notes.sort(
                   </div>
                 </div>
               </article>
-              );
+            );
             })
           }
         </div>

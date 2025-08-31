@@ -43,7 +43,10 @@ const navItems = [
         class="md:hidden flex items-center justify-center w-8 h-8 rounded-lg bg-white/40 hover:bg-white/60 transition-all duration-300"
         aria-label="Toggle menu"
       >
-        <span class="i-tabler-menu-2 text-base text-gray-600"></span>
+        <span
+          id="menu-icon"
+          class="i-tabler-menu-2 text-base text-gray-600 transition-transform duration-300"
+        ></span>
       </button>
     </div>
   </div>
@@ -54,7 +57,7 @@ const navItems = [
         navItems.map((item) => (
           <a
             href={item.href}
-            class={`relative flex items-center gap-2.5 px-3 py-1.5 text-sm font-normal transition-all duration-300 ${
+            class={`mobile-menu-link relative flex items-center gap-2.5 px-3 py-1.5 text-sm font-normal transition-all duration-300 ${
               pathname === item.href
                 ? "text-primary-700"
                 : "text-gray-600 hover:text-primary-600 hover:bg-white/30"
@@ -70,32 +73,78 @@ const navItems = [
 </header>
 
 <script>
-const menuButton = document.getElementById("mobile-menu-button");
-const mobileMenu = document.getElementById("mobile-menu");
-const header = document.getElementById("header");
+function initHeader() {
+  const menuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuIcon = document.getElementById("menu-icon");
+  const header = document.getElementById("header");
 
-menuButton?.addEventListener("click", () => {
-  mobileMenu?.classList.toggle("hidden");
-});
+  if (!menuButton || !mobileMenu || !menuIcon || !header) return;
 
-let lastScrollY = window.scrollY;
+  let isMenuOpen = false;
 
-const updateHeaderStyle = () => {
-  const currentScrollY = window.scrollY;
-
-  if (currentScrollY > 10) {
-    header?.classList.add("border-b", "border-white/20", "shadow-sm");
-    header?.classList.remove("bg-white/40");
-    header?.classList.add("bg-white/70");
-  } else {
-    header?.classList.remove("border-b", "border-white/20", "shadow-sm");
-    header?.classList.remove("bg-white/70");
-    header?.classList.add("bg-white/40");
+  function toggleMenu() {
+    isMenuOpen = !isMenuOpen;
+    mobileMenu!.classList.toggle("hidden", !isMenuOpen);
+    menuIcon!.className = isMenuOpen
+      ? "i-tabler-x text-base text-gray-600 transition-transform duration-300"
+      : "i-tabler-menu-2 text-base text-gray-600 transition-transform duration-300";
+    menuButton!.setAttribute("aria-expanded", String(isMenuOpen));
+    menuButton!.setAttribute(
+      "aria-label",
+      isMenuOpen ? "Close menu" : "Open menu",
+    );
   }
 
-  lastScrollY = currentScrollY;
-};
+  function closeMenu() {
+    if (isMenuOpen) {
+      isMenuOpen = false;
+      mobileMenu!.classList.add("hidden");
+      menuIcon!.className =
+        "i-tabler-menu-2 text-base text-gray-600 transition-transform duration-300";
+      menuButton!.setAttribute("aria-expanded", "false");
+      menuButton!.setAttribute("aria-label", "Open menu");
+    }
+  }
 
-window.addEventListener("scroll", updateHeaderStyle);
-updateHeaderStyle();
+  function updateHeaderOnScroll() {
+    const scrolled = window.scrollY > 10;
+    header!.className = scrolled
+      ? "w-full bg-white/70 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 border-b border-white/20 shadow-sm"
+      : "w-full bg-white/40 backdrop-blur-md sticky top-0 z-50 transition-all duration-300";
+  }
+
+  menuButton!.addEventListener("click", toggleMenu);
+
+  document.querySelectorAll(".mobile-menu-link").forEach(link => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (isMenuOpen && !header!.contains(e.target as Node)) {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener("scroll", updateHeaderOnScroll);
+  updateHeaderOnScroll();
+
+  return () => {
+    menuButton.removeEventListener("click", toggleMenu);
+    document.querySelectorAll(".mobile-menu-link").forEach(link => {
+      link.removeEventListener("click", closeMenu);
+    });
+    window.removeEventListener("scroll", updateHeaderOnScroll);
+  };
+}
+
+let cleanup: (() => void) | undefined;
+
+function setupHeader() {
+  if (cleanup) cleanup();
+  cleanup = initHeader();
+}
+
+setupHeader();
+document.addEventListener("astro:after-swap", setupHeader);
 </script>

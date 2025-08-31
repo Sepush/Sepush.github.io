@@ -1,14 +1,20 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "react",
     "types": [
+      "@types/react",
+      "@types/react-dom",
       "@unocss/preset-attributify"
     ],
     "verbatimModuleSyntax": true
   },
   "include": [
     ".astro/types.d.ts",
-    "**/*"
+    "src/**/*.tsx",
+    "src/**/*.jsx",
+    "src/**/react/**/*"
   ],
   "exclude": [
     "dist"
