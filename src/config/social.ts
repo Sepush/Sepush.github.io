@@ -1,5 +1,11 @@
 import type { SocialLink } from "../components/social";
 
+interface Friend {
+  name: string;
+  description?: string;
+  socialLinks: SocialLink[];
+}
+
 export const arteaSocialLinks: SocialLink[] = [
   {
     platform: "github",
@@ -27,12 +33,6 @@ export const arteaSocialLinks: SocialLink[] = [
     icon: "i-tabler-rss",
   },
 ];
-
-interface Friend {
-  name: string;
-  description?: string;
-  socialLinks: SocialLink[];
-}
 
 export const friends: Friend[] = [
   {

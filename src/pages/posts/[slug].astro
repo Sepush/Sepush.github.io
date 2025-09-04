@@ -4,6 +4,7 @@ import { SocialShare } from "../../components/social";
 import { TagGroup } from "../../components/tag";
 import Toc from "../../components/Toc.astro";
 import Layout from "../../layouts/Layout.astro";
+import { formatDate } from "../../utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -18,7 +19,7 @@ interface Props {
   post: CollectionEntry<"posts">;
 }
 
-const { post } = Astro.props as Props;
+const { post } = Astro.props;
 const { Content, headings } = await post.render();
 
 const postTags = post.data.tags.map((tag) => {
@@ -26,14 +27,6 @@ const postTags = post.data.tags.map((tag) => {
     tag,
   };
 });
-
-function formatDate(date: Date) {
-  return new Intl.DateTimeFormat("zh-CN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(date);
-}
 ---
 
 <Layout
@@ -42,8 +35,8 @@ function formatDate(date: Date) {
 >
   <div class="min-h-screen">
     <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 overflow-hidden">
-      <header class="mb-12">
-        <nav class="mb-8">
+      <header class="flex flex-col gap-y-4">
+        <nav>
           <a
             href="/posts"
             class="inline-flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors text-sm"
@@ -52,40 +45,25 @@ function formatDate(date: Date) {
             <span>返回文章列表</span>
           </a>
         </nav>
-
         <h1
-          class="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight break-words"
+          class="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight tracking-tight break-words"
         >
           {post.data.title}
         </h1>
-
         {
           post.data.description && (
-            <p class="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl">
+            <p class="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl">
               {post.data.description}
             </p>
           )
         }
-
-        <div
-          class="flex flex-wrap items-center gap-6 text-sm text-gray-500 mb-8"
-        >
-          <div class="flex items-center gap-2">
-            <div
-              class="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center"
-            >
-              <span class="i-tabler-user text-white text-sm"></span>
-            </div>
-            <span>{post.data.author}</span>
-          </div>
-
+        <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500">
           <div class="flex items-center gap-2">
             <span class="i-tabler-calendar text-gray-400"></span>
             <time datetime={post.data.pubDate.toISOString()}>
               {formatDate(post.data.pubDate)}
             </time>
           </div>
-
           {
             post.data.updatedDate && (
               <div class="flex items-center gap-2">
@@ -99,30 +77,26 @@ function formatDate(date: Date) {
         <TagGroup tags={postTags} />
       </header>
 
-      <article class="prose max-w-none mb-16 min-w-0">
+      <article class="prose max-w-none min-w-0">
         <Content />
       </article>
 
-      <footer class="pt-8 border-t border-gray-200">
-        <div
-          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-        >
-          <div class="text-sm text-gray-500">
-            <span>如果觉得这篇文章有点意思，欢迎分享给更多人！</span>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <SocialShare
-              title={post.data.title}
-              url={Astro.url.href}
-              platforms={["x"]}
-              size="md"
-            />
-          </div>
+      <footer
+        class="pt-8 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      >
+        <div class="text-sm text-gray-500">
+          <span>如果觉得这篇文章有点意思，欢迎分享给更多人！</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <SocialShare
+            title={post.data.title}
+            url={Astro.url.href}
+            platforms={["x"]}
+            size="md"
+          />
         </div>
       </footer>
     </main>
-
     <Toc headings={headings} maxDepth={3} position="fixed" />
   </div>
 </Layout>

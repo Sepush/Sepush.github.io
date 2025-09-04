@@ -12,7 +12,7 @@ export default defineConfig({
   site: "https://sepush.github.io",
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: "hover",
+    defaultStrategy: "load",
   },
   vite: {
     build: {

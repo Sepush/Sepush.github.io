@@ -1,13 +1,14 @@
 ---
 import { platformConfigs } from "./config";
-import type { SocialPlatform } from "./interface";
+import type { ShareLink, SocialPlatform } from "./interface";
 import { createShareUrl } from "./utis";
 
+type Size = "sm" | "md";
 export interface Props {
   title: string;
   url: string;
   platforms?: SocialPlatform[];
-  size?: "sm" | "md";
+  size?: Size;
   showLabels?: boolean;
   className?: string;
 }
@@ -21,14 +22,16 @@ const {
   className = "",
 } = Astro.props;
 
-const shareLinks = platforms
+const shareLinks: ShareLink[] = platforms
   .filter((platform) => platformConfigs[platform])
   .map((platform) => {
+    const config = platformConfigs[platform]!;
     return {
-      ...platformConfigs[platform],
+      ...config,
       url: createShareUrl(platform, title, url),
     };
   });
+
 const sizeClasses = {
   sm: {
     button: "px-2 py-1 text-sm",
@@ -39,6 +42,12 @@ const sizeClasses = {
     icon: "text-md",
   },
 };
+
+function calcLinkClasses(link: ShareLink, size: Size) {
+  return `flex items-center gap-1 ${link.color} text-white rounded transition-colors ${
+    sizeClasses[size].button
+  }`;
+}
 ---
 
 {
@@ -56,9 +65,7 @@ const sizeClasses = {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              class={`flex items-center gap-1 ${link.color} text-white rounded transition-colors ${
-                sizeClasses[size].button
-              }`}
+              class={calcLinkClasses(link, size)}
               title={`分享到 ${link.platform}`}
               aria-label={`Share on ${link.platform}`}
             >

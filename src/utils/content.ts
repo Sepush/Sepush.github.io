@@ -1,25 +1,5 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 
-export function isDevEnv(): boolean {
-  return import.meta.env.DEV;
-}
-
-export async function getPosts(): Promise<CollectionEntry<"posts">[]> {
-  const showDrafts = isDevEnv();
-
-  return await getCollection("posts", ({ data }) => {
-    return showDrafts || !data.draft;
-  });
-}
-
-export async function getNotes(): Promise<CollectionEntry<"notes">[]> {
-  const showDrafts = isDevEnv();
-
-  return await getCollection("notes", ({ data }) => {
-    return showDrafts || !data.draft;
-  });
-}
-
 export enum ContentType {
   Posts = "posts",
   Notes = "notes",
@@ -34,6 +14,33 @@ export interface NotesContent extends CollectionEntry<"notes"> {
 }
 
 export type ContentItem = PostsContent | NotesContent;
+
+export function isDevEnv(): boolean {
+  return import.meta.env.DEV;
+}
+
+export async function getPosts(): Promise<CollectionEntry<"posts">[]> {
+  const showDrafts = isDevEnv();
+
+  return await getCollection("posts", ({ data }) => {
+    return showDrafts || !data.draft;
+  });
+}
+
+export async function getSortedPosts(): Promise<CollectionEntry<"posts">[]> {
+  const posts = await getPosts();
+  return posts.sort(
+    (a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
+  );
+}
+
+export async function getNotes(): Promise<CollectionEntry<"notes">[]> {
+  const showDrafts = isDevEnv();
+
+  return await getCollection("notes", ({ data }) => {
+    return showDrafts || !data.draft;
+  });
+}
 
 export async function getAllContent(): Promise<ContentItem[]> {
   const [posts, notes] = await Promise.all([

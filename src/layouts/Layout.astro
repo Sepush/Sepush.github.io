@@ -57,13 +57,6 @@ const { title, description = "Artea's blog" } = Astro.props;
   </head>
   <body class="min-h-screen bg-gradient-primary text-gray-900 font-sans antialiased">
     <div class="flex flex-col min-h-screen relative">
-      <div class="fixed inset-0 -z-10 overflow-hidden">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary-200/20 to-accent-200/20 rounded-full blur-3xl opacity-60">
-        </div>
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-accent-200/20 to-primary-200/20 rounded-full blur-3xl opacity-60">
-        </div>
-      </div>
-
       <Header />
       <main class="flex-1 relative">
         <slot />
@@ -74,17 +67,17 @@ const { title, description = "Artea's blog" } = Astro.props;
 
 <style is:global>
 html {
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: var(--a-font-system);
   scroll-behavior: smooth;
 }
 
 code {
-  font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+  font-family: var(--a-font-mono);
 }
 
 ::selection {
   background-color: oklch(0.67 0.15 145 / 0.2);
-  color: oklch(0.39 0.27 145);
+  color: var(--a-color-accent-strong);
 }
 
 a {

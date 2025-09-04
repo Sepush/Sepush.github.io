@@ -248,10 +248,6 @@
   transition: var(--a-transition-normal);
 }
 
-.prose img:hover {
-  transform: scale(1.01);
-}
-
 .prose table {
   width: 100%;
   border-collapse: collapse;

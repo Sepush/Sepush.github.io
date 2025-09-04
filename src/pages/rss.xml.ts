@@ -1,6 +1,6 @@
 import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
-import { ContentType, getAllContent } from "../utils/content";
+import { ContentType, getAllContent } from "../utils";
 
 export async function GET(context: APIContext) {
   const allContent = await getAllContent();
@@ -18,7 +18,7 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: "Artea's Blog",
-    description: "一个关于技术、生活和思考的博客",
+    description: "一个自说自话的博客",
     site: context.site!,
     items: rssItems,
     customData: `<language>zh-cn</language>`,
