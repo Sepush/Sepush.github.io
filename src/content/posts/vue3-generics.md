@@ -53,7 +53,7 @@ function Select(props: {
 使用 intersection types 代替 union types, 但这样的写法只是权宜之计，并不能从根本上解决问题，它有一些代价
 
 - `onChange` 可以接受更多的类型了，但和 options 进行关联的工作交给了组件的使用者
-- `string` 和 `numbe` 的交集其实是 `never`
+- `string` 和 `number` 的交集其实是 `never`
 
 ```tsx
 (value: string)=>void
@@ -204,7 +204,7 @@ export default defineComponent(
 );
 ```
 
-时至今日 defineComponent[^2] 的泛型支持依然是不完善的 对于 Props 如果像上面那样使用泛型，仍然需要手动声明 props，不然的话在使用的地方就是 undefined
+时至今日 defineComponent[^2] 的泛型支持依然是不完善的 对于 props 如果像上面那样使用泛型，仍然需要手动声明 props，不然的话在使用的地方就是 undefined
 
 我个人认为还需要手动声明一遍 props 这个体验是不好的 应该也不少必须的，但暂且把他理解成一个实现上的 trade-off 吧
 
