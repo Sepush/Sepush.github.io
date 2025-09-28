@@ -212,6 +212,8 @@ export default defineComponent(
 
 workaround 是在手动指定 props 的时候 `as any` 这样你可以获得泛型支持(我倾向于认为这是个 Bug 暂时不清楚是 vue 的原因还是 volar 的原因)
 
+![defineComponent](./vue3-define-component-generic.png)
+
 ### 上科技 vue-jsx-vapor 插件
 
 使用 [vue-jsx-vapor](https://jsx-vapor.netlify.app/) 可以获得近乎于 react function component 的体验
