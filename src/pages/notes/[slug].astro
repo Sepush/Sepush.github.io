@@ -15,7 +15,7 @@ interface Props {
   note: CollectionEntry<"notes">;
 }
 
-const { note } = Astro.props as Props;
+const { note } = Astro.props;
 const { Content } = await note.render();
 
 function formatDate(date: Date) {
