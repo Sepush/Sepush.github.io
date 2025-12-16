@@ -12,7 +12,6 @@ export default defineConfig({
     "i-tabler-brand-x",
     "i-tabler-brand-telegram",
     "i-tabler-mail",
-    "i-tabler-rss",
     "i-tabler-link",
     "i-tabler-menu-2",
     "i-tabler-x",

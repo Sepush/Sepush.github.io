@@ -47,12 +47,6 @@ const { title, description = "Artea's blog" } = Astro.props;
         crossorigin="anonymous"
       />
     </noscript>
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title="Artea's Blog"
-      href={new URL("rss.xml", Astro.site)}
-    />
     <ClientRouter />
   </head>
   <body class="min-h-screen bg-gradient-primary text-gray-900 font-sans antialiased">

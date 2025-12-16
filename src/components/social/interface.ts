@@ -1,4 +1,4 @@
-export type SocialPlatform = "x" | "telegram" | "linkedin" | "email" | "github" | "rss" | "blog" | "website";
+export type SocialPlatform = "x" | "telegram" | "linkedin" | "email" | "github" | "blog" | "website";
 
 export interface SocialLink {
   platform: SocialPlatform;

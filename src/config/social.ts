@@ -27,11 +27,6 @@ export const arteaSocialLinks: SocialLink[] = [
     url: "mailto:sepush@outlook.com",
     icon: "i-tabler-mail",
   },
-  {
-    platform: "rss",
-    url: "/rss.xml",
-    icon: "i-tabler-rss",
-  },
 ];
 
 export const friends: Friend[] = [
