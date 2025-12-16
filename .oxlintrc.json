@@ -1,6 +1,19 @@
 {
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/"
+  ],
+  "plugins": [
+    "typescript",
+    "import",
+    "react",
+    "vue"
+  ],
   "rules": {
+    "import/no-cycle": "error",
     "no-console": "warn",
-    "no-debugger": "warn"
+    "no-debugger": "error",
+    "typescript/no-redundant-type-constituents": "error"
   }
 }

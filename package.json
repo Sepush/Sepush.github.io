@@ -9,8 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "fmt": "dprint fmt --config dprint.json",
-    "lint": "oxlint --react-plugin --vue-plugin --import-plugin --tsconfig ./tsconfig.json",
-    "lint:fix": "oxlint --fix --react-plugin --vue-plugin --import-plugin --tsconfig ./tsconfig.json"
+    "lint": "oxlint -c .oxlintrc.json --type-aware ",
+    "lint:fix": "oxlint -c .oxlintrc.json --type-aware --fix"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -38,7 +38,8 @@
     "@unocss/preset-wind3": "^66.5.0",
     "@unocss/reset": "^66.5.0",
     "lint-staged": "^16.1.5",
-    "oxlint": "^1.12.0",
+    "oxlint": "^1.33.0",
+    "oxlint-tsgolint": "^0.9.1",
     "simple-git-hooks": "^2.13.1",
     "typescript": "^5.9.2",
     "unocss": "^66.5.0"
