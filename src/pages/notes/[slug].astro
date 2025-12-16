@@ -40,12 +40,9 @@ function formatTime(date: Date) {
       <nav class="mb-12">
         <a
           href="/notes"
-          class="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 transition-all duration-200 group"
+          class="inline-flex items-center justify-center w-8 h-8 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
         >
-          <span
-            class="i-tabler-arrow-left group-hover:-translate-x-1 transition-transform duration-200"
-          ></span>
-          <span class="font-medium">返回笔记</span>
+          <span class="i-tabler-arrow-left text-lg"></span>
         </a>
       </nav>
 
@@ -57,7 +54,7 @@ function formatTime(date: Date) {
 
           <div class="flex flex-wrap items-center gap-6 text-sm text-gray-600 mb-6">
             <div class="flex items-center gap-2">
-              <span class="i-tabler-calendar w-4 h-4 text-primary-500"></span>
+              <span class="i-tabler-calendar w-4 h-4 text-gray-500"></span>
               <time
                 datetime={note.data.pubDate.toISOString()}
                 class="font-medium"
@@ -70,7 +67,7 @@ function formatTime(date: Date) {
               note.data.mood && (
                 <div class="flex items-center gap-2">
                   <span
-                    class="i-tabler-mood-smile w-4 h-4 text-accent-500"
+                    class="i-tabler-mood-smile w-4 h-4 text-gray-500"
                   ></span>
                   <span class="font-medium">{note.data.mood}</span>
                 </div>
@@ -81,7 +78,7 @@ function formatTime(date: Date) {
               note.data.location && (
                 <div class="flex items-center gap-2">
                   <span
-                    class="i-tabler-map-pin w-4 h-4 text-primary-400"
+                    class="i-tabler-map-pin w-4 h-4 text-gray-500"
                   ></span>
                   <span class="font-medium">{note.data.location}</span>
                 </div>
@@ -101,7 +98,7 @@ function formatTime(date: Date) {
                 {
                   note.data.tags.map((tag) => (
                     <span
-                      class="px-3 py-1 bg-primary-50 text-primary-700 rounded-lg text-xs font-medium border border-primary-100"
+                      class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium border border-gray-200"
                     >
                       #{tag}
                     </span>
@@ -112,7 +109,7 @@ function formatTime(date: Date) {
           }
         </header>
 
-        <div class="h-px bg-gradient-to-r from-transparent via-primary-200 to-transparent mx-8">
+        <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mx-8">
         </div>
 
         <div class="px-8 py-8">

@@ -33,20 +33,6 @@
   color: var(--a-color-heading-primary);
 }
 
-.prose h2::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: var(--a-spacing-3xl);
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    var(--a-color-accent),
-    var(--a-color-accent-light)
-  );
-}
-
 .prose h3 {
   font-size: var(--a-text-2xl);
   color: var(--a-color-text-primary);
@@ -73,34 +59,14 @@
 }
 
 .prose a {
-  color: var(--a-color-accent-light);
+  color: var(--a-color-text-primary);
   text-decoration: none;
   font-weight: var(--a-font-medium);
-  position: relative;
   transition: var(--a-transition-normal);
-}
-
-.prose a::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    var(--a-color-accent),
-    var(--a-color-accent-light)
-  );
-  transition: var(--a-transition-normal);
-}
-
-.prose a:hover::after {
-  width: 100%;
 }
 
 .prose a:hover {
-  color: var(--a-color-accent-hover);
+  color: var(--a-color-heading-dark);
 }
 
 .prose ul,
@@ -180,7 +146,7 @@
   margin-right: var(--a-spacing-xs);
   width: var(--a-spacing-md);
   height: var(--a-spacing-md);
-  accent-color: var(--a-color-accent);
+  accent-color: #6b7280;
 }
 
 .prose blockquote {
@@ -215,22 +181,22 @@
   border-radius: 4px;
   font-family: var(--a-font-mono);
   font-size: var(--a-text-sm);
-  font-weight: var(--a-font-normal);
-  border: 1px solid var(--a-color-accent-border);
+  border: 1px solid var(--a-color-border);
+  background: #f3f4f6;
   padding: 0.1em 0.3em;
   word-break: break-word;
+  color: var(--a-color-heading-primary);
 }
 
 .prose pre {
-  padding: var(--a-spacing-xs);
+  padding: var(--a-spacing-lg);
   border-radius: 6px;
   overflow-x: auto;
   margin: var(--a-spacing-xs) 0;
   font-family: var(--a-font-mono);
   line-height: var(--a-leading-tight);
-  box-shadow: var(--a-shadow-md);
   max-width: 100%;
-  touch-action: manipulation;
+  border: 0.5px solid var(--a-color-border);
 }
 
 .prose pre code {
@@ -267,8 +233,8 @@
 .prose th {
   background: linear-gradient(
     135deg,
-    var(--a-color-accent-bg) 0%,
-    var(--a-color-accent-bg-alt) 100%
+    #f9fafb 0%,
+    #f3f4f6 100%
   );
   font-weight: var(--a-font-semibold);
   color: var(--a-color-text-primary);
@@ -281,22 +247,17 @@
 .prose hr {
   border: none;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--a-color-accent-border),
-    transparent
-  );
+  background: #e5e7eb;
   margin: var(--a-spacing-3xl) 0;
 }
 
 .prose strong {
-  color: var(--a-color-accent-strong);
+  color: var(--a-color-heading-dark);
   font-weight: var(--a-font-semibold);
 }
 
 .prose em {
-  color: var(--a-color-accent-em);
+  color: var(--a-color-text-secondary);
   font-style: italic;
 }
 
@@ -329,7 +290,6 @@
     margin: var(--a-spacing-md) 0;
     font-size: var(--a-text-xs);
     line-height: 1.4;
-    touch-action: manipulation;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--a-color-accent-border) transparent;
@@ -352,7 +312,6 @@
     display: block;
     overflow-x: auto;
     white-space: nowrap;
-    touch-action: manipulation;
   }
 
   .prose img {
@@ -374,10 +333,10 @@
 .prose .katex-display > .katex {
   display: inline-block;
   white-space: nowrap;
-  background: var(--a-color-accent-bg);
+  background: #f9fafb;
   padding: var(--a-spacing-md) var(--a-spacing-lg);
   border-radius: var(--a-radius-lg);
-  border: 1px solid var(--a-color-accent-border);
+  border: 1px solid var(--a-color-border);
   box-shadow: var(--a-shadow-sm);
 }
 
@@ -394,10 +353,10 @@
 }
 
 .prose .math-inline .katex {
-  background: var(--a-color-bg-code);
+  background: #f3f4f6;
   padding: 0.1em 0.3em;
   border-radius: var(--a-radius-sm);
-  border: 1px solid var(--a-color-accent-border);
+  border: 1px solid var(--a-color-border);
   font-size: 0.95em;
 }
 
@@ -411,11 +370,11 @@
   padding: var(--a-spacing-lg);
   background: linear-gradient(
     135deg,
-    var(--a-color-accent-bg) 0%,
-    var(--a-color-accent-bg-alt) 100%
+    #f9fafb 0%,
+    #f3f4f6 100%
   );
   border-radius: var(--a-radius-lg);
-  border: 1px solid var(--a-color-accent-border);
+  border: 1px solid var(--a-color-border);
   box-shadow: var(--a-shadow-md);
 }
 
@@ -471,7 +430,7 @@
 }
 
 .prose .footnotes li:target {
-  background-color: var(--a-color-accent-bg);
+  background-color: #f9fafb;
   padding: var(--a-spacing-xs) var(--a-spacing-sm);
   border-radius: var(--a-radius-md);
   margin-left: calc(-1 * var(--a-spacing-sm));
@@ -487,7 +446,7 @@
   vertical-align: super;
   line-height: 0;
   position: relative;
-  padding: 0 var(--a-spacing-2xs);
+  padding: 0 0.25rem;
 }
 
 .prose a[data-footnote-ref]::after {
@@ -502,7 +461,7 @@
 
 /* Footnote back references */
 .prose a[data-footnote-backref] {
-  color: var(--a-color-text-tertiary);
+  color: var(--a-color-accent);
   text-decoration: none;
   font-weight: var(--a-font-normal);
   margin-left: var(--a-spacing-xs);
@@ -519,4 +478,5 @@
 .prose a[data-footnote-backref]::before {
   content: "↩";
   font-size: var(--a-text-sm);
+  color: var(--a-color-accent);
 }

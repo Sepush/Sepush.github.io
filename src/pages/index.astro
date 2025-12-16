@@ -1,34 +1,19 @@
 ---
 import { SocialLinks } from "../components/social";
 import { arteaSocialLinks } from "../config/social";
-import About from "../content/about.md";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Home">
-  <div class="max-w-3xl mx-auto px-6 py-20">
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center gap-8">
-        <img
-          src="/avatar.svg"
-          alt="Artea Avatar"
-          class="w-32 h-32 rounded-full ring-4 ring-primary-200 shadow-lg flex-shrink-0"
-        />
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900">
-          Hi, I'm Artea
-        </h1>
-      </div>
-    </div>
-
-    <div class="mb-4 text-center">
-      <About />
-    </div>
-
-    <div class="text-center">
-      <SocialLinks
-        links={arteaSocialLinks}
-        size="md"
+  <div class="max-w-3xl mx-auto px-6 py-20 flex flex-col items-center gap-6">
+    <div class="inline-flex items-center gap-8">
+      <img
+        src="/avatar.svg"
+        alt="Artea Avatar"
+        class="w-32 h-32 rounded-full ring-4 shadow-lg flex-shrink-0"
       />
     </div>
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Hi, I'm Artea</h1>
+    <SocialLinks links={arteaSocialLinks} size="md" />
   </div>
 </Layout>

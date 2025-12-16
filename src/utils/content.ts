@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 export enum ContentType {
   Posts = "posts",
   Notes = "notes",
+  About = "about",
 }
 
 export interface PostsContent extends CollectionEntry<"posts"> {
@@ -13,7 +14,11 @@ export interface NotesContent extends CollectionEntry<"notes"> {
   type: ContentType.Notes;
 }
 
-export type ContentItem = PostsContent | NotesContent;
+export interface AboutContent extends CollectionEntry<"about"> {
+  type: ContentType.About;
+}
+
+export type ContentItem = PostsContent | NotesContent | AboutContent;
 
 export function isDevEnv(): boolean {
   return import.meta.env.DEV;
@@ -40,6 +45,11 @@ export async function getNotes(): Promise<CollectionEntry<"notes">[]> {
   return await getCollection("notes", ({ data }) => {
     return showDrafts || !data.draft;
   });
+}
+
+export async function getAbout(): Promise<CollectionEntry<"about">> {
+  const aboutItems = await getCollection("about");
+  return aboutItems[0];
 }
 
 export async function getAllContent(): Promise<ContentItem[]> {

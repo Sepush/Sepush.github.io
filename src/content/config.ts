@@ -26,7 +26,12 @@ const notes = defineCollection({
   }),
 });
 
+const about = defineCollection({
+  type: "content",
+});
+
 export const collections = {
   posts,
   notes,
+  about,
 };

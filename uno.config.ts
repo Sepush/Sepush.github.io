@@ -73,15 +73,7 @@ export default defineConfig({
       "card-modern":
         "bg-white/80 backdrop-blur-sm rounded-2xl shadow-elegant hover:shadow-float transition-all duration-500 border border-white/20",
     },
-    {
-      "card-float":
-        "bg-white rounded-2xl shadow-float hover:shadow-glow transition-all duration-500 transform hover:-translate-y-1",
-    },
-
-    { "bg-gradient-primary": "bg-gradient-to-br from-primary-50 via-surface-50 to-accent-50" },
-    { "prose": "max-w-none leading-7 text-gray-700" },
-    { "prose-lg": "text-lg leading-8" },
-    { "prose-xl": "text-xl leading-9" },
+    { "bg-gradient-primary": "bg-gradient-to-br from-gray-50 via-white to-gray-50" },
   ],
   transformers: [
     transformerDirectives(),

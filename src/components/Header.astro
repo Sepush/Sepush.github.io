@@ -5,6 +5,7 @@ const navItems = [
   { name: "Home", href: "/", icon: "i-tabler-home" },
   { name: "Posts", href: "/posts", icon: "i-tabler-article" },
   { name: "Notes", href: "/notes", icon: "i-tabler-note" },
+  { name: "About", href: "/about", icon: "i-tabler-user" },
   { name: "Friends", href: "/friends", icon: "i-tabler-users" },
 ];
 ---
@@ -15,8 +16,7 @@ const navItems = [
 >
   <div class="max-w-6xl mx-auto px-6 py-1.5">
     <div class="flex items-center justify-between">
-      <a class="flex items-center gap-4 hover:text-primary-600" href="/"
-      >Artea</a>
+      <a class="flex items-center gap-4 hover:text-gray-900" href="/">Artea</a>
 
       <nav class="hidden md:flex items-center gap-2">
         {
@@ -25,8 +25,8 @@ const navItems = [
               href={item.href}
               class={`group relative flex items-center gap-1 px-1 py-1 text-sm font-normal transition-all duration-300 ${
                 pathname === item.href
-                  ? "text-primary-700"
-                  : "text-gray-600 hover:text-primary-600 hover:bg-white/30"
+                  ? "text-gray-900 font-semibold"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-white/30"
               }`}
             >
               <span
@@ -59,8 +59,8 @@ const navItems = [
             href={item.href}
             class={`mobile-menu-link relative flex items-center gap-2.5 px-3 py-1.5 text-sm font-normal transition-all duration-300 ${
               pathname === item.href
-                ? "text-primary-700"
-                : "text-gray-600 hover:text-primary-600 hover:bg-white/30"
+                ? "text-gray-900 font-semibold"
+                : "text-gray-600 hover:text-gray-900 hover:bg-white/30"
             }`}
           >
             <span class={`${item.icon} text-base`} />

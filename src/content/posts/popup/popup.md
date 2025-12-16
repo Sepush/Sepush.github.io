@@ -43,9 +43,9 @@ naive-ui 的所有 popup、select、cascader、menu、popover 都依赖于 @vueu
 
 - transform = 'translateY(-100%) translateX(-50%)'
 
-top = [target.top](http://target.top) - [offset.top](http://offset.top)
+top = targetRect.top - offsetRect.top
 
-left = target.left -offsetRect.left
+left = targetRect.left - offsetRect.left
 
 是做了一件什么事情呢 看下面的图2会发现 它其实是把 follow 和 target 以各自的左上角为标准重叠在一起
 
