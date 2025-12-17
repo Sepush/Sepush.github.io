@@ -1,13 +1,39 @@
 ---
 const pathname = Astro.url.pathname;
 
+function normalizePath(path: string) {
+  // Astro dev/prod may differ by trailing slash (e.g. /notes vs /notes/).
+  // Normalize so active nav highlighting is stable.
+  const raw = path.split("?")[0]?.split("#")[0] || "/";
+  if (raw === "/") return "/";
+  return raw.endsWith("/") ? raw.slice(0, -1) : raw;
+}
+
+function isActive(current: string, target: string) {
+  const normalizedCur = normalizePath(current);
+  const normalizedTgt = normalizePath(target);
+  return (
+    normalizedCur === normalizedTgt
+    || (normalizedTgt !== "/" && normalizedTgt !== ""
+      && normalizedCur.startsWith(normalizedTgt))
+  );
+}
+
 const navItems = [
   { name: "Home", href: "/", icon: "i-tabler-home" },
   { name: "Posts", href: "/posts", icon: "i-tabler-article" },
   { name: "Notes", href: "/notes", icon: "i-tabler-note" },
   { name: "About", href: "/about", icon: "i-tabler-user" },
   { name: "Friends", href: "/friends", icon: "i-tabler-users" },
-];
+] as const;
+
+const activeLinkClass = "text-accent-600";
+const inactiveLinkClass =
+  "text-gray-600 hover:text-gray-900 hover:bg-gray/20 rounded-md";
+const desktopLinkBaseClass =
+  "group relative flex items-center gap-1 px-1 py-1 text-sm font-normal transition-all duration-300";
+const mobileLinkBaseClass =
+  "mobile-menu-link relative flex items-center gap-2.5 px-3 py-1.5 text-sm font-normal transition-all duration-300";
 ---
 
 <header
@@ -20,13 +46,14 @@ const navItems = [
 
       <nav class="hidden md:flex items-center gap-2">
         {
-          navItems.map((item) => (
+          navItems.map((item) => {
+            const active = isActive(pathname, item.href);
+            return (
             <a
               href={item.href}
-              class={`group relative flex items-center gap-1 px-1 py-1 text-sm font-normal transition-all duration-300 ${
-                pathname === item.href
-                  ? "text-accent-600"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-white/30"
+              aria-current={active ? "page" : undefined}
+              class={`${desktopLinkBaseClass} ${
+                active ? activeLinkClass : inactiveLinkClass
               }`}
             >
               <span
@@ -34,14 +61,17 @@ const navItems = [
               />
               <span>{item.name}</span>
             </a>
-          ))
+          );
+          })
         }
       </nav>
 
       <button
         id="mobile-menu-button"
         class="md:hidden flex items-center justify-center w-8 h-8 rounded-lg bg-white/40 hover:bg-white/60 transition-all duration-300"
-        aria-label="Toggle menu"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
       >
         <span
           id="menu-icon"
@@ -54,19 +84,21 @@ const navItems = [
   <div id="mobile-menu" class="hidden md:hidden bg-white/40 backdrop-blur-md">
     <nav class="max-w-6xl mx-auto px-6 py-1.5 space-y-0.5">
       {
-        navItems.map((item) => (
+        navItems.map((item) => {
+          const active = isActive(pathname, item.href);
+          return (
           <a
             href={item.href}
-            class={`mobile-menu-link relative flex items-center gap-2.5 px-3 py-1.5 text-sm font-normal transition-all duration-300 ${
-              pathname === item.href
-                ? "text-accent-600"
-                : "text-gray-600 hover:text-gray-900 hover:bg-white/30"
+            aria-current={active ? "page" : undefined}
+            class={`${mobileLinkBaseClass} ${
+              active ? activeLinkClass : inactiveLinkClass
             }`}
           >
             <span class={`${item.icon} text-base`} />
             <span>{item.name}</span>
           </a>
-        ))
+        );
+        })
       }
     </nav>
   </div>
@@ -79,62 +111,107 @@ function initHeader() {
   const menuIcon = document.getElementById("menu-icon");
   const header = document.getElementById("header");
 
-  if (!menuButton || !mobileMenu || !menuIcon || !header) return;
+  if (
+    !(menuButton instanceof HTMLButtonElement)
+    || !(mobileMenu instanceof HTMLElement)
+    || !(menuIcon instanceof HTMLElement)
+    || !(header instanceof HTMLElement)
+  ) {
+    return;
+  }
 
+  const menuButtonEl: HTMLButtonElement = menuButton;
+  const mobileMenuEl: HTMLElement = mobileMenu;
+  const menuIconEl: HTMLElement = menuIcon;
+  const headerEl: HTMLElement = header;
+
+  const ICON_BASE = "text-base text-gray-600 transition-transform duration-300";
+  const ICON_OPEN = `i-tabler-x ${ICON_BASE}`;
+  const ICON_CLOSED = `i-tabler-menu-2 ${ICON_BASE}`;
+
+  const BG_DEFAULT = "bg-white/40";
+  const BG_SCROLLED = "bg-white/70";
+  const SCROLLED_EXTRAS = ["border-b", "border-white/20", "shadow-sm"];
+
+  const mqDesktop = window.matchMedia("(min-width: 768px)");
   let isMenuOpen = false;
 
-  function toggleMenu() {
-    isMenuOpen = !isMenuOpen;
-    mobileMenu!.classList.toggle("hidden", !isMenuOpen);
-    menuIcon!.className = isMenuOpen
-      ? "i-tabler-x text-base text-gray-600 transition-transform duration-300"
-      : "i-tabler-menu-2 text-base text-gray-600 transition-transform duration-300";
-    menuButton!.setAttribute("aria-expanded", String(isMenuOpen));
-    menuButton!.setAttribute(
+  function setMenuState(open: boolean) {
+    isMenuOpen = open;
+    mobileMenuEl.classList.toggle("hidden", !open);
+    menuIconEl.className = open ? ICON_OPEN : ICON_CLOSED;
+    menuButtonEl.setAttribute("aria-expanded", String(open));
+    menuButtonEl.setAttribute(
       "aria-label",
-      isMenuOpen ? "Close menu" : "Open menu",
+      open ? "Close menu" : "Open menu",
     );
   }
 
-  function closeMenu() {
-    if (isMenuOpen) {
-      isMenuOpen = false;
-      mobileMenu!.classList.add("hidden");
-      menuIcon!.className =
-        "i-tabler-menu-2 text-base text-gray-600 transition-transform duration-300";
-      menuButton!.setAttribute("aria-expanded", "false");
-      menuButton!.setAttribute("aria-label", "Open menu");
-    }
+  function toggleMenu() {
+    setMenuState(!isMenuOpen);
   }
 
   function updateHeaderOnScroll() {
     const scrolled = window.scrollY > 10;
-    header!.className = scrolled
-      ? "w-full bg-white/70 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 border-b border-white/20 shadow-sm"
-      : "w-full bg-white/40 backdrop-blur-md sticky top-0 z-50 transition-all duration-300";
+    if (scrolled) {
+      headerEl.classList.remove(BG_DEFAULT);
+      headerEl.classList.add(BG_SCROLLED, ...SCROLLED_EXTRAS);
+    } else {
+      headerEl.classList.remove(BG_SCROLLED, ...SCROLLED_EXTRAS);
+      headerEl.classList.add(BG_DEFAULT);
+    }
   }
 
-  menuButton!.addEventListener("click", toggleMenu);
+  function onMobileLinkClick() {
+    setMenuState(false);
+  }
 
-  document.querySelectorAll(".mobile-menu-link").forEach(link => {
-    link.addEventListener("click", closeMenu);
-  });
-
-  document.addEventListener("click", (e) => {
-    if (isMenuOpen && !header!.contains(e.target as Node)) {
-      closeMenu();
+  function onDocumentClick(e: MouseEvent) {
+    if (!isMenuOpen) return;
+    const target = e.target;
+    if (target instanceof Node && !headerEl.contains(target)) {
+      setMenuState(false);
     }
-  });
+  }
 
-  window.addEventListener("scroll", updateHeaderOnScroll);
+  function onDocumentKeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      setMenuState(false);
+    }
+  }
+
+  function onMediaChange() {
+    // When switching to desktop layout, ensure mobile menu is closed.
+    if (mqDesktop.matches) {
+      setMenuState(false);
+    }
+  }
+
+  // Initialize
+  setMenuState(false);
   updateHeaderOnScroll();
 
+  menuButtonEl.addEventListener("click", toggleMenu);
+  const mobileLinks = Array.from(
+    document.querySelectorAll(".mobile-menu-link"),
+  );
+  mobileLinks.forEach((link) =>
+    link.addEventListener("click", onMobileLinkClick)
+  );
+  document.addEventListener("click", onDocumentClick);
+  document.addEventListener("keydown", onDocumentKeydown);
+  window.addEventListener("scroll", updateHeaderOnScroll);
+  mqDesktop.addEventListener("change", onMediaChange);
+
   return () => {
-    menuButton.removeEventListener("click", toggleMenu);
-    document.querySelectorAll(".mobile-menu-link").forEach(link => {
-      link.removeEventListener("click", closeMenu);
-    });
+    menuButtonEl.removeEventListener("click", toggleMenu);
+    mobileLinks.forEach((link) =>
+      link.removeEventListener("click", onMobileLinkClick)
+    );
+    document.removeEventListener("click", onDocumentClick);
+    document.removeEventListener("keydown", onDocumentKeydown);
     window.removeEventListener("scroll", updateHeaderOnScroll);
+    mqDesktop.removeEventListener("change", onMediaChange);
   };
 }
 

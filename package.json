@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "astro build && astro preview",
     "astro": "astro",
     "fmt": "dprint fmt --config dprint.json",
     "lint": "oxlint -c .oxlintrc.json --type-aware ",

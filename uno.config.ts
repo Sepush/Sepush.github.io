@@ -53,8 +53,8 @@ export default defineConfig({
       },
     },
     fontFamily: {
-      mono: ["JetBrains Mono", "Fira Code", "Consolas", "Monaco", "monospace"],
-      sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+      mono: ["var(--a-font-mono)"],
+      sans: ["var(--a-font-system)"],
     },
     borderRadius: {
       "xl": "1rem",
