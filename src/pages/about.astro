@@ -7,20 +7,18 @@ const { Content } = await about.render();
 ---
 
 <Layout title="关于我" description="了解更多关于我的信息">
-  <div class="min-h-screen">
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 overflow-hidden">
-      <nav class="mb-8">
-        <a
-          href="/"
-          class="inline-flex items-center justify-center w-8 h-8 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
-        >
-          <span class="i-tabler-arrow-left text-lg"></span>
-        </a>
-      </nav>
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <nav class="mb-8">
+      <a
+        href="/"
+        class="inline-flex items-center justify-center w-8 h-8 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+      >
+        <span class="i-tabler-arrow-left text-lg"></span>
+      </a>
+    </nav>
 
-      <article class="prose max-w-none min-w-0">
-        <Content />
-      </article>
-    </main>
-  </div>
+    <article class="prose max-w-none min-w-0">
+      <Content />
+    </article>
+  </main>
 </Layout>

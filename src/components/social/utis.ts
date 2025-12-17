@@ -3,7 +3,7 @@ import type { ShareConfig, SocialPlatform } from "./interface";
 export function createShareUrl(
   platform: SocialPlatform,
   title: string,
-  url: string
+  url: string,
 ): string {
   const encodedTitle = encodeURIComponent(title);
   const encodedUrl = encodeURIComponent(url);
@@ -13,4 +13,4 @@ export function createShareUrl(
   };
 
   return shareConfig[platform] || shareConfig.x!;
-};
+}
