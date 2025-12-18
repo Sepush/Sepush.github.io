@@ -5,7 +5,7 @@ interface Props {
   headings: MarkdownHeading[];
   maxDepth?: number;
   className?: string;
-  position?: "fixed" | "static";
+  position?: "fixed" | "static" | "sticky";
 }
 
 const {
@@ -18,7 +18,9 @@ const {
 const tocItems = headings.filter((h) => h.depth <= maxDepth);
 
 const positionClasses = position === "fixed"
-  ? "fixed right-6 top-1/2 transform -translate-y-1/2 hidden xl:block z-10"
+  ? "fixed right-6 top-24 hidden xl:block z-10"
+  : position === "sticky"
+  ? "sticky top-24 hidden xl:block z-10 self-start"
   : "relative";
 ---
 
@@ -150,32 +152,92 @@ const positionClasses = position === "fixed"
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
-  const tocItems = document.querySelectorAll(".toc-item");
+function initToc() {
+  const tocLinkElements = Array.from(document.querySelectorAll(".toc-item"))
+    .filter((el): el is HTMLAnchorElement => el instanceof HTMLAnchorElement);
 
-  if (!headings.length || !tocItems.length) return;
+  if (tocLinkElements.length === 0) return;
 
-  headings.forEach((heading, index) => {
-    if (!heading.id) {
-      heading.id = `heading-${index}`;
+  const prefersReducedMotion = window.matchMedia?.(
+    "(prefers-reduced-motion: reduce)",
+  )?.matches ?? false;
+
+  const linkByTargetId = new Map<string, HTMLAnchorElement>();
+  const headingTargets: HTMLElement[] = [];
+
+  for (const tocLinkElement of tocLinkElements) {
+    const href = tocLinkElement.getAttribute("href") ?? "";
+    if (!href.startsWith("#")) continue;
+
+    let targetId = href.slice(1);
+    try {
+      targetId = decodeURIComponent(targetId);
+    } catch {
+      // keep raw
     }
-  });
+    linkByTargetId.set(targetId, tocLinkElement);
+
+    const headingTarget = document.getElementById(targetId);
+    if (headingTarget instanceof HTMLElement) {
+      headingTargets.push(headingTarget);
+    }
+  }
+
+  if (headingTargets.length === 0) return;
+
+  let activeLink: HTMLAnchorElement | null = null;
+  function setActive(targetId: string | null) {
+    const nextLink = targetId ? linkByTargetId.get(targetId) ?? null : null;
+    if (activeLink === nextLink) return;
+
+    activeLink?.classList.remove("active");
+    nextLink?.classList.add("active");
+    activeLink = nextLink;
+  }
+
+  const onTocClick = (e: MouseEvent) => {
+    const currentTarget = e.currentTarget;
+    if (!(currentTarget instanceof HTMLAnchorElement)) return;
+
+    const href = currentTarget.getAttribute("href") ?? "";
+    if (!href.startsWith("#")) return;
+
+    let targetId = href.slice(1);
+    try {
+      targetId = decodeURIComponent(targetId);
+    } catch {
+      // keep raw
+    }
+
+    const target = document.getElementById(targetId);
+    if (!(target instanceof HTMLElement)) return;
+
+    e.preventDefault();
+    history.pushState(null, "", href);
+    setActive(targetId);
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
+  const onHashChange = () => {
+    const targetId = window.location.hash
+      ? decodeURIComponent(window.location.hash.slice(1))
+      : null;
+    setActive(targetId);
+  };
 
   const observer = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          tocItems.forEach((item) => item.classList.remove("active"));
+      const visibleEntries = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
 
-          const activeItem = document.querySelector(
-            `.toc-item[href="#${entry.target.id}"]`,
-          );
-          if (activeItem) {
-            activeItem.classList.add("active");
-          }
-        }
-      });
+      const topMost = visibleEntries[0];
+      if (topMost?.target instanceof HTMLElement) {
+        setActive(topMost.target.id);
+      }
     },
     {
       rootMargin: "-80px 0px -70%",
@@ -183,29 +245,32 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   );
 
-  headings.forEach((heading) => observer.observe(heading));
-
-  tocItems.forEach((item) => {
-    item.addEventListener("click", (e) => {
-      e.preventDefault();
-      const href = item.getAttribute("href");
-      if (href) {
-        const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-          history.pushState(null, "", href);
-        }
-      }
-    });
-  });
-
-  if (window.location.hash) {
-    setTimeout(() => {
-      const target = document.querySelector(window.location.hash);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 300);
+  for (const headingTarget of headingTargets) observer.observe(headingTarget);
+  window.addEventListener("hashchange", onHashChange, { passive: true });
+  window.addEventListener("popstate", onHashChange, { passive: true });
+  for (const tocLinkElement of tocLinkElements) {
+    tocLinkElement.addEventListener("click", onTocClick);
   }
-});
+
+  onHashChange();
+
+  return () => {
+    observer.disconnect();
+    window.removeEventListener("hashchange", onHashChange);
+    window.removeEventListener("popstate", onHashChange);
+    for (const tocLinkElement of tocLinkElements) {
+      tocLinkElement.removeEventListener("click", onTocClick);
+    }
+  };
+}
+
+let cleanup: (() => void) | undefined;
+function setupToc() {
+  cleanup?.();
+  cleanup = initToc();
+}
+
+setupToc();
+document.addEventListener("astro:page-load", setupToc);
+document.addEventListener("astro:after-swap", setupToc);
 </script>

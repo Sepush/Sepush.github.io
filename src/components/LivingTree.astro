@@ -1,0 +1,273 @@
+---
+
+---
+
+<div id="living-tree-bg" aria-hidden="true">
+  <canvas id="living-tree-canvas"></canvas>
+</div>
+
+<script>
+export {};
+
+/**
+ * Canvas background (branching growth).
+ * Notes:
+ * - We keep everything self-contained to avoid build-time/URL import pitfalls.
+ * - Idempotent init for Astro view transitions.
+ */
+type Task = { x: number; y: number; theta: number; len: number; depth: number };
+type LivingTreeInst = { destroy: () => void };
+let livingTreeInst: LivingTreeInst | null = null;
+
+function readCssVar(name: string, fallback: string): string {
+  try {
+    const v = getComputedStyle(document.documentElement)
+      .getPropertyValue(name)
+      .trim();
+    return v || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function prefersReducedMotion(): boolean {
+  return (
+    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
+  );
+}
+
+function createEngine(canvas: HTMLCanvasElement): LivingTreeInst | null {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  const ctx2d: CanvasRenderingContext2D = ctx;
+
+  let tasks: Task[] = [];
+  let rafId = 0;
+  let stopped = false;
+  let tick = 0;
+
+  const opts = {
+    lineWidth: Number(readCssVar("--living-tree-line-width", "1.6")) || 1.6,
+    stroke: readCssVar("--living-tree-stroke", "rgba(101, 67, 33, 0.22)"),
+    leafStroke: readCssVar("--living-tree-leaf", "rgba(86, 121, 74, 0.16)"),
+    leafChance: 0.16,
+    leafRadius: 1.6,
+
+    // Visual tuning (intentionally subtle)
+    seedCount: 4,
+    sideSeedCount: 2,
+    maxDepth: 180,
+    baseLen: 12,
+    shrink: 0.985,
+    jitter: 0.18,
+    branchChance: 0.045,
+    branchAngle: 0.55,
+
+    // Perf tuning
+    tickModulo: 2,
+    stepsPerTick: 40,
+  };
+
+  function resizeAndClear(): void {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = Math.max(1, Math.floor(window.innerWidth));
+    const h = Math.max(1, Math.floor(window.innerHeight));
+    const isMobile = w < 768;
+    const seedCount = isMobile ? 1 : opts.seedCount;
+    const sideSeedCount = isMobile ? 1 : opts.sideSeedCount;
+
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+
+    ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx2d.clearRect(0, 0, w, h);
+    ctx2d.lineCap = "round";
+    ctx2d.lineJoin = "round";
+    ctx2d.lineWidth = opts.lineWidth;
+    ctx2d.strokeStyle = opts.stroke;
+
+    tasks = [];
+    seedFromBottom(w, h, seedCount);
+    seedFromSides(w, h, sideSeedCount);
+  }
+
+  function seedFromBottom(w: number, h: number, count: number): void {
+    const baseY = h + 40;
+
+    for (let i = 0; i < count; i++) {
+      const x = w * (0.15 + 0.7 * Math.random());
+      const theta = -Math.PI / 2 + (Math.random() - 0.5) * 0.35;
+      const len = opts.baseLen * (0.8 + Math.random() * 0.6);
+      tasks.push({ x, y: baseY, theta, len, depth: 0 });
+    }
+  }
+
+  function seedFromSides(w: number, h: number, count: number): void {
+    const margin = 30;
+    for (let i = 0; i < count; i++) {
+      const fromLeft = Math.random() < 0.5;
+      const x = fromLeft ? -margin : w + margin;
+      const y = h * (0.2 + Math.random() ** 1.5 * 0.55);
+      const baseTheta = fromLeft ? 0 : Math.PI;
+      const jitter = (Math.random() - 0.5) * 0.6;
+      const lowBias = y > h * 0.6 ? 0.55 : 0;
+      const targetTheta = fromLeft ? -Math.PI / 3 : Math.PI + Math.PI / 3;
+      const theta = (baseTheta + jitter) * (1 - lowBias)
+        + targetTheta * lowBias;
+      const len = opts.baseLen * (0.8 + Math.random() * 0.6);
+      tasks.push({ x, y, theta, len, depth: 0 });
+    }
+  }
+
+  function stepTask(t: Task): void {
+    if (t.depth >= opts.maxDepth || t.len < 0.6) return;
+
+    const x2 = t.x + Math.cos(t.theta) * t.len;
+    const y2 = t.y + Math.sin(t.theta) * t.len;
+
+    ctx2d.beginPath();
+    ctx2d.moveTo(t.x, t.y);
+    ctx2d.lineTo(x2, y2);
+    ctx2d.stroke();
+
+    if (t.depth > opts.maxDepth * 0.6 && Math.random() < opts.leafChance) {
+      ctx2d.beginPath();
+      ctx2d.fillStyle = opts.leafStroke;
+      ctx2d.arc(
+        x2,
+        y2,
+        opts.leafRadius * (0.7 + Math.random() * 0.8),
+        0,
+        Math.PI * 2,
+      );
+      ctx2d.fill();
+      ctx2d.fillStyle = opts.stroke;
+    }
+
+    const next: Task = {
+      x: x2,
+      y: y2,
+      theta: t.theta + (Math.random() - 0.5) * opts.jitter,
+      len: t.len * opts.shrink,
+      depth: t.depth + 1,
+    };
+
+    // Continue main branch
+    tasks.push(next);
+
+    // Occasionally branch
+    if (Math.random() < opts.branchChance) {
+      const sign = Math.random() < 0.5 ? -1 : 1;
+      tasks.push({
+        x: x2,
+        y: y2,
+        theta: t.theta
+          + sign * (opts.branchAngle * (0.6 + Math.random() * 0.7)),
+        len: t.len * (0.75 + Math.random() * 0.2),
+        depth: t.depth + 1,
+      });
+    }
+  }
+
+  function runTicksOnce(maxTicks: number): void {
+    // For reduced motion: render a static snapshot quickly.
+    for (let i = 0; i < maxTicks; i++) {
+      if (!tasks.length) return;
+      for (let s = 0; s < opts.stepsPerTick; s++) {
+        const t = tasks.shift();
+        if (!t) break;
+        stepTask(t);
+      }
+    }
+  }
+
+  function frame(): void {
+    if (stopped) return;
+    rafId = requestAnimationFrame(frame);
+
+    // Small throttle for CPU friendliness
+    tick++;
+    if (tick % opts.tickModulo !== 0) return;
+
+    // No tasks? Stop drawing.
+    if (!tasks.length) return;
+
+    const budget = opts.stepsPerTick;
+    for (let i = 0; i < budget; i++) {
+      const t = tasks.shift();
+      if (!t) break;
+      stepTask(t);
+    }
+  }
+
+  function start(): void {
+    stopped = false;
+    cancelAnimationFrame(rafId);
+
+    if (prefersReducedMotion()) {
+      // Static render only
+      runTicksOnce(220);
+      return;
+    }
+
+    rafId = requestAnimationFrame(frame);
+  }
+
+  function stop(): void {
+    stopped = true;
+    cancelAnimationFrame(rafId);
+  }
+
+  const onResize = (): void => {
+    resizeAndClear();
+    start();
+  };
+
+  const onVisibility = (): void => {
+    if (document.visibilityState === "hidden") stop();
+    else start();
+  };
+
+  resizeAndClear();
+  start();
+
+  window.addEventListener("resize", onResize, { passive: true });
+  document.addEventListener("visibilitychange", onVisibility, {
+    passive: true,
+  });
+
+  return {
+    destroy() {
+      stop();
+      window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+    },
+  };
+}
+
+function setup(): void {
+  const canvas = document.getElementById("living-tree-canvas");
+  if (!(canvas instanceof HTMLCanvasElement)) return;
+
+  // Ensure singleton (Layout renders once, but transitions can re-fire events)
+  livingTreeInst?.destroy();
+
+  const instance = createEngine(canvas);
+  if (instance) {
+    livingTreeInst = instance;
+  }
+}
+
+// Run now
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setup, { once: true });
+} else {
+  setup();
+}
+
+// Astro view transitions: re-init after swap just in case.
+document.addEventListener("astro:page-load", setup);
+document.addEventListener("astro:after-swap", setup);
+</script>

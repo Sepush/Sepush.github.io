@@ -24,32 +24,48 @@ export function isDevEnv(): boolean {
   return import.meta.env.DEV;
 }
 
-export async function getPosts(): Promise<CollectionEntry<"posts">[]> {
-  const showDrafts = isDevEnv();
+function includeDraft(draft: boolean | undefined): boolean {
+  return isDevEnv() || !draft;
+}
 
+function compareByPubDateDesc<T extends { data: { pubDate: Date } }>(
+  a: T,
+  b: T,
+): number {
+  return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+}
+
+export async function getPosts(): Promise<CollectionEntry<"posts">[]> {
   return await getCollection("posts", ({ data }) => {
-    return showDrafts || !data.draft;
+    return includeDraft(data.draft);
   });
 }
 
 export async function getSortedPosts(): Promise<CollectionEntry<"posts">[]> {
   const posts = await getPosts();
-  return posts.sort(
-    (a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime(),
-  );
+  return [...posts].sort(compareByPubDateDesc);
 }
 
 export async function getNotes(): Promise<CollectionEntry<"notes">[]> {
-  const showDrafts = isDevEnv();
-
   return await getCollection("notes", ({ data }) => {
-    return showDrafts || !data.draft;
+    return includeDraft(data.draft);
   });
+}
+
+export async function getSortedNotes(): Promise<CollectionEntry<"notes">[]> {
+  const notes = await getNotes();
+  return [...notes].sort(compareByPubDateDesc);
 }
 
 export async function getAbout(): Promise<CollectionEntry<"about">> {
   const aboutItems = await getCollection("about");
-  return aboutItems[0];
+  const about = aboutItems[0];
+  if (!about) {
+    throw new Error(
+      "Missing \"about\" content. Add a file under src/content/about/ (e.g. src/content/about/index.md).",
+    );
+  }
+  return about;
 }
 
 export async function getAllContent(): Promise<ContentItem[]> {
@@ -69,5 +85,5 @@ export async function getAllContent(): Promise<ContentItem[]> {
     })),
   ];
 
-  return allContent.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+  return allContent.sort(compareByPubDateDesc);
 }

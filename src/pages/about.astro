@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getAbout } from "../utils/content";
+import { getAbout } from "../utils";
 
 const about = await getAbout();
 const { Content } = await about.render();

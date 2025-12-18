@@ -106,42 +106,44 @@ const mobileLinkBaseClass =
 
 <script>
 function initHeader() {
-  const menuButton = document.getElementById("mobile-menu-button");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const menuIcon = document.getElementById("menu-icon");
-  const header = document.getElementById("header");
+  const menuButtonEl = document.getElementById("mobile-menu-button");
+  const mobileMenuEl = document.getElementById("mobile-menu");
+  const menuIconEl = document.getElementById("menu-icon");
+  const headerEl = document.getElementById("header");
 
   if (
-    !(menuButton instanceof HTMLButtonElement)
-    || !(mobileMenu instanceof HTMLElement)
-    || !(menuIcon instanceof HTMLElement)
-    || !(header instanceof HTMLElement)
+    !(menuButtonEl instanceof HTMLButtonElement)
+    || !(mobileMenuEl instanceof HTMLElement)
+    || !(menuIconEl instanceof HTMLElement)
+    || !(headerEl instanceof HTMLElement)
   ) {
     return;
   }
 
-  const menuButtonEl: HTMLButtonElement = menuButton;
-  const mobileMenuEl: HTMLElement = mobileMenu;
-  const menuIconEl: HTMLElement = menuIcon;
-  const headerEl: HTMLElement = header;
+  const menuButton = menuButtonEl;
+  const mobileMenu = mobileMenuEl;
+  const menuIcon = menuIconEl;
+  const header = headerEl;
 
   const ICON_BASE = "text-base text-gray-600 transition-transform duration-300";
-  const ICON_OPEN = `i-tabler-x ${ICON_BASE}`;
-  const ICON_CLOSED = `i-tabler-menu-2 ${ICON_BASE}`;
+  const ICONS = {
+    open: `i-tabler-x ${ICON_BASE}`,
+    closed: `i-tabler-menu-2 ${ICON_BASE}`,
+  };
 
-  const BG_DEFAULT = "bg-white/40";
-  const BG_SCROLLED = "bg-white/70";
-  const SCROLLED_EXTRAS = ["border-b", "border-white/20", "shadow-sm"];
+  const HEADER_BG_DEFAULT = "bg-white/40";
+  const HEADER_BG_SCROLLED = "bg-white/70";
+  const HEADER_SCROLLED_EXTRAS = ["border-b", "border-white/20", "shadow-sm"];
 
   const mqDesktop = window.matchMedia("(min-width: 768px)");
   let isMenuOpen = false;
 
   function setMenuState(open: boolean) {
     isMenuOpen = open;
-    mobileMenuEl.classList.toggle("hidden", !open);
-    menuIconEl.className = open ? ICON_OPEN : ICON_CLOSED;
-    menuButtonEl.setAttribute("aria-expanded", String(open));
-    menuButtonEl.setAttribute(
+    mobileMenu.classList.toggle("hidden", !open);
+    menuIcon.className = open ? ICONS.open : ICONS.closed;
+    menuButton.setAttribute("aria-expanded", String(open));
+    menuButton.setAttribute(
       "aria-label",
       open ? "Close menu" : "Open menu",
     );
@@ -154,11 +156,11 @@ function initHeader() {
   function updateHeaderOnScroll() {
     const scrolled = window.scrollY > 10;
     if (scrolled) {
-      headerEl.classList.remove(BG_DEFAULT);
-      headerEl.classList.add(BG_SCROLLED, ...SCROLLED_EXTRAS);
+      header.classList.remove(HEADER_BG_DEFAULT);
+      header.classList.add(HEADER_BG_SCROLLED, ...HEADER_SCROLLED_EXTRAS);
     } else {
-      headerEl.classList.remove(BG_SCROLLED, ...SCROLLED_EXTRAS);
-      headerEl.classList.add(BG_DEFAULT);
+      header.classList.remove(HEADER_BG_SCROLLED, ...HEADER_SCROLLED_EXTRAS);
+      header.classList.add(HEADER_BG_DEFAULT);
     }
   }
 
@@ -169,7 +171,7 @@ function initHeader() {
   function onDocumentClick(e: MouseEvent) {
     if (!isMenuOpen) return;
     const target = e.target;
-    if (target instanceof Node && !headerEl.contains(target)) {
+    if (target instanceof Node && !header.contains(target)) {
       setMenuState(false);
     }
   }
@@ -191,20 +193,20 @@ function initHeader() {
   setMenuState(false);
   updateHeaderOnScroll();
 
-  menuButtonEl.addEventListener("click", toggleMenu);
+  menuButton.addEventListener("click", toggleMenu);
   const mobileLinks = Array.from(
-    document.querySelectorAll(".mobile-menu-link"),
+    document.querySelectorAll<HTMLAnchorElement>(".mobile-menu-link"),
   );
   mobileLinks.forEach((link) =>
     link.addEventListener("click", onMobileLinkClick)
   );
   document.addEventListener("click", onDocumentClick);
   document.addEventListener("keydown", onDocumentKeydown);
-  window.addEventListener("scroll", updateHeaderOnScroll);
+  window.addEventListener("scroll", updateHeaderOnScroll, { passive: true });
   mqDesktop.addEventListener("change", onMediaChange);
 
   return () => {
-    menuButtonEl.removeEventListener("click", toggleMenu);
+    menuButton.removeEventListener("click", toggleMenu);
     mobileLinks.forEach((link) =>
       link.removeEventListener("click", onMobileLinkClick)
     );
@@ -223,5 +225,6 @@ function setupHeader() {
 }
 
 setupHeader();
+document.addEventListener("astro:page-load", setupHeader);
 document.addEventListener("astro:after-swap", setupHeader);
 </script>

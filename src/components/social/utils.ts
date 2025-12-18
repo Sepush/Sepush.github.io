@@ -1,7 +1,7 @@
-import type { ShareConfig, SocialPlatform } from "./interface";
+import type { ShareConfig, SharePlatform } from "./interface";
 
 export function createShareUrl(
-  platform: SocialPlatform,
+  platform: SharePlatform,
   title: string,
   url: string,
 ): string {
@@ -10,6 +10,9 @@ export function createShareUrl(
 
   const shareConfig: ShareConfig = {
     x: `https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+    telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    email: `mailto:?subject=${encodedTitle}&body=${encodedUrl}`,
   };
 
   return shareConfig[platform] || shareConfig.x!;

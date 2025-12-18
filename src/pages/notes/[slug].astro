@@ -1,9 +1,11 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { TagGroup } from "../../components/tag";
 import Layout from "../../layouts/Layout.astro";
+import { formatDate, formatTime, getNotes } from "../../utils";
 
 export async function getStaticPaths() {
-  const notes = await getCollection("notes");
+  const notes = await getNotes();
 
   return notes.map((note) => ({
     params: { slug: note.slug },
@@ -17,21 +19,6 @@ interface Props {
 
 const { note } = Astro.props;
 const { Content } = await note.render();
-
-function formatDate(date: Date) {
-  return new Intl.DateTimeFormat("zh-CN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(date);
-}
-
-function formatTime(date: Date) {
-  return new Intl.DateTimeFormat("zh-CN", {
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
-}
 ---
 
 <Layout title={`${note.data.title} - Artea`} description="随笔笔记">
@@ -89,20 +76,12 @@ function formatTime(date: Date) {
             </div>
           </div>
 
-          {
-            note.data.tags && note.data.tags.length > 0
+            {
+              note.data.tags && note.data.tags.length > 0
               && (
-              <div class="flex flex-wrap gap-2">
-                {
-                  note.data.tags.map((tag) => (
-                    <span
-                      class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium border border-gray-200"
-                    >
-                      #{tag}
-                    </span>
-                  ))
-                }
-              </div>
+              <TagGroup
+                tags={note.data.tags.map((tag) => ({ tag, showHash: true }))}
+              />
             )
           }
         </header>

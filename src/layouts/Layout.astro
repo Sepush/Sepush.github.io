@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import Header from "../components/Header.astro";
+import LivingTree from "../components/LivingTree.astro";
 import "../styles/global.css";
 import "../styles/markdown.css";
 
@@ -24,10 +25,10 @@ const { title, description = "Artea's blog" } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      id="google-fonts"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=LXGW+WenKai+Mono+TC:wght@300;400;700&display=swap"
       rel="stylesheet"
       media="print"
-      onload="this.media='all'"
     />
     <noscript>
       <link
@@ -37,20 +38,30 @@ const { title, description = "Artea's blog" } = Astro.props;
     </noscript>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+      integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+"
+      crossorigin="anonymous"
     />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
-        integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+"
-        crossorigin="anonymous"
-      />
-    </noscript>
+    <script>
+    const link = document.getElementById("google-fonts");
+      if (link instanceof HTMLLinkElement) {
+        const enable = () => {
+          link.media = "all";
+        };
+
+        // If the stylesheet is already loaded (e.g. bfcache), enable immediately.
+        if (link.sheet) {
+          enable();
+        } else {
+          link.addEventListener("load", enable, { once: true });
+        }
+      }
+    </script>
     <ClientRouter />
   </head>
   <body class="min-h-screen bg-gradient-primary text-gray-900 font-sans antialiased">
-    <div class="flex flex-col min-h-screen relative">
+    <LivingTree />
+    <div class="flex flex-col min-h-screen relative z-10">
       <Header />
       <main class="flex-1 relative">
         <slot />

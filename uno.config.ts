@@ -43,14 +43,6 @@ export default defineConfig({
         800: "oklch(0.38 0.32 160)",
         900: "oklch(0.30 0.36 160)",
       },
-      surface: {
-        50: "oklch(1.00 0.000 106)",
-        100: "oklch(0.98 0.002 106)",
-        200: "oklch(0.96 0.003 106)",
-        300: "oklch(0.93 0.005 106)",
-        400: "oklch(0.89 0.008 106)",
-        500: "oklch(0.78 0.015 106)",
-      },
     },
     fontFamily: {
       mono: ["var(--a-font-mono)"],

@@ -1,13 +1,13 @@
 ---
 import { platformConfigs } from "./config";
-import type { ShareLink, SocialPlatform } from "./interface";
-import { createShareUrl } from "./utis";
+import type { ShareLink, SharePlatform } from "./interface";
+import { createShareUrl } from "./utils";
 
 type Size = "sm" | "md";
 export interface Props {
   title: string;
   url: string;
-  platforms?: SocialPlatform[];
+  platforms?: SharePlatform[];
   size?: Size;
   showLabels?: boolean;
   className?: string;
@@ -58,9 +58,7 @@ function calcLinkClasses(link: ShareLink, size: Size) {
       </span>
       <div class="flex items-center gap-2">
         {
-          shareLinks.map((link) => {
-            return (
-              link && (
+          shareLinks.map((link) => (
             <a
               href={link.url}
               target="_blank"
@@ -69,14 +67,10 @@ function calcLinkClasses(link: ShareLink, size: Size) {
               title={`分享到 ${link.platform}`}
               aria-label={`Share on ${link.platform}`}
             >
-              <span
-                class={`${link.icon} ${sizeClasses[size].icon} text-gray-500`}
-              />
+              <span class={`${link.icon} ${sizeClasses[size].icon}`} />
               {showLabels && <span>{link.platform}</span>}
             </a>
-          )
-            );
-          })
+          ))
         }
       </div>
     </div>
