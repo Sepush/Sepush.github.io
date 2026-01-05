@@ -1,20 +1,20 @@
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from 'astro:content';
 
 export enum ContentType {
-  Posts = "posts",
-  Notes = "notes",
-  About = "about",
+  Posts = 'posts',
+  Notes = 'notes',
+  About = 'about',
 }
 
-export interface PostsContent extends CollectionEntry<"posts"> {
+export interface PostsContent extends CollectionEntry<'posts'> {
   type: ContentType.Posts;
 }
 
-export interface NotesContent extends CollectionEntry<"notes"> {
+export interface NotesContent extends CollectionEntry<'notes'> {
   type: ContentType.Notes;
 }
 
-export interface AboutContent extends CollectionEntry<"about"> {
+export interface AboutContent extends CollectionEntry<'about'> {
   type: ContentType.About;
 }
 
@@ -35,34 +35,34 @@ function compareByPubDateDesc<T extends { data: { pubDate: Date } }>(
   return b.data.pubDate.getTime() - a.data.pubDate.getTime();
 }
 
-export async function getPosts(): Promise<CollectionEntry<"posts">[]> {
-  return await getCollection("posts", ({ data }) => {
+export async function getPosts(): Promise<CollectionEntry<'posts'>[]> {
+  return await getCollection('posts', ({ data }) => {
     return includeDraft(data.draft);
   });
 }
 
-export async function getSortedPosts(): Promise<CollectionEntry<"posts">[]> {
+export async function getSortedPosts(): Promise<CollectionEntry<'posts'>[]> {
   const posts = await getPosts();
   return [...posts].sort(compareByPubDateDesc);
 }
 
-export async function getNotes(): Promise<CollectionEntry<"notes">[]> {
-  return await getCollection("notes", ({ data }) => {
+export async function getNotes(): Promise<CollectionEntry<'notes'>[]> {
+  return await getCollection('notes', ({ data }) => {
     return includeDraft(data.draft);
   });
 }
 
-export async function getSortedNotes(): Promise<CollectionEntry<"notes">[]> {
+export async function getSortedNotes(): Promise<CollectionEntry<'notes'>[]> {
   const notes = await getNotes();
   return [...notes].sort(compareByPubDateDesc);
 }
 
-export async function getAbout(): Promise<CollectionEntry<"about">> {
-  const aboutItems = await getCollection("about");
+export async function getAbout(): Promise<CollectionEntry<'about'>> {
+  const aboutItems = await getCollection('about');
   const about = aboutItems[0];
   if (!about) {
     throw new Error(
-      "Missing \"about\" content. Add a file under src/content/about/ (e.g. src/content/about/index.md).",
+      'Missing "about" content. Add a file under src/content/about/ (e.g. src/content/about/index.md).',
     );
   }
   return about;

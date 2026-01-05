@@ -166,13 +166,13 @@ import {
   h,
   type SetupContext,
   type SlotsType,
-} from "vue";
+} from 'vue';
 
 export default defineComponent(
   <T extends string | number = number>(
     props: {
       options: T[];
-      "onUpdate:value": (option: T) => void;
+      'onUpdate:value': (option: T) => void;
     },
     { slots }: SetupContext<EmitsOptions, SlotsType<{ extra: { option: T } }>>,
   ) => {
@@ -180,12 +180,12 @@ export default defineComponent(
 
     function handleChange(e: Event) {
       const value = (e.target as HTMLSelectElement).value as T;
-      props["onUpdate:value"](value);
+      props['onUpdate:value'](value);
     }
-    console.log("options", options);
+    console.log('options', options);
     return () => (
       <div>
-        <select id="generic-select" onChange={handleChange}>
+        <select id='generic-select' onChange={handleChange}>
           {options?.map((option) => (
             <option value={option} key={option}>
               {option}
@@ -199,7 +199,7 @@ export default defineComponent(
   {
     // if you use defineComponent with generics, must `as any` when manually specify props
     // workaround for vue type issue
-    props: ["options", "onUpdate:value"] as any,
+    props: ['options', 'onUpdate:value'] as any,
   },
 );
 ```
@@ -241,7 +241,7 @@ Naive-UI 给我们找到了这样的一条路，但这是一条曲折的路
 
 ```ts
 // public-types.ts
-import type { VNode } from "vue";
+import type { VNode } from 'vue';
 
 export type Option = string | number;
 
@@ -249,7 +249,7 @@ export type OnUpdateValue<T> = (option: T) => void;
 
 export type GDSelectProps<T extends Option = Option> = {
   options: T[];
-  "onUpdate:value": OnUpdateValue<T>;
+  'onUpdate:value': OnUpdateValue<T>;
 };
 
 export type GDSelectSlots<T extends Option = Option> = {
@@ -263,15 +263,15 @@ export type GDSelectSlots<T extends Option = Option> = {
 
 ```tsx
 // BasicSelect.tsx
-import { defineComponent, h, type PropType, type SlotsType } from "vue";
-import type { GDSelectSlots, OnUpdateValue, Option } from "./public-types";
+import { defineComponent, h, type PropType, type SlotsType } from 'vue';
+import type { GDSelectSlots, OnUpdateValue, Option } from './public-types';
 
 export const selectProps = {
   options: {
     type: Array as PropType<Option[]>,
     default: () => [],
   },
-  "onUpdate:value": Function as PropType<OnUpdateValue<Option>>,
+  'onUpdate:value': Function as PropType<OnUpdateValue<Option>>,
 };
 
 export default defineComponent({
@@ -280,7 +280,7 @@ export default defineComponent({
   setup(props) {
     function handleChange(e: Event) {
       const value = (e.target as HTMLSelectElement).value;
-      props["onUpdate:value"]?.(value);
+      props['onUpdate:value']?.(value);
     }
     return {
       handleChange,
@@ -289,7 +289,7 @@ export default defineComponent({
   render() {
     const { options, handleChange, $slots } = this;
     return (
-      <select id="g-select" onChange={handleChange}>
+      <select id='g-select' onChange={handleChange}>
         {options?.map((option) => (
           <option value={option} key={option}>
             {option}

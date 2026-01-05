@@ -1,28 +1,28 @@
 ---
-import type { SocialLink } from "./interface";
+import type { SocialLink } from './interface';
 
 export interface Props {
   links: SocialLink[];
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
   showLabels?: boolean;
   className?: string;
 }
 
 const {
   links = [],
-  size = "md",
+  size = 'md',
   showLabels = false,
-  className = "",
+  className = '',
 } = Astro.props;
 
 const sizeClasses = {
-  sm: "text-lg",
-  md: "text-2xl",
-  lg: "text-3xl",
+  sm: 'text-lg',
+  md: 'text-2xl',
+  lg: 'text-3xl',
 };
 
 const baseItemClasses =
-  "text-gray-600 hover:text-gray-900 transition-all duration-300 ease-out";
+  'text-gray-600 hover:text-gray-900 transition-all duration-300 ease-out';
 const itemClasses = showLabels
   ? `${baseItemClasses} flex items-center gap-2`
   : baseItemClasses;
@@ -32,7 +32,7 @@ const itemClasses = showLabels
   links.length > 0 && (
     <div
       class={`flex flex-wrap justify-center ${
-        showLabels ? "gap-6" : "gap-3"
+        showLabels ? 'gap-6' : 'gap-3'
       } ${className}`}
     >
       {

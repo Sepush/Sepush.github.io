@@ -1,27 +1,27 @@
 ---
-import type { MarkdownHeading } from "astro";
+import type { MarkdownHeading } from 'astro';
 
 interface Props {
   headings: MarkdownHeading[];
   maxDepth?: number;
   className?: string;
-  position?: "fixed" | "static" | "sticky";
+  position?: 'fixed' | 'static' | 'sticky';
 }
 
 const {
   headings,
   maxDepth = 3,
-  className = "",
-  position = "fixed",
+  className = '',
+  position = 'fixed',
 } = Astro.props;
 
 const tocItems = headings.filter((h) => h.depth <= maxDepth);
 
-const positionClasses = position === "fixed"
-  ? "fixed right-6 top-24 hidden xl:block z-10"
-  : position === "sticky"
-  ? "sticky top-24 hidden xl:block z-10 self-start"
-  : "relative";
+const positionClasses = position === 'fixed'
+  ? 'fixed right-6 top-24 hidden xl:block z-10'
+  : position === 'sticky'
+  ? 'sticky top-24 hidden xl:block z-10 self-start'
+  : 'relative';
 ---
 
 {
@@ -153,21 +153,21 @@ const positionClasses = position === "fixed"
 
 <script>
 function initToc() {
-  const tocLinkElements = Array.from(document.querySelectorAll(".toc-item"))
+  const tocLinkElements = Array.from(document.querySelectorAll('.toc-item'))
     .filter((el): el is HTMLAnchorElement => el instanceof HTMLAnchorElement);
 
   if (tocLinkElements.length === 0) return;
 
   const prefersReducedMotion = window.matchMedia?.(
-    "(prefers-reduced-motion: reduce)",
+    '(prefers-reduced-motion: reduce)',
   )?.matches ?? false;
 
   const linkByTargetId = new Map<string, HTMLAnchorElement>();
   const headingTargets: HTMLElement[] = [];
 
   for (const tocLinkElement of tocLinkElements) {
-    const href = tocLinkElement.getAttribute("href") ?? "";
-    if (!href.startsWith("#")) continue;
+    const href = tocLinkElement.getAttribute('href') ?? '';
+    if (!href.startsWith('#')) continue;
 
     let targetId = href.slice(1);
     try {
@@ -190,8 +190,8 @@ function initToc() {
     const nextLink = targetId ? linkByTargetId.get(targetId) ?? null : null;
     if (activeLink === nextLink) return;
 
-    activeLink?.classList.remove("active");
-    nextLink?.classList.add("active");
+    activeLink?.classList.remove('active');
+    nextLink?.classList.add('active');
     activeLink = nextLink;
   }
 
@@ -199,8 +199,8 @@ function initToc() {
     const currentTarget = e.currentTarget;
     if (!(currentTarget instanceof HTMLAnchorElement)) return;
 
-    const href = currentTarget.getAttribute("href") ?? "";
-    if (!href.startsWith("#")) return;
+    const href = currentTarget.getAttribute('href') ?? '';
+    if (!href.startsWith('#')) return;
 
     let targetId = href.slice(1);
     try {
@@ -213,11 +213,11 @@ function initToc() {
     if (!(target instanceof HTMLElement)) return;
 
     e.preventDefault();
-    history.pushState(null, "", href);
+    history.pushState(null, '', href);
     setActive(targetId);
     target.scrollIntoView({
-      behavior: prefersReducedMotion ? "auto" : "smooth",
-      block: "start",
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      block: 'start',
     });
   };
 
@@ -240,26 +240,26 @@ function initToc() {
       }
     },
     {
-      rootMargin: "-80px 0px -70%",
+      rootMargin: '-80px 0px -70%',
       threshold: 0.1,
     },
   );
 
   for (const headingTarget of headingTargets) observer.observe(headingTarget);
-  window.addEventListener("hashchange", onHashChange, { passive: true });
-  window.addEventListener("popstate", onHashChange, { passive: true });
+  window.addEventListener('hashchange', onHashChange, { passive: true });
+  window.addEventListener('popstate', onHashChange, { passive: true });
   for (const tocLinkElement of tocLinkElements) {
-    tocLinkElement.addEventListener("click", onTocClick);
+    tocLinkElement.addEventListener('click', onTocClick);
   }
 
   onHashChange();
 
   return () => {
     observer.disconnect();
-    window.removeEventListener("hashchange", onHashChange);
-    window.removeEventListener("popstate", onHashChange);
+    window.removeEventListener('hashchange', onHashChange);
+    window.removeEventListener('popstate', onHashChange);
     for (const tocLinkElement of tocLinkElements) {
-      tocLinkElement.removeEventListener("click", onTocClick);
+      tocLinkElement.removeEventListener('click', onTocClick);
     }
   };
 }
@@ -271,6 +271,6 @@ function setupToc() {
 }
 
 setupToc();
-document.addEventListener("astro:page-load", setupToc);
-document.addEventListener("astro:after-swap", setupToc);
+document.addEventListener('astro:page-load', setupToc);
+document.addEventListener('astro:after-swap', setupToc);
 </script>

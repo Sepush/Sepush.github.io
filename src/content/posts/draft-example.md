@@ -104,7 +104,7 @@ async function fetchData(url) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
   }
 }
 ```
@@ -245,7 +245,7 @@ class Animal:
 
 ```javascript
 // 这里甚至可以包含代码块
-console.log("Hello from collapsible content!");
+console.log('Hello from collapsible content!');
 ```
 
 </details>

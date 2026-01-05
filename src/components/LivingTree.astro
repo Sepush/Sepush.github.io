@@ -32,12 +32,12 @@ function readCssVar(name: string, fallback: string): string {
 
 function prefersReducedMotion(): boolean {
   return (
-    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
+    window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false
   );
 }
 
 function createEngine(canvas: HTMLCanvasElement): LivingTreeInst | null {
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
   if (!ctx) return null;
   const ctx2d: CanvasRenderingContext2D = ctx;
 
@@ -47,9 +47,9 @@ function createEngine(canvas: HTMLCanvasElement): LivingTreeInst | null {
   let tick = 0;
 
   const opts = {
-    lineWidth: Number(readCssVar("--living-tree-line-width", "1.6")) || 1.6,
-    stroke: readCssVar("--living-tree-stroke", "rgba(101, 67, 33, 0.22)"),
-    leafStroke: readCssVar("--living-tree-leaf", "rgba(86, 121, 74, 0.16)"),
+    lineWidth: Number(readCssVar('--living-tree-line-width', '1.6')) || 1.6,
+    stroke: readCssVar('--living-tree-stroke', 'rgba(101, 67, 33, 0.22)'),
+    leafStroke: readCssVar('--living-tree-leaf', 'rgba(86, 121, 74, 0.16)'),
     leafChance: 0.16,
     leafRadius: 1.6,
 
@@ -78,13 +78,13 @@ function createEngine(canvas: HTMLCanvasElement): LivingTreeInst | null {
 
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
 
     ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx2d.clearRect(0, 0, w, h);
-    ctx2d.lineCap = "round";
-    ctx2d.lineJoin = "round";
+    ctx2d.lineCap = 'round';
+    ctx2d.lineJoin = 'round';
     ctx2d.lineWidth = opts.lineWidth;
     ctx2d.strokeStyle = opts.stroke;
 
@@ -226,29 +226,29 @@ function createEngine(canvas: HTMLCanvasElement): LivingTreeInst | null {
   };
 
   const onVisibility = (): void => {
-    if (document.visibilityState === "hidden") stop();
+    if (document.visibilityState === 'hidden') stop();
     else start();
   };
 
   resizeAndClear();
   start();
 
-  window.addEventListener("resize", onResize, { passive: true });
-  document.addEventListener("visibilitychange", onVisibility, {
+  window.addEventListener('resize', onResize, { passive: true });
+  document.addEventListener('visibilitychange', onVisibility, {
     passive: true,
   });
 
   return {
     destroy() {
       stop();
-      window.removeEventListener("resize", onResize);
-      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibility);
     },
   };
 }
 
 function setup(): void {
-  const canvas = document.getElementById("living-tree-canvas");
+  const canvas = document.getElementById('living-tree-canvas');
   if (!(canvas instanceof HTMLCanvasElement)) return;
 
   // Ensure singleton (Layout renders once, but transitions can re-fire events)
@@ -261,13 +261,13 @@ function setup(): void {
 }
 
 // Run now
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", setup, { once: true });
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setup, { once: true });
 } else {
   setup();
 }
 
 // Astro view transitions: re-init after swap just in case.
-document.addEventListener("astro:page-load", setup);
-document.addEventListener("astro:after-swap", setup);
+document.addEventListener('astro:page-load', setup);
+document.addEventListener('astro:after-swap', setup);
 </script>

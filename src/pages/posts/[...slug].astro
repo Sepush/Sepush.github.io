@@ -1,10 +1,10 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { SocialShare } from "../../components/social";
-import { TagGroup } from "../../components/tag";
-import Toc from "../../components/Toc.astro";
-import Layout from "../../layouts/Layout.astro";
-import { formatDate, getPosts } from "../../utils";
+import type { CollectionEntry } from 'astro:content';
+import { SocialShare } from '../../components/social';
+import { TagGroup } from '../../components/tag';
+import Toc from '../../components/Toc.astro';
+import Layout from '../../layouts/Layout.astro';
+import { formatDate, getPosts } from '../../utils';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  post: CollectionEntry<"posts">;
+  post: CollectionEntry<'posts'>;
 }
 
 const { post } = Astro.props;
@@ -84,7 +84,7 @@ const postTags = post.data.tags.map((tag) => ({ tag }));
               <SocialShare
                 title={post.data.title}
                 url={Astro.url.href}
-                platforms={["x"]}
+                platforms={['x']}
                 size="md"
               />
             </div>

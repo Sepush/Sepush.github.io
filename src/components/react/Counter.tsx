@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 interface Props {
   message: string;
@@ -11,7 +11,7 @@ export function Counter({ message }: Props) {
     <div>
       <div i-tabler:brand-react bg-blue-500 px-4 py-2 />
       <p>{message}</p>
-      <button type="button" onClick={() => setCount(count + 1)}>
+      <button type='button' onClick={() => setCount(count + 1)}>
         Count: {count}
       </button>
     </div>

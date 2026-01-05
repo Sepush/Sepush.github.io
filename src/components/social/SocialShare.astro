@@ -1,9 +1,9 @@
 ---
-import { platformConfigs } from "./config";
-import type { ShareLink, SharePlatform } from "./interface";
-import { createShareUrl } from "./utils";
+import { platformConfigs } from './config';
+import type { ShareLink, SharePlatform } from './interface';
+import { createShareUrl } from './utils';
 
-type Size = "sm" | "md";
+type Size = 'sm' | 'md';
 export interface Props {
   title: string;
   url: string;
@@ -16,10 +16,10 @@ export interface Props {
 const {
   title,
   url,
-  platforms = ["x"],
-  size = "sm",
+  platforms = ['x'],
+  size = 'sm',
   showLabels = false,
-  className = "",
+  className = '',
 } = Astro.props;
 
 const shareLinks: ShareLink[] = platforms
@@ -34,12 +34,12 @@ const shareLinks: ShareLink[] = platforms
 
 const sizeClasses = {
   sm: {
-    button: "px-2 py-1 text-sm",
-    icon: "text-sm",
+    button: 'px-2 py-1 text-sm',
+    icon: 'text-sm',
   },
   md: {
-    button: "px-3 py-2 text-md",
-    icon: "text-md",
+    button: 'px-3 py-2 text-md',
+    icon: 'text-md',
   },
 };
 
@@ -53,7 +53,7 @@ function calcLinkClasses(link: ShareLink, size: Size) {
 {
   shareLinks.length > 0 && (
     <div class={`flex items-center gap-3 ${className}`}>
-      <span class={`text-gray-500 ${size === "sm" ? "text-sm" : "text-base"}`}>
+      <span class={`text-gray-500 ${size === 'sm' ? 'text-sm' : 'text-base'}`}>
         分享到：
       </span>
       <div class="flex items-center gap-2">

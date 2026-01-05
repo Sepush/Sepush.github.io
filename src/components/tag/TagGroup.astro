@@ -1,6 +1,6 @@
 ---
-import type { TagProps } from "./interface";
-import Tag from "./Tag.astro";
+import type { TagProps } from './interface';
+import Tag from './Tag.astro';
 
 export interface Props {
   tags: TagProps[];
@@ -11,7 +11,7 @@ export interface Props {
 const {
   tags = [],
   maxVisible,
-  className = "",
+  className = '',
 } = Astro.props;
 
 const visibleTags = maxVisible ? tags.slice(0, maxVisible) : tags;
@@ -28,7 +28,7 @@ const remainingCount = maxVisible && tags.length > maxVisible
         remainingCount > 0 && (
           <span
             class={`inline-flex items-center px-2 py-1 text-xs text-gray-400 ${
-              visibleTags[0]?.size === "sm" ? "text-xs" : "text-sm"
+              visibleTags[0]?.size === 'sm' ? 'text-xs' : 'text-sm'
             }`}
           >
             +{remainingCount}

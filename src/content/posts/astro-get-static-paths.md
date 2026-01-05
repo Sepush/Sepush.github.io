@@ -22,9 +22,9 @@ tags: ["Astro"]
 
 ```astro
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from 'astro:content';
 
-const posts = await getCollection("posts");
+const posts = await getCollection('posts');
 
 export async function getStaticPaths() {
   return posts.map((post) => ({
@@ -50,10 +50,10 @@ export async function getStaticPaths() {
 
 ```astro
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts");
+  const posts = await getCollection('posts');
 
   return posts.map((post) => ({
     params: { slug: post.slug },
@@ -67,8 +67,8 @@ export async function getStaticPaths() {
 
 ```ts
 // some other file
-import { getCollection } from "astro:content";
-export const posts = await getCollection("posts");
+import { getCollection } from 'astro:content';
+export const posts = await getCollection('posts');
 ```
 
 ```astro
@@ -76,7 +76,7 @@ export const posts = await getCollection("posts");
 // [slug].astro
 // 从其他文件导入时，该文件的顶层代码也必须是在构建时可执行的
 // 这个文件不能包含运行时才能获取的数据
-import { posts } from "./test";
+import { posts } from './test';
 
 export async function getStaticPaths() {
   return posts.map((post) => ({
@@ -110,13 +110,13 @@ export async function getStaticPaths() {
 export async function getStaticPaths() {
   return [
     {
-      params: { name: "tacos" },
+      params: { name: 'tacos' },
     },
     {
-      params: { name: "potatoes" },
+      params: { name: 'potatoes' },
     },
     {
-      params: { name: "spaghetti" },
+      params: { name: 'spaghetti' },
     },
   ];
 }
@@ -172,7 +172,7 @@ export async function callGetStaticPaths({
   const cached = routeCache.get(route);
   if (!mod) {
     throw new Error(
-      "This is an error caused by Astro and not your code. Please file an issue.",
+      'This is an error caused by Astro and not your code. Please file an issue.',
     );
   }
   if (cached?.staticPaths) {
@@ -188,7 +188,7 @@ export async function callGetStaticPaths({
   // Add a check here to make TypeScript happy.
   // This is already checked in validateDynamicRouteModule().
   if (!mod.getStaticPaths) {
-    throw new Error("Unexpected Error.");
+    throw new Error('Unexpected Error.');
   }
 
   // 这里就是我们关心的逻辑
@@ -217,23 +217,23 @@ import {
   b as renderTemplate,
   c as createComponent,
   r as renderHead,
-} from "../../chunks/astro/server_cKRqlGeV.mjs";
-import "kleur/colors";
-import "html-escaper";
-import "clsx";
-export { renderers } from "../../renderers.mjs";
+} from '../../chunks/astro/server_cKRqlGeV.mjs';
+import 'kleur/colors';
+import 'html-escaper';
+import 'clsx';
+export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro();
 async function getStaticPaths() {
   return [
     {
-      params: { name: "tacos" },
+      params: { name: 'tacos' },
     },
     {
-      params: { name: "potatoes" },
+      params: { name: 'potatoes' },
     },
     {
-      params: { name: "spaghetti" },
+      params: { name: 'spaghetti' },
     },
   ];
 }
@@ -243,12 +243,12 @@ const $$name = createComponent(
     Astro2.self = $$name;
     return renderTemplate`<html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Food</title>${renderHead()}</head> <body> <p id="url">${Astro2.url.pathname}</p> </body></html>`;
   },
-  "filepathto/src/pages/food/[name].astro",
+  'filepathto/src/pages/food/[name].astro',
   void 0,
 );
 
-const $$file = "filepathto/src/pages/food/[name].astro";
-const $$url = "/food/[name]";
+const $$file = 'filepathto/src/pages/food/[name].astro';
+const $$url = '/food/[name]';
 
 const _page = /*#__PURE__*/ Object.freeze(/*#__PURE__*/ Object.defineProperty(
   {
@@ -259,7 +259,7 @@ const _page = /*#__PURE__*/ Object.freeze(/*#__PURE__*/ Object.defineProperty(
     url: $$url,
   },
   Symbol.toStringTag,
-  { value: "Module" },
+  { value: 'Module' },
 ));
 
 const page = () => _page;

@@ -1,8 +1,8 @@
 ---
-import Empty from "../components/Empty.astro";
-import { TagGroup } from "../components/tag";
-import Layout from "../layouts/Layout.astro";
-import { formatDate, getSortedNotes, isDevEnv } from "../utils";
+import Empty from '../components/Empty.astro';
+import { TagGroup } from '../components/tag';
+import Layout from '../layouts/Layout.astro';
+import { formatDate, getSortedNotes, isDevEnv } from '../utils';
 
 const showDrafts = isDevEnv();
 const sortedNotes = await getSortedNotes();

@@ -1,8 +1,8 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { TagGroup } from "../../components/tag";
-import Layout from "../../layouts/Layout.astro";
-import { formatDate, formatTime, getNotes } from "../../utils";
+import type { CollectionEntry } from 'astro:content';
+import { TagGroup } from '../../components/tag';
+import Layout from '../../layouts/Layout.astro';
+import { formatDate, formatTime, getNotes } from '../../utils';
 
 export async function getStaticPaths() {
   const notes = await getNotes();
@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  note: CollectionEntry<"notes">;
+  note: CollectionEntry<'notes'>;
 }
 
 const { note } = Astro.props;
@@ -76,8 +76,8 @@ const { Content } = await note.render();
             </div>
           </div>
 
-            {
-              note.data.tags && note.data.tags.length > 0
+          {
+            note.data.tags && note.data.tags.length > 0
               && (
               <TagGroup
                 tags={note.data.tags.map((tag) => ({ tag, showHash: true }))}

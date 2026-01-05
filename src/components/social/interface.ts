@@ -1,5 +1,5 @@
-export type SocialPlatform = "x" | "telegram" | "linkedin" | "email" | "github" | "blog" | "website";
-export type SharePlatform = "x" | "telegram" | "linkedin" | "email";
+export type SocialPlatform = 'x' | 'telegram' | 'linkedin' | 'email' | 'github' | 'blog' | 'website';
+export type SharePlatform = 'x' | 'telegram' | 'linkedin' | 'email';
 
 export interface SocialLink {
   platform: SocialPlatform;
@@ -7,11 +7,11 @@ export interface SocialLink {
   icon: string;
 }
 
-export interface ShareLink extends Omit<SocialLink, "platform"> {
+export interface ShareLink extends Omit<SocialLink, 'platform'> {
   platform: SharePlatform;
   color: string;
 }
 
 export type ShareConfig = Partial<Record<SharePlatform, string>>;
 
-export type PlatformConfig = Partial<Record<SharePlatform, Omit<ShareLink, "url">>>;
+export type PlatformConfig = Partial<Record<SharePlatform, Omit<ShareLink, 'url'>>>;

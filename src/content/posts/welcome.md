@@ -25,11 +25,11 @@ tags: ["介绍", "杂文"]
 
 ```typescript
 const techStack = {
-  framework: ["Astro", "React", "Vue"],
-  styling: "UnoCSS",
-  language: "TypeScript",
-  icons: "UnoCSS preset icons",
-  deployment: "GitHub Pages",
+  framework: ['Astro', 'React', 'Vue'],
+  styling: 'UnoCSS',
+  language: 'TypeScript',
+  icons: 'UnoCSS preset icons',
+  deployment: 'GitHub Pages',
 };
 ```
 

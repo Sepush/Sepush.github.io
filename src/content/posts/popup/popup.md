@@ -86,10 +86,10 @@ targetRect[position] < followerRect[propToCompare[position]]
 
 ```ts
 const oppositionPositions: Record<Position, Position> = {
-  top: "bottom",
-  bottom: "top",
-  left: "right",
-  right: "left",
+  top: 'bottom',
+  bottom: 'top',
+  left: 'right',
+  right: 'left',
 };
 ```
 

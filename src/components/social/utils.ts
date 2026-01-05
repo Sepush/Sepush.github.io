@@ -1,4 +1,4 @@
-import type { ShareConfig, SharePlatform } from "./interface";
+import type { ShareConfig, SharePlatform } from './interface';
 
 export function createShareUrl(
   platform: SharePlatform,
