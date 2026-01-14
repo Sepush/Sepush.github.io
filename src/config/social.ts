@@ -19,7 +19,7 @@ export const arteaSocialLinks: SocialLink[] = [
   },
   {
     platform: 'telegram',
-    url: 'https://t.me/SepushZhang',
+    url: 'https://t.me/Artea4096',
     icon: 'i-tabler-brand-telegram',
   },
   {
