@@ -50,18 +50,18 @@ function createEngine(canvas: HTMLCanvasElement): LivingTreeInst | null {
     lineWidth: Number(readCssVar('--living-tree-line-width', '1.6')) || 1.6,
     stroke: readCssVar('--living-tree-stroke', 'rgba(101, 67, 33, 0.22)'),
     leafStroke: readCssVar('--living-tree-leaf', 'rgba(86, 121, 74, 0.16)'),
-    leafChance: 0.16,
+    leafChance: 0.12,
     leafRadius: 1.6,
 
     // Visual tuning (intentionally subtle)
-    seedCount: 4,
-    sideSeedCount: 2,
-    maxDepth: 180,
-    baseLen: 12,
-    shrink: 0.985,
-    jitter: 0.18,
-    branchChance: 0.045,
-    branchAngle: 0.55,
+    seedCount: 3,
+    sideSeedCount: 1,
+    maxDepth: 120,
+    baseLen: 10,
+    shrink: 0.98,
+    jitter: 0.15,
+    branchChance: 0.025,
+    branchAngle: 0.5,
 
     // Perf tuning
     tickModulo: 2,
