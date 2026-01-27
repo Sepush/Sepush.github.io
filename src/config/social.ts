@@ -1,6 +1,6 @@
 import type { SocialLink } from '../components/social';
 
-interface Friend {
+export interface Friend {
   name: string;
   description?: string;
   socialLinks: SocialLink[];
