@@ -14,7 +14,7 @@ export const arteaSocialLinks: SocialLink[] = [
   },
   {
     platform: 'x',
-    url: 'https://x.com/Sepush2',
+    url: 'https://x.com/Artea4096',
     icon: 'i-tabler-brand-x',
   },
   {
