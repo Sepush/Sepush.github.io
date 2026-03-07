@@ -1,5 +1,12 @@
 import { presetWind3 } from '@unocss/preset-wind3';
-import { defineConfig, presetAttributify, presetIcons, transformerAttributifyJsx, transformerDirectives } from 'unocss';
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetWebFonts,
+  transformerAttributifyJsx,
+  transformerDirectives,
+} from 'unocss';
 
 export default defineConfig({
   content: {
@@ -80,6 +87,13 @@ export default defineConfig({
       extraProperties: {
         'display': 'inline-block',
         'vertical-align': 'middle',
+      },
+    }),
+    presetWebFonts({
+      provider: 'google',
+      fonts: {
+        sans: 'Inter:400,500,600,700',
+        mono: 'JetBrains Mono:400,500,700',
       },
     }),
   ],

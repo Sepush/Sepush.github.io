@@ -173,7 +173,7 @@
   font-size: var(--a-spacing-3xl);
   color: var(--a-color-accent);
   opacity: 0.3;
-  font-family: serif;
+  font-family: var(--a-font-serif, serif);
   line-height: 1;
 }
 
