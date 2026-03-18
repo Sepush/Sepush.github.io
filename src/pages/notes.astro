@@ -21,7 +21,7 @@ const sortedNotes = await getSortedNotes();
                 <div class="flex flex-col gap-3">
                   <h2 class="text-xl font-semibold text-gray-900 group-hover:text-gray-900 transition-colors duration-200">
                     <a
-                      href={`/notes/${note.slug}`}
+                      href={`/notes/${note.id.replace(/\.mdx?$/, '')}`}
                       class="block flex items-center gap-2"
                     >
                       <span>{note.data.title}</span>
@@ -65,7 +65,7 @@ const sortedNotes = await getSortedNotes();
 
                     <div class="flex items-center justify-between sm:justify-end gap-3">
                       <a
-                        href={`/notes/${note.slug}`}
+                        href={`/notes/${note.id.replace(/\.mdx?$/, '')}`}
                         class="inline-flex items-center gap-1 text-sm text-gray-900 hover:text-gray-900 font-medium transition-colors duration-200"
                       >
                         <span>阅读笔记</span>

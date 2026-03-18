@@ -1,5 +1,5 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import { render, type CollectionEntry } from 'astro:content';
 import { TagGroup } from '../../components/tag';
 import Layout from '../../layouts/Layout.astro';
 import { formatDate, formatTime, getNotes } from '../../utils';
@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   const notes = await getNotes();
 
   return notes.map((note) => ({
-    params: { slug: note.slug },
+    params: { slug: note.id.replace(/\.mdx?$/, '') },
     props: { note },
   }));
 }
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { note } = Astro.props;
-const { Content } = await note.render();
+const { Content } = await render(note);
 ---
 
 <Layout title={`${note.data.title} - Artea`} description="随笔笔记">

@@ -1,9 +1,10 @@
 ---
+import { render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import { getAbout } from '../utils';
 
 const about = await getAbout();
-const { Content } = await about.render();
+const { Content } = await render(about);
 ---
 
 <Layout title="关于我" description="了解更多关于我的信息">

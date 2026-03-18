@@ -1,5 +1,5 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import { render, type CollectionEntry } from 'astro:content';
 import { SocialShare } from '../../components/social';
 import { TagGroup } from '../../components/tag';
 import Toc from '../../components/Toc.astro';
@@ -10,7 +10,7 @@ export async function getStaticPaths() {
   const posts = await getPosts();
 
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id.replace(/\.mdx?$/, '') },
     props: { post },
   }));
 }
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { Content, headings } = await post.render();
+const { Content, headings } = await render(post);
 
 const postTags = post.data.tags.map((tag) => ({ tag }));
 ---
