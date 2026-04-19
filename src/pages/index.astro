@@ -4,16 +4,18 @@ import { arteaSocialLinks } from '../config/social';
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Home">
-  <div class="max-w-4xl mx-auto px-6 py-12 flex flex-col items-center gap-6">
-    <div class="inline-flex items-center gap-8">
-      <img
-        src="/avatar.svg"
-        alt="Artea Avatar"
-        class="w-32 h-32 rounded-full ring-4 shadow-lg flex-shrink-0"
-      />
+<Layout title="Home" background="map">
+  <div class="relative z-10 px-8 md:px-12 min-h-[calc(100vh-4rem)] flex flex-col items-end justify-end pb-12 md:pb-16 gap-4">
+    <img
+      src="/avatar.svg"
+      alt="Artea Avatar"
+      class="w-24 h-24 rounded-full ring-4 ring-white/80 shadow-float"
+    />
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+      Hi, I'm Artea
+    </h1>
+    <div class="rounded-full bg-white/45 backdrop-blur-md border border-white/35 shadow-elegant px-4 py-2">
+      <SocialLinks links={arteaSocialLinks} size="md" />
     </div>
-    <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Hi, I'm Artea</h1>
-    <SocialLinks links={arteaSocialLinks} size="md" />
   </div>
 </Layout>

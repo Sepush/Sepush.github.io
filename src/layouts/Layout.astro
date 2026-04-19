@@ -2,15 +2,21 @@
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import LivingTree from '../components/LivingTree.astro';
+import TravelMap from '../components/travel/TravelMap';
 import '../styles/global.css';
 import '../styles/markdown.css';
 
 export interface Props {
   title: string;
   description?: string;
+  background?: 'tree' | 'map' | 'none';
 }
 
-const { title, description = 'Artea\'s blog' } = Astro.props;
+const {
+  title,
+  description = 'Artea\'s blog',
+  background = 'tree',
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -24,16 +30,23 @@ const { title, description = 'Artea\'s blog' } = Astro.props;
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
-      integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="/katex.min.css" />
     <ClientRouter />
   </head>
   <body class="min-h-screen bg-gradient-primary text-gray-900 font-sans antialiased">
-    <LivingTree />
+    {
+      background === 'tree' && <LivingTree />
+    }
+    {
+      background === 'map' && (
+        <div id="travel-map-bg" aria-hidden="true">
+          <div class="travel-map-mask"></div>
+          <div class="travel-map-stage">
+            <TravelMap client:only="react" />
+          </div>
+        </div>
+      )
+    }
     <div class="flex flex-col min-h-screen relative z-10">
       <Header />
       <main class="flex-1 relative">
@@ -72,5 +85,36 @@ input:focus,
 textarea:focus {
   outline: 2px solid oklch(0.67 0.15 145 / 0.5);
   outline-offset: 2px;
+}
+
+#travel-map-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+#travel-map-bg .travel-map-mask {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 30%, rgb(255 255 255 / 0.42), transparent 42%),
+    linear-gradient(
+      to bottom,
+      rgb(249 250 251 / 0.24),
+      rgb(255 255 255 / 0.08) 34%,
+      rgb(255 255 255 / 0.28)
+    );
+}
+
+#travel-map-bg .travel-map-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0 0;
 }
 </style>

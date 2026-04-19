@@ -38,7 +38,7 @@ const mobileLinkBaseClass =
 
 <header
   id="header"
-  class="w-full bg-white/40 backdrop-blur-md sticky top-0 z-50 transition-all duration-300"
+  class="w-full bg-white/25 backdrop-blur-xl border-b border-white/20 sticky top-0 z-50 transition-all duration-300"
 >
   <div class="max-w-6xl mx-auto px-6 py-1.5">
     <div class="flex items-center justify-between">
@@ -131,9 +131,9 @@ function initHeader() {
     closed: `i-tabler-menu-2 ${ICON_BASE}`,
   };
 
-  const HEADER_BG_DEFAULT = 'bg-white/40';
-  const HEADER_BG_SCROLLED = 'bg-white/70';
-  const HEADER_SCROLLED_EXTRAS = ['border-b', 'border-white/20', 'shadow-sm'];
+  const HEADER_BG_DEFAULT = 'bg-white/25';
+  const HEADER_BG_SCROLLED = 'bg-white/50';
+  const HEADER_SCROLLED_EXTRAS = ['shadow-sm'];
 
   const mqDesktop = window.matchMedia('(min-width: 768px)');
   let isMenuOpen = false;

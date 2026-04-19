@@ -18,6 +18,7 @@
     "@astrojs/react": "^5.0.0",
     "@astrojs/vue": "^6.0.1",
     "astro": "^6.0.5",
+    "d3-geo": "^3.1.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "rehype-katex": "^7.0.1",
@@ -29,8 +30,10 @@
   "devDependencies": {
     "@iconify-json/tabler": "^1.2.31",
     "@iconify/utils": "^3.1.0",
+    "@types/d3-geo": "^3.1.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@types/topojson-client": "^3.1.5",
     "@unocss/astro": "^66.6.7",
     "@unocss/preset-attributify": "^66.6.7",
     "@unocss/preset-icons": "^66.6.7",
@@ -42,6 +45,7 @@
     "oxlint": "^1.56.0",
     "oxlint-tsgolint": "^0.17.0",
     "simple-git-hooks": "^2.13.1",
+    "topojson-client": "^3.1.0",
     "typescript": "^5.9.3",
     "unocss": "^66.6.7"
   },
