@@ -53,9 +53,12 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*": [
-      "pnpm fmt",
-      "pnpm lint:fix"
+    "*.{js,jsx,ts,tsx,astro,vue}": [
+      "pnpm lint:fix",
+      "pnpm fmt"
+    ],
+    "*.{css,md,mdx,json,jsonc,yaml,yml,toml}": [
+      "pnpm fmt"
     ]
   }
 }

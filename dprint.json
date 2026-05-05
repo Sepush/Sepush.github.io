@@ -16,7 +16,10 @@
   },
   "excludes": [
     "**/node_modules",
-    "**/*-lock.json"
+    "**/*-lock.json",
+    "**/pnpm-lock.yaml",
+    "public/katex.min.css",
+    "src/data/travel/countries-110m.json"
   ],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.95.8.wasm",

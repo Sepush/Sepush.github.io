@@ -17,8 +17,7 @@ export default defineConfig({
   vite: {
     build: {
       rollupOptions: {
-        output: {
-        },
+        output: {},
       },
     },
   },
