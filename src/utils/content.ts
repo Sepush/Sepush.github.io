@@ -28,10 +28,7 @@ function includeDraft(draft: boolean | undefined): boolean {
   return isDevEnv() || !draft;
 }
 
-function compareByPubDateDesc<T extends { data: { pubDate: Date } }>(
-  a: T,
-  b: T,
-): number {
+function compareByPubDateDesc<T extends { data: { pubDate: Date } }>(a: T, b: T): number {
   return b.data.pubDate.getTime() - a.data.pubDate.getTime();
 }
 
@@ -61,28 +58,27 @@ export async function getAbout(): Promise<CollectionEntry<'about'>> {
   const aboutItems = await getCollection('about');
   const about = aboutItems[0];
   if (!about) {
-    throw new Error(
-      'Missing "about" content. Add a file under src/content/about/ (e.g. src/content/about/index.md).',
-    );
+    throw new Error('Missing "about" content. Add a file under src/content/about/ (e.g. src/content/about/index.md).');
   }
   return about;
 }
 
 export async function getAllContent(): Promise<ContentItem[]> {
-  const [posts, notes] = await Promise.all([
-    getPosts(),
-    getNotes(),
-  ]);
+  const [posts, notes] = await Promise.all([getPosts(), getNotes()]);
 
   const allContent: ContentItem[] = [
-    ...posts.map((post): ContentItem => ({
-      ...post,
-      type: ContentType.Posts,
-    })),
-    ...notes.map((note): ContentItem => ({
-      ...note,
-      type: ContentType.Notes,
-    })),
+    ...posts.map(
+      (post): ContentItem => ({
+        ...post,
+        type: ContentType.Posts,
+      }),
+    ),
+    ...notes.map(
+      (note): ContentItem => ({
+        ...note,
+        type: ContentType.Notes,
+      }),
+    ),
   ];
 
   return allContent.sort(compareByPubDateDesc);

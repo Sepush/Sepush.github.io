@@ -1,8 +1,6 @@
 @font-face {
-  font-family: "quote-cjk-patch";
-  src:
-    local("PingFangSC-Regular"),
-    local("Microsoft YaHei");
+  font-family: 'quote-cjk-patch';
+  src: local('PingFangSC-Regular'), local('Microsoft YaHei');
   unicode-range: U+201C-201D, U+2018-2019;
 }
 
@@ -14,7 +12,7 @@
   --a-color-heading-light: #4b5563;
 
   --a-color-accent: oklch(0.67 0.15 145);
-  --a-color-accent-light: oklch(0.60 0.18 145);
+  --a-color-accent-light: oklch(0.6 0.18 145);
   --a-color-accent-bg: oklch(0.98 0.015 145);
   --a-color-accent-bg-alt: oklch(0.97 0.01 145);
   --a-color-accent-border: oklch(0.88 0.04 145);
@@ -50,16 +48,11 @@
   --a-leading-normal: 1.5;
   --a-leading-relaxed: 1.7;
 
-  --a-font-mono:
-    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas,
-    "Liberation Mono", monospace;
+  --a-font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
   --a-font-system:
-    "quote-cjk-patch", "Inter", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-    "Helvetica Neue", sans-serif;
-  --a-font-serif:
-    "quote-cjk-patch", ui-serif, Georgia, Cambria, "Times New Roman", Times,
-    "Songti SC", "SimSun", serif;
+    'quote-cjk-patch', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --a-font-serif: 'quote-cjk-patch', ui-serif, Georgia, Cambria, 'Times New Roman', Times, 'Songti SC', 'SimSun', serif;
 
   --a-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --a-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);

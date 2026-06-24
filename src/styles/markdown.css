@@ -138,11 +138,11 @@
   margin-bottom: 0;
 }
 
-.prose li:has(input[type="checkbox"]) {
+.prose li:has(input[type='checkbox']) {
   list-style: none;
 }
 
-.prose input[type="checkbox"] {
+.prose input[type='checkbox'] {
   margin-right: var(--a-spacing-xs);
   width: var(--a-spacing-md);
   height: var(--a-spacing-md);
@@ -151,11 +151,7 @@
 
 .prose blockquote {
   border-left: 4px solid var(--a-color-accent);
-  background: linear-gradient(
-    135deg,
-    var(--a-color-accent-bg) 0%,
-    var(--a-color-accent-bg-alt) 100%
-  );
+  background: linear-gradient(135deg, var(--a-color-accent-bg) 0%, var(--a-color-accent-bg-alt) 100%);
   padding: var(--a-spacing-lg) var(--a-spacing-xl);
   margin: var(--a-spacing-xl) 0;
   font-style: italic;
@@ -166,7 +162,7 @@
 }
 
 .prose blockquote::before {
-  content: "\"";
+  content: '"';
   position: absolute;
   top: var(--a-spacing-xs);
   left: var(--a-spacing-md);
@@ -231,11 +227,7 @@
 }
 
 .prose th {
-  background: linear-gradient(
-    135deg,
-    #f9fafb 0%,
-    #f3f4f6 100%
-  );
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
   font-weight: var(--a-font-semibold);
   color: var(--a-color-text-primary);
 }
@@ -367,11 +359,7 @@
 .prose .math-display .katex-display {
   margin: 0;
   padding: var(--a-spacing-lg);
-  background: linear-gradient(
-    135deg,
-    #f9fafb 0%,
-    #f3f4f6 100%
-  );
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
   border-radius: var(--a-radius-lg);
   border: 1px solid var(--a-color-border);
   box-shadow: var(--a-shadow-md);
@@ -475,7 +463,7 @@
 }
 
 .prose a[data-footnote-backref]::before {
-  content: "↩";
+  content: '↩';
   font-size: var(--a-text-sm);
   color: var(--a-color-accent);
 }

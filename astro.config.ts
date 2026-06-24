@@ -1,4 +1,5 @@
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import react from '@astrojs/react';
 import vue from '@astrojs/vue';
 
@@ -28,17 +29,16 @@ export default defineConfig({
     vue({
       include: ['**/vue/**/*.vue', '**/*.vue'],
     }),
-    mdx({
-      remarkPlugins: [remarkMath, remarkGfm],
-      rehypePlugins: [[rehypeKatex]],
-    }),
+    mdx(),
     UnoCSS({
       injectReset: true,
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkMath, remarkGfm],
-    rehypePlugins: [rehypeKatex],
+    processor: unified({
+      remarkPlugins: [remarkMath, remarkGfm],
+      rehypePlugins: [rehypeKatex],
+    }),
     shikiConfig: {
       theme: 'vitesse-light',
     },

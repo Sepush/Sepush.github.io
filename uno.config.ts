@@ -10,9 +10,7 @@ import {
 
 export default defineConfig({
   content: {
-    filesystem: [
-      'src/**/*.{astro,vue,tsx,ts,js}',
-    ],
+    filesystem: ['src/**/*.{astro,vue,tsx,ts,js}'],
   },
   safelist: [
     'i-tabler-brand-github',
@@ -56,14 +54,14 @@ export default defineConfig({
       sans: ['var(--a-font-system)'],
     },
     borderRadius: {
-      'xl': '1rem',
+      xl: '1rem',
       '2xl': '1.5rem',
       '3xl': '2rem',
     },
     boxShadow: {
-      'elegant': '0 4px 20px -2px rgba(0, 0, 0, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.04)',
-      'float': '0 8px 30px -6px rgba(0, 0, 0, 0.12), 0 4px 16px -4px rgba(0, 0, 0, 0.08)',
-      'glow': '0 0 20px -4px oklch(0.55 0.016 106 / 0.3)',
+      elegant: '0 4px 20px -2px rgba(0, 0, 0, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.04)',
+      float: '0 8px 30px -6px rgba(0, 0, 0, 0.12), 0 4px 16px -4px rgba(0, 0, 0, 0.08)',
+      glow: '0 0 20px -4px oklch(0.55 0.016 106 / 0.3)',
     },
   },
   shortcuts: [
@@ -73,10 +71,7 @@ export default defineConfig({
     },
     { 'bg-gradient-primary': 'bg-gradient-to-br from-gray-50 via-white to-gray-50' },
   ],
-  transformers: [
-    transformerDirectives(),
-    transformerAttributifyJsx(),
-  ],
+  transformers: [transformerDirectives(), transformerAttributifyJsx()],
   presets: [
     presetWind3(),
     presetAttributify(),
@@ -85,7 +80,7 @@ export default defineConfig({
         tabler: () => import('@iconify-json/tabler/icons.json').then(i => i.default as any),
       },
       extraProperties: {
-        'display': 'inline-block',
+        display: 'inline-block',
         'vertical-align': 'middle',
       },
     }),

@@ -1,10 +1,6 @@
 import type { ShareConfig, SharePlatform } from './interface';
 
-export function createShareUrl(
-  platform: SharePlatform,
-  title: string,
-  url: string,
-): string {
+export function createShareUrl(platform: SharePlatform, title: string, url: string): string {
   const encodedTitle = encodeURIComponent(title);
   const encodedUrl = encodeURIComponent(url);
 

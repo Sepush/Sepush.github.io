@@ -3,20 +3,9 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "react",
-    "types": [
-      "@types/react",
-      "@types/react-dom",
-      "@unocss/preset-attributify"
-    ],
+    "types": ["@types/react", "@types/react-dom", "@unocss/preset-attributify"],
     "verbatimModuleSyntax": true
   },
-  "include": [
-    ".astro/types.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.jsx",
-    "src/**/react/**/*"
-  ],
-  "exclude": [
-    "dist"
-  ]
+  "include": [".astro/types.d.ts", "src/**/*.tsx", "src/**/*.jsx", "src/**/react/**/*"],
+  "exclude": ["dist"]
 }

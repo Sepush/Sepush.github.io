@@ -18,8 +18,6 @@ function increment() {
   <div>
     <div i-tabler:brand-vue rounded bg-green-500 px-4 py-2 />
     <p>{{ message }}</p>
-    <button type="button" @click="increment">
-      Count: {{ count }}
-    </button>
+    <button type="button" @click="increment">Count: {{ count }}</button>
   </div>
 </template>

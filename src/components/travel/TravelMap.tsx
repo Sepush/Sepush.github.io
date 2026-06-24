@@ -4,10 +4,7 @@ import * as topojson from 'topojson-client';
 import worldData from '../../data/travel/countries-110m.json';
 import placesData from '../../data/travel/places.json';
 
-const worldGeoJson = topojson.feature(
-  worldData as any,
-  worldData.objects.countries as any,
-) as any;
+const worldGeoJson = topojson.feature(worldData as any, worldData.objects.countries as any) as any;
 
 const VIEWPORT = {
   width: 1600,
@@ -36,9 +33,7 @@ type TravelMapProps = {
 };
 
 function easeInOutQuart(t: number) {
-  return t < 0.5
-    ? 8 * t * t * t * t
-    : 1 - Math.pow(-2 * t + 2, 4) / 2;
+  return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
 }
 
 function lerp(a: number, b: number, t: number) {
@@ -84,12 +79,15 @@ export default function TravelMap({ className = '' }: TravelMapProps) {
     };
   }, []);
 
-  const currentView = useMemo(() => ({
-    centerLng: lerp(INITIAL_VIEW.centerLng, FINAL_VIEW.centerLng, progress),
-    centerLat: lerp(INITIAL_VIEW.centerLat, FINAL_VIEW.centerLat, progress),
-    scale: lerp(INITIAL_VIEW.scale, FINAL_VIEW.scale, progress),
-    translateY: lerp(INITIAL_VIEW.translateY, FINAL_VIEW.translateY, progress),
-  }), [progress]);
+  const currentView = useMemo(
+    () => ({
+      centerLng: lerp(INITIAL_VIEW.centerLng, FINAL_VIEW.centerLng, progress),
+      centerLat: lerp(INITIAL_VIEW.centerLat, FINAL_VIEW.centerLat, progress),
+      scale: lerp(INITIAL_VIEW.scale, FINAL_VIEW.scale, progress),
+      translateY: lerp(INITIAL_VIEW.translateY, FINAL_VIEW.translateY, progress),
+    }),
+    [progress],
+  );
 
   const projection = useMemo(() => {
     return geoMercator()
@@ -108,7 +106,7 @@ export default function TravelMap({ className = '' }: TravelMapProps) {
 
   const projectedPlaces = useMemo(() => {
     return placesData
-      .map((place) => {
+      .map(place => {
         const coords = projection([place.lng, place.lat]);
         if (!coords) return null;
         return {
@@ -117,9 +115,7 @@ export default function TravelMap({ className = '' }: TravelMapProps) {
           y: coords[1],
         };
       })
-      .filter(Boolean) as Array<
-        (typeof placesData)[number] & { x: number; y: number }
-      >;
+      .filter(Boolean) as Array<(typeof placesData)[number] & { x: number; y: number }>;
   }, [projection]);
 
   return (
@@ -171,17 +167,8 @@ export default function TravelMap({ className = '' }: TravelMapProps) {
               return (
                 <g key={`place-${index}`} transform={`translate(${place.x}, ${place.y})`}>
                   <circle r={36} fill='url(#travel-map-point-glow)' />
-                  <circle
-                    r={10}
-                    fill='var(--a-color-accent)'
-                    fillOpacity='0.34'
-                  />
-                  <circle
-                    r={5.2}
-                    fill='var(--a-color-accent)'
-                    stroke='rgba(255, 255, 255, 0.92)'
-                    strokeWidth='1.8'
-                  />
+                  <circle r={10} fill='var(--a-color-accent)' fillOpacity='0.34' />
+                  <circle r={5.2} fill='var(--a-color-accent)' stroke='rgba(255, 255, 255, 0.92)' strokeWidth='1.8' />
                 </g>
               );
             })}
