@@ -6,3 +6,5 @@ onlyBuiltDependencies:
   - esbuild
   - sharp
   - simple-git-hooks
+overrides:
+  volar-service-yaml: 0.0.71
