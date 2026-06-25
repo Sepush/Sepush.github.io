@@ -130,7 +130,6 @@ vp env doctor     # 检查 Vite+ 环境配置
 - 使用 Git 进行版本控制。
 - 所有和 GitHub 交互通过 `gh cli` 完成。
 - 使用 `sg`（ast-grep）进行代码搜索/重构，可以使用 `sg -h` 查看帮助。
-- 使用 `context7-mcp` 进行文档查询。
 - 使用 `chrome-devtools-mcp` 进行页面调试和验证。
 
 ## 构建与部署
