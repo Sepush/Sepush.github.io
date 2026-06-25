@@ -2,7 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import LivingTree from '../components/LivingTree.astro';
-import TravelMap from '../components/travel/TravelMap';
+import TravelMapGis from '../components/travel/TravelMapGis';
 import '../styles/global.css';
 import '../styles/markdown.css';
 
@@ -40,14 +40,14 @@ const {
         <div id="travel-map-bg" aria-hidden="true">
           <div class="travel-map-mask"></div>
           <div class="travel-map-stage">
-            <TravelMap client:only="react" />
+            <TravelMapGis client:only="react" />
           </div>
         </div>
       )
     }
-    <div class="flex flex-col min-h-screen relative z-10">
+    <div class="flex flex-col min-h-screen relative z-10 pointer-events-none">
       <Header />
-      <main class="flex-1 relative">
+      <main class="flex-1 relative pointer-events-none">
         <slot />
       </main>
     </div>
@@ -89,7 +89,6 @@ textarea:focus {
   position: fixed;
   inset: 0;
   z-index: 0;
-  pointer-events: none;
   user-select: none;
   overflow: hidden;
 }
@@ -97,6 +96,7 @@ textarea:focus {
 #travel-map-bg .travel-map-mask {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background:
     radial-gradient(
       circle at 50% 30%,
