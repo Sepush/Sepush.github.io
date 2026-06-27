@@ -13,6 +13,11 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: 'load',
   },
+  vite: {
+    optimizeDeps: {
+      include: ['react-map-gl/maplibre', 'maplibre-gl'],
+    },
+  },
   integrations: [
     react({
       include: ['**/react/**/*', '**/*.jsx', '**/*.tsx'],
