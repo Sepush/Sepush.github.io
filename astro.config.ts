@@ -1,12 +1,10 @@
 import mdx from '@astrojs/mdx';
-import { unified } from '@astrojs/markdown-remark';
+import { satteri } from '@astrojs/markdown-satteri';
+import { katex as satteriKatex } from '@nullpinter/satteri-katex';
 import react from '@astrojs/react';
 import vue from '@astrojs/vue';
 
 import { defineConfig } from 'astro/config';
-import rehypeKatex from 'rehype-katex';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
 import UnoCSS from 'unocss/astro';
 
 export default defineConfig({
@@ -14,13 +12,6 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'load',
-  },
-  vite: {
-    build: {
-      rollupOptions: {
-        output: {},
-      },
-    },
   },
   integrations: [
     react({
@@ -35,9 +26,11 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    processor: unified({
-      remarkPlugins: [remarkMath, remarkGfm],
-      rehypePlugins: [rehypeKatex],
+    processor: satteri({
+      features: {
+        math: true,
+      },
+      mdastPlugins: [satteriKatex()],
     }),
     shikiConfig: {
       theme: 'vitesse-light',

@@ -21,8 +21,9 @@
 - **包管理器**: pnpm 11.9.0（由 `vp install` 代理）
 - **代码检查**: `vp lint`（内置 Oxlint）
 - **代码格式化**: `vp fmt`（内置 Oxfmt）
-- **数学公式**: KaTeX（通过 remark-math 和 rehype-katex）
-- **Markdown 扩展**: GitHub Flavored Markdown（GFM）
+- **Markdown 处理器**: Sätteri（Astro 7 默认的 Rust Markdown/MDX 引擎）
+- **数学公式**: KaTeX（通过 `@nullpinter/satteri-katex` Sätteri 插件）
+- **Markdown 扩展**: GitHub Flavored Markdown（GFM，Sätteri 内置）
 
 ## 项目架构
 
@@ -110,6 +111,10 @@
 
 ```bash
 vp run dev        # 启动 Astro 开发服务器（http://localhost:4321）
+vp run dev:bg     # 以后台模式启动开发服务器（AI agent 友好）
+vp run dev:stop   # 停止后台开发服务器
+vp run dev:status # 查看后台开发服务器状态
+vp run dev:logs   # 查看后台开发服务器日志
 vp run build      # 构建生产环境代码
 vp run preview    # 预览构建结果
 vp run fmt        # 使用 Vite+ 内置 Oxfmt 格式化代码
@@ -138,6 +143,10 @@ vp env doctor     # 检查 Vite+ 环境配置
 
 ```bash
 vp run dev          # 启动开发服务器 (http://localhost:4321)
+vp run dev:bg       # 以后台模式启动开发服务器
+vp run dev:stop     # 停止后台开发服务器
+vp run dev:status   # 查看后台开发服务器状态
+vp run dev:logs     # 查看后台开发服务器日志
 vp run build        # 构建生产环境代码
 vp run preview      # 预览构建结果
 vp run fmt          # 格式化代码
