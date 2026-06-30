@@ -1,0 +1,92 @@
+---
+export interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  class={`inline-flex items-center justify-center rounded-lg transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--a-color-accent)] ${className}`}
+  aria-label="切换主题"
+  title="切换主题"
+>
+  <span id="theme-icon" class="i-tabler-sun text-lg"></span>
+  <span id="theme-label" class="sr-only">主题</span>
+</button>
+
+<script>
+import {
+  applyTheme,
+  cycleThemePreference,
+  getResolvedTheme,
+  getThemePreference,
+  initThemeSync,
+  withThemeTransition,
+} from './theme';
+
+type IconClass = 'i-tabler-sun' | 'i-tabler-moon' | 'i-tabler-device-desktop';
+
+const ICONS: Record<ReturnType<typeof getThemePreference>, IconClass> = {
+  light: 'i-tabler-sun',
+  dark: 'i-tabler-moon',
+  system: 'i-tabler-device-desktop',
+};
+
+const LABELS: Record<ReturnType<typeof getThemePreference>, string> = {
+  light: '浅色模式',
+  dark: '深色模式',
+  system: '跟随系统',
+};
+
+function updateToggleUI(): void {
+  const preference = getThemePreference();
+  const resolved = getResolvedTheme();
+  const iconEl = document.getElementById('theme-icon');
+  const labelEl = document.getElementById('theme-label');
+  const buttonEl = document.getElementById('theme-toggle');
+
+  if (iconEl) {
+    iconEl.className = `${ICONS[preference]} text-lg`;
+    iconEl.style.color = resolved === 'dark' ? 'var(--a-color-accent-strong)' : 'var(--a-color-accent)';
+  }
+
+  if (labelEl) {
+    labelEl.textContent = LABELS[preference];
+  }
+
+  if (buttonEl) {
+    buttonEl.setAttribute('title', `当前：${LABELS[preference]}（点击切换）`);
+  }
+}
+
+function onToggleClick(): void {
+  withThemeTransition(() => {
+    cycleThemePreference();
+    updateToggleUI();
+  });
+}
+
+function setupToggle(): void {
+  const button = document.getElementById('theme-toggle');
+  if (!(button instanceof HTMLButtonElement)) return;
+
+  updateToggleUI();
+  button.addEventListener('click', onToggleClick);
+}
+
+let cleanupSync: (() => void) | undefined;
+
+function init(): void {
+  cleanupSync?.();
+  cleanupSync = initThemeSync();
+  applyTheme(getResolvedTheme());
+  setupToggle();
+}
+
+init();
+document.addEventListener('astro:page-load', init);
+document.addEventListener('astro:after-swap', init);
+</script>

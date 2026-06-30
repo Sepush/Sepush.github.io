@@ -38,7 +38,10 @@ export default defineConfig({
       mdastPlugins: [satteriKatex()],
     }),
     shikiConfig: {
-      theme: 'vitesse-light',
+      themes: {
+        light: 'vitesse-light',
+        dark: 'vitesse-dark',
+      },
     },
   },
 });

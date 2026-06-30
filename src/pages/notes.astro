@@ -17,9 +17,9 @@ const sortedNotes = await getSortedNotes();
             sortedNotes.map((note) => {
               const noteTags = note.data.tags.map((tag) => ({ tag }));
               return (
-              <article class="group border-b border-gray-100 pb-6 last:border-b-0 hover:bg-gray-50/50 transition-colors duration-200 rounded-lg px-4 py-4">
+              <article class="group border-b border-gray-100 dark:border-gray-800 pb-6 last:border-b-0 hover:bg-gray-50/50 dark:hover:bg-gray-800/40 transition-colors duration-200 rounded-lg px-4 py-4">
                 <div class="flex flex-col gap-3">
-                  <h2 class="text-xl font-semibold text-gray-900 group-hover:text-gray-900 transition-colors duration-200">
+                  <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-200">
                     <a
                       href={`/notes/${note.id.replace(/\.mdx?$/, '')}`}
                       class="block flex items-center gap-2"
@@ -28,7 +28,7 @@ const sortedNotes = await getSortedNotes();
                       {
                         showDrafts && note.data.draft && (
                           <span
-                            class="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-600 bg-orange-100 rounded-full"
+                            class="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-700 dark:text-orange-300 bg-orange-100 dark:bg-orange-900/40 rounded-full"
                           >
                             <span class="i-tabler-edit text-xs mr-1"></span>
                             草稿
@@ -39,7 +39,7 @@ const sortedNotes = await getSortedNotes();
                   </h2>
                   {
                     note.data.content && (
-                      <p class="text-gray-600 leading-relaxed line-clamp-2">
+                      <p class="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
                         {note.data.content}
                       </p>
                     )
@@ -49,7 +49,7 @@ const sortedNotes = await getSortedNotes();
                       <TagGroup tags={noteTags} />
                       {
                         note.data.mood && (
-                          <div class="flex items-center gap-1 text-xs text-gray-500">
+                          <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-500">
                             <span class="i-tabler-mood-smile text-xs" />
                             <span>{note.data.mood}</span>
                           </div>
@@ -57,7 +57,7 @@ const sortedNotes = await getSortedNotes();
                       }
                       <time
                         datetime={note.data.pubDate.toISOString()}
-                        class="text-gray-500 flex-shrink-0 order-last"
+                        class="text-gray-500 dark:text-gray-500 flex-shrink-0 order-last"
                       >
                         {formatDate(note.data.pubDate)}
                       </time>
@@ -66,14 +66,14 @@ const sortedNotes = await getSortedNotes();
                     <div class="flex items-center justify-between sm:justify-end gap-3">
                       <a
                         href={`/notes/${note.id.replace(/\.mdx?$/, '')}`}
-                        class="inline-flex items-center gap-1 text-sm text-gray-900 hover:text-gray-900 font-medium transition-colors duration-200"
+                        class="inline-flex items-center gap-1 text-sm text-gray-900 dark:text-gray-200 hover:text-gray-700 dark:hover:text-white font-medium transition-colors duration-200"
                       >
                         <span>阅读笔记</span>
                         <span class="i-tabler-arrow-right text-xs" />
                       </a>
                       {
                         note.data.location && (
-                          <div class="flex items-center gap-1 text-xs text-gray-500">
+                          <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-500">
                             <span class="i-tabler-map-pin text-xs" />
                             <span>{note.data.location}</span>
                           </div>

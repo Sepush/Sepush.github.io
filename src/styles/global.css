@@ -5,6 +5,10 @@
 }
 
 :root {
+  --a-color-bg-gradient-from: #f3f4f6;
+  --a-color-bg-gradient-via: #ffffff;
+  --a-color-bg-gradient-to: #f3f4f6;
+
   --a-color-text-primary: #1f2937;
   --a-color-text-secondary: #374151;
   --a-color-heading-primary: #111827;
@@ -20,7 +24,27 @@
   --a-color-accent-quote: oklch(0.53 0.21 145);
 
   --a-color-border: #d1d5db;
+  --a-color-border-subtle: #e5e7eb;
+  --a-color-border-strong: #9ca3af;
   --a-color-bg-even: #f9fafb;
+
+  --a-color-surface: rgba(255, 255, 255, 0.8);
+  --a-color-surface-raised: rgba(255, 255, 255, 0.95);
+  --a-color-surface-hover: rgba(243, 244, 246, 0.5);
+
+  --a-color-code-bg: #f3f4f6;
+  --a-color-code-text: var(--a-color-heading-primary);
+
+  --a-color-selection-bg: oklch(0.67 0.15 145 / 0.22);
+  --a-color-selection-text: var(--a-color-accent-strong);
+
+  --a-color-map-overlay-inner: rgb(217 249 232 / 0.04);
+  --a-color-map-overlay-mid: rgb(255 255 255 / 0.02);
+  --a-color-map-overlay-outer: rgb(255 255 255 / 0.1);
+  --a-color-map-hint-bg: rgb(255 255 255 / 0.8);
+  --a-color-map-hint-text: #4b5563;
+  --a-color-map-country-fill: rgba(148, 163, 184, 0.42);
+  --a-color-map-country-stroke: rgba(148, 163, 184, 0.94);
 
   --a-spacing-xs: 0.5rem;
   --a-spacing-sm: 0.75rem;
@@ -56,6 +80,8 @@
 
   --a-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --a-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --a-shadow-dark-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+  --a-shadow-dark-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
   --a-radius-sm: 0.375rem;
   --a-radius-md: 0.5rem;
@@ -71,6 +97,82 @@
   --living-tree-opacity: 0.45;
 }
 
+.dark {
+  --a-color-bg-gradient-from: #111318;
+  --a-color-bg-gradient-via: #0f1115;
+  --a-color-bg-gradient-to: #111318;
+  --a-color-bg-spot: radial-gradient(ellipse 80% 60% at 20% 20%, rgba(56, 70, 100, 0.14), transparent 55%);
+
+  --a-color-text-primary: #e5e7eb;
+  --a-color-text-secondary: #9ca3af;
+  --a-color-heading-primary: #f3f4f6;
+  --a-color-heading-dark: #ffffff;
+  --a-color-heading-light: #6b7280;
+
+  --a-color-accent: oklch(0.74 0.17 145);
+  --a-color-accent-light: oklch(0.82 0.19 145);
+  --a-color-accent-bg: oklch(0.22 0.05 145);
+  --a-color-accent-bg-alt: oklch(0.17 0.04 145);
+  --a-color-accent-border: oklch(0.5 0.1 145);
+  --a-color-accent-strong: oklch(0.86 0.23 145);
+  --a-color-accent-quote: oklch(0.74 0.19 145);
+
+  --a-color-border: rgba(107, 114, 128, 0.45);
+  --a-color-border-subtle: rgba(75, 85, 99, 0.35);
+  --a-color-border-strong: rgba(156, 163, 175, 0.55);
+  --a-color-bg-even: rgba(31, 35, 41, 0.5);
+
+  --a-color-surface: rgba(24, 27, 33, 0.65);
+  --a-color-surface-raised: rgba(30, 34, 41, 0.82);
+  --a-color-surface-hover: rgba(40, 45, 54, 0.45);
+
+  --a-color-code-bg: rgba(24, 27, 33, 0.85);
+  --a-color-code-text: #f3f4f6;
+
+  --a-color-selection-bg: oklch(0.74 0.13 145 / 0.32);
+  --a-color-selection-text: #dcfce7;
+
+  --a-color-map-overlay-inner: rgb(20 83 45 / 0.06);
+  --a-color-map-overlay-mid: rgb(0 0 0 / 0.04);
+  --a-color-map-overlay-outer: rgb(0 0 0 / 0.18);
+  --a-color-map-hint-bg: rgba(24, 27, 33, 0.88);
+  --a-color-map-hint-text: #d1d5db;
+  --a-color-map-country-fill: rgba(75, 85, 99, 0.55);
+  --a-color-map-country-stroke: rgba(75, 85, 99, 0.9);
+
+  --a-shadow-sm: var(--a-shadow-dark-sm);
+  --a-shadow-md: var(--a-shadow-dark-md);
+
+  --living-tree-stroke: rgba(255, 255, 255, 0.05);
+  --living-tree-leaf: rgba(134, 179, 116, 0.16);
+  --living-tree-opacity: 0.32;
+}
+
+/* Smooth theme transitions on color properties when explicitly toggling. */
+html.is-transitioning,
+html.is-transitioning *,
+html.is-transitioning *::before,
+html.is-transitioning *::after {
+  transition:
+    color 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease,
+    text-decoration-color 200ms ease,
+    fill 200ms ease,
+    stroke 200ms ease,
+    opacity 200ms ease;
+}
+
+/* Subtle ambient spotlight overlay for dark mode depth. */
+.dark body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--a-color-bg-spot);
+}
+
 /* Living tree background layer */
 #living-tree-bg {
   position: fixed;
@@ -81,6 +183,10 @@
   /* Make the effect subtle and blend into the existing background gradient */
   mix-blend-mode: multiply;
   opacity: var(--living-tree-opacity, 0.55);
+}
+
+.dark #living-tree-bg {
+  mix-blend-mode: screen;
 }
 
 #living-tree-canvas {

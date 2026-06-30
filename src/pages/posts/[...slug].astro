@@ -36,24 +36,24 @@ const postTags = post.data.tags.map((tag) => ({ tag }));
           <nav>
             <a
               href="/posts"
-              class="inline-flex items-center justify-center w-8 h-8 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+              class="inline-flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <span class="i-tabler-arrow-left text-lg"></span>
             </a>
           </nav>
-          <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight tracking-tight break-words">
+          <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white leading-tight tracking-tight break-words">
             {post.data.title}
           </h1>
           {
             post.data.description && (
-              <p class="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl">
+              <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl">
                 {post.data.description}
               </p>
             )
           }
-          <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500">
+          <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500 dark:text-gray-500">
             <div class="flex items-center gap-2">
-              <span class="i-tabler-calendar text-gray-400"></span>
+              <span class="i-tabler-calendar text-gray-400 dark:text-gray-500"></span>
               <time datetime={post.data.pubDate.toISOString()}>
                 {formatDate(post.data.pubDate)}
               </time>
@@ -61,7 +61,7 @@ const postTags = post.data.tags.map((tag) => ({ tag }));
             {
               post.data.updatedDate && (
                 <div class="flex items-center gap-2">
-                  <span class="i-tabler-edit text-gray-400" />
+                  <span class="i-tabler-edit text-gray-400 dark:text-gray-500" />
                   <span>更新于 {formatDate(post.data.updatedDate)}</span>
                 </div>
               )
@@ -75,8 +75,8 @@ const postTags = post.data.tags.map((tag) => ({ tag }));
           <Content />
         </article>
 
-        <footer class="pt-8 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div class="text-sm text-gray-500">
+        <footer class="pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="text-sm text-gray-500 dark:text-gray-400">
             <span>如果觉得这篇文章有点意思，欢迎分享给更多人！</span>
           </div>
           <div class="flex items-center gap-3">

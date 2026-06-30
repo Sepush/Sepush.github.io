@@ -123,8 +123,20 @@ export default function TravelMap({ className = '' }: TravelMapProps) {
       aria-hidden='true'
       className={`pointer-events-none relative isolate h-full w-full overflow-hidden ${className}`}
     >
-      <div className='absolute inset-0 bg-gradient-to-b from-white/8 via-white/[0.01] to-white/8' />
-      <div className='absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(217,249,232,0.06)_0%,rgba(255,255,255,0.02)_34%,rgba(255,255,255,0.14)_78%)]' />
+      <div
+        className='absolute inset-0'
+        style={{
+          background:
+            'linear-gradient(to bottom, var(--a-color-map-overlay-mid) 0%, transparent 50%, var(--a-color-map-overlay-mid) 100%)',
+        }}
+      />
+      <div
+        className='absolute inset-0'
+        style={{
+          background:
+            'radial-gradient(circle at 50% 48%, var(--a-color-map-overlay-inner) 0%, var(--a-color-map-overlay-mid) 34%, var(--a-color-map-overlay-outer) 78%)',
+        }}
+      />
 
       <div className='absolute inset-0 z-20'>
         <svg
@@ -149,8 +161,8 @@ export default function TravelMap({ className = '' }: TravelMapProps) {
                 <path
                   key={`country-${index}`}
                   d={d}
-                  fill='rgba(148, 163, 184, 0.42)'
-                  stroke='rgba(148, 163, 184, 0.94)'
+                  fill='var(--a-color-map-country-fill, rgba(148, 163, 184, 0.42))'
+                  stroke='var(--a-color-map-country-stroke, rgba(148, 163, 184, 0.94))'
                   strokeWidth='1.18'
                 />
               );
@@ -176,7 +188,13 @@ export default function TravelMap({ className = '' }: TravelMapProps) {
         </svg>
       </div>
 
-      <div className='absolute inset-0 z-30 bg-[linear-gradient(180deg,rgba(255,255,255,0.01)_0%,rgba(255,255,255,0)_28%,rgba(255,255,255,0.005)_74%,rgba(255,255,255,0.03)_100%)]' />
+      <div
+        className='absolute inset-0 z-30'
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0) 28%, rgba(255, 255, 255, 0.005) 74%, rgba(255, 255, 255, 0.03) 100%)',
+        }}
+      />
     </div>
   );
 }

@@ -42,7 +42,7 @@ const tocItems = headings.filter((h) => h.depth <= maxDepth);
   )
 }
 
-<style>
+<style is:global>
 .toc-sidebar {
   position: fixed;
   right: 0;
@@ -92,12 +92,12 @@ const tocItems = headings.filter((h) => h.depth <= maxDepth);
 }
 
 .toc-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.12);
   border-radius: 2px;
 }
 
 .toc-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.22);
 }
 
 .toc-item {
@@ -105,7 +105,7 @@ const tocItems = headings.filter((h) => h.depth <= maxDepth);
   align-items: center;
   gap: 10px;
   padding: 5px 0;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(0, 0, 0, 0.55);
   font-size: 13px;
   line-height: 1.4;
   text-decoration: none;
@@ -115,15 +115,16 @@ const tocItems = headings.filter((h) => h.depth <= maxDepth);
 }
 
 .toc-item:hover {
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .toc-indicator {
   flex-shrink: 0;
   width: 24px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.18);
   transition: all 0.2s ease;
+  border-radius: 1px;
 }
 
 .toc-depth-1 .toc-indicator {
@@ -156,16 +157,17 @@ const tocItems = headings.filter((h) => h.depth <= maxDepth);
 }
 
 .toc-item.active {
-  color: var(--a-color-accent-light);
+  color: var(--a-color-accent-strong);
+  font-weight: 500;
 }
 
 .toc-item.active .toc-indicator {
-  background: var(--a-color-accent-light);
+  background: var(--a-color-accent-strong);
   height: 2px;
 }
 
 .toc-item:hover .toc-indicator {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.45);
   width: 28px;
 }
 
@@ -178,20 +180,22 @@ const tocItems = headings.filter((h) => h.depth <= maxDepth);
 }
 
 .toc-item.active:hover .toc-indicator {
-  background: var(--a-color-accent-light);
+  background: var(--a-color-accent-strong);
 }
 
 .toc-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s ease;
   z-index: 1;
   pointer-events: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.04);
 }
 
 .toc-sidebar:hover .toc-overlay {
@@ -199,34 +203,47 @@ const tocItems = headings.filter((h) => h.depth <= maxDepth);
   visibility: visible;
 }
 
-@media (prefers-color-scheme: light) {
-  .toc-overlay {
-    background: rgba(255, 255, 255, 0.85);
-  }
+/* Dark mode: scoped styles cannot reach the html.dark ancestor, so this block is global. */
+.dark .toc-overlay {
+  background: rgba(17, 19, 24, 0.78);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    -8px 0 24px rgba(0, 0, 0, 0.25),
+    inset 1px 0 0 rgba(255, 255, 255, 0.04);
+}
 
-  .toc-item {
-    color: rgba(0, 0, 0, 0.55);
-  }
+.dark .toc-item {
+  color: rgba(255, 255, 255, 0.55);
+}
 
-  .toc-item:hover {
-    color: rgba(0, 0, 0, 0.9);
-  }
+.dark .toc-item:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
 
-  .toc-indicator {
-    background: rgba(0, 0, 0, 0.2);
-  }
+.dark .toc-indicator {
+  background: rgba(255, 255, 255, 0.18);
+}
 
-  .toc-item:hover .toc-indicator {
-    background: rgba(0, 0, 0, 0.5);
-  }
+.dark .toc-item:hover .toc-indicator {
+  background: rgba(255, 255, 255, 0.6);
+}
 
-  .toc-content::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
-  }
+.dark .toc-item.active {
+  color: var(--a-color-accent-light);
+  text-shadow: 0 0 12px oklch(0.78 0.18 145 / 0.25);
+}
 
-  .toc-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.25);
-  }
+.dark .toc-item.active .toc-indicator {
+  background: var(--a-color-accent-light);
+  box-shadow: 0 0 8px oklch(0.78 0.18 145 / 0.4);
+}
+
+.dark .toc-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.dark .toc-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
 }
 </style>
 

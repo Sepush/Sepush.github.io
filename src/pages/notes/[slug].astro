@@ -22,12 +22,12 @@ const { Content } = await render(note);
 ---
 
 <Layout title={`${note.data.title} - Artea`} description="随笔笔记">
-  <div class="min-h-screen bg-gradient-primary">
+  <div class="min-h-screen">
     <div class="max-w-4xl mx-auto px-4 py-12">
       <nav class="mb-12">
         <a
           href="/notes"
-          class="inline-flex items-center justify-center w-8 h-8 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+          class="inline-flex items-center justify-center w-8 h-8 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
         >
           <span class="i-tabler-arrow-left text-lg"></span>
         </a>
@@ -35,13 +35,13 @@ const { Content } = await render(note);
 
       <article class="card-modern overflow-hidden">
         <header class="px-8 pt-8 pb-6">
-          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
             {note.data.title}
           </h1>
 
-          <div class="flex flex-wrap items-center gap-6 text-sm text-gray-600 mb-6">
+          <div class="flex flex-wrap items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-6">
             <div class="flex items-center gap-2">
-              <span class="i-tabler-calendar w-4 h-4 text-gray-500"></span>
+              <span class="i-tabler-calendar w-4 h-4 text-gray-500 dark:text-gray-500"></span>
               <time
                 datetime={note.data.pubDate.toISOString()}
                 class="font-medium"
@@ -54,7 +54,7 @@ const { Content } = await render(note);
               note.data.mood && (
                 <div class="flex items-center gap-2">
                   <span
-                    class="i-tabler-mood-smile w-4 h-4 text-gray-500"
+                    class="i-tabler-mood-smile w-4 h-4 text-gray-500 dark:text-gray-500"
                   ></span>
                   <span class="font-medium">{note.data.mood}</span>
                 </div>
@@ -64,14 +64,14 @@ const { Content } = await render(note);
             {
               note.data.location && (
                 <div class="flex items-center gap-2">
-                  <span class="i-tabler-map-pin w-4 h-4 text-gray-500"></span>
+                  <span class="i-tabler-map-pin w-4 h-4 text-gray-500 dark:text-gray-500"></span>
                   <span class="font-medium">{note.data.location}</span>
                 </div>
               )
             }
 
             <div class="flex items-center gap-2 ml-auto">
-              <span class="i-tabler-clock w-4 h-4 text-gray-400"></span>
+              <span class="i-tabler-clock w-4 h-4 text-gray-400 dark:text-gray-500"></span>
               <span>{formatTime(note.data.pubDate)}</span>
             </div>
           </div>
@@ -86,7 +86,7 @@ const { Content } = await render(note);
           }
         </header>
 
-        <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mx-8">
+        <div class="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent mx-8">
         </div>
 
         <div class="px-8 py-8">

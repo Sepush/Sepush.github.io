@@ -22,7 +22,7 @@ const sizeClasses = {
 };
 
 const baseItemClasses =
-  'text-gray-600 hover:text-gray-900 transition-all duration-300 ease-out';
+  'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 ease-out';
 const itemClasses = showLabels
   ? `${baseItemClasses} flex items-center gap-2`
   : baseItemClasses;
@@ -43,7 +43,7 @@ const itemClasses = showLabels
             rel="noopener noreferrer"
             class={`${itemClasses} ${
               sizeClasses[size]
-            } inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100`}
+            } inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800`}
             title={link.platform}
             aria-label={`Visit ${link.platform}`}
           >

@@ -20,9 +20,12 @@ const {
 } = Astro.props;
 
 const tagTypeClasses = {
-  default: 'bg-gray-100 text-gray-600 hover:bg-gray-200',
-  primary: 'bg-primary-50 text-primary-700 hover:bg-primary-100',
-  accent: 'bg-accent-50 text-accent-700 hover:bg-accent-100',
+  default:
+    'bg-gray-100 dark:bg-gray-900/50 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800/70 border border-transparent dark:border-gray-700/50',
+  primary:
+    'bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-900/40 border border-transparent dark:border-primary-800/40',
+  accent:
+    'bg-accent-50 dark:bg-accent-950/30 text-accent-700 dark:text-accent-300 hover:bg-accent-100 dark:hover:bg-accent-900/40 border border-transparent dark:border-accent-800/40',
 };
 
 const sizeClasses = {

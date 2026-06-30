@@ -10,8 +10,16 @@ const INITIAL_VIEW = {
   zoom: 1.4,
 } as const;
 
+const MAP_STYLE_LIGHT = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
+const MAP_STYLE_DARK = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
+
 const FLY_DURATION_MS = 3500;
 const FLY_DELAY_MS = 600;
+
+function isDocumentDark(): boolean {
+  if (typeof document === 'undefined') return false;
+  return document.documentElement.classList.contains('dark');
+}
 
 const PLACE_BOUNDS = placesData.reduce(
   (acc, place) => ({
@@ -37,6 +45,7 @@ export default function TravelMapGis({ className = '', replayKey = 0 }: TravelMa
   const mapRef = useRef<MapRef>(null);
   const [markersVisible, setMarkersVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isDark, setIsDark] = useState(isDocumentDark);
 
   const runAnimation = useCallback(() => {
     const map = mapRef.current?.getMap();
@@ -78,13 +87,41 @@ export default function TravelMapGis({ className = '', replayKey = 0 }: TravelMa
     return runAnimation();
   }, [isLoaded, replayKey, runAnimation]);
 
+  useEffect(() => {
+    setIsDark(isDocumentDark());
+
+    const onThemeChange = (): void => {
+      setIsDark(isDocumentDark());
+    };
+
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', onThemeChange);
+
+    const observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.attributeName === 'class') {
+          onThemeChange();
+        }
+      }
+    });
+    observer.observe(document.documentElement, { attributes: true });
+
+    document.addEventListener('artea-theme-change', onThemeChange);
+
+    return () => {
+      mq.removeEventListener('change', onThemeChange);
+      observer.disconnect();
+      document.removeEventListener('artea-theme-change', onThemeChange);
+    };
+  }, []);
+
   return (
     <div aria-hidden='true' className={`group relative isolate h-full w-full overflow-hidden ${className}`}>
       <Map
         ref={mapRef}
         initialViewState={INITIAL_VIEW}
         style={{ width: '100%', height: '100%' }}
-        mapStyle='https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+        mapStyle={isDark ? MAP_STYLE_DARK : MAP_STYLE_LIGHT}
         attributionControl={false}
         dragPan
         scrollZoom
@@ -97,11 +134,29 @@ export default function TravelMapGis({ className = '', replayKey = 0 }: TravelMa
       </Map>
 
       {/* Subtle overlay to match the original aesthetic */}
-      <div className='pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_48%,rgba(217,249,232,0.04)_0%,rgba(255,255,255,0.02)_34%,rgba(255,255,255,0.10)_78%)]' />
-      <div className='pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.01)_0%,rgba(255,255,255,0)_28%,rgba(255,255,255,0.005)_74%,rgba(255,255,255,0.03)_100%)]' />
+      <div
+        className='pointer-events-none absolute inset-0 z-10'
+        style={{
+          background:
+            'radial-gradient(circle at 50% 48%, var(--a-color-map-overlay-inner) 0%, var(--a-color-map-overlay-mid) 34%, var(--a-color-map-overlay-outer) 78%)',
+        }}
+      />
+      <div
+        className='pointer-events-none absolute inset-0 z-20'
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0) 28%, rgba(255, 255, 255, 0.005) 74%, rgba(255, 255, 255, 0.03) 100%)',
+        }}
+      />
 
       {/* Interaction hint */}
-      <div className='pointer-events-none absolute bottom-3 left-1/2 z-30 -translate-x-1/2 rounded-full bg-white/80 px-3 py-1 text-xs text-gray-600 opacity-0 shadow-sm backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100'>
+      <div
+        className='pointer-events-none absolute bottom-3 left-1/2 z-30 -translate-x-1/2 rounded-full px-3 py-1 text-xs opacity-0 shadow-sm backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100'
+        style={{
+          backgroundColor: 'var(--a-color-map-hint-bg)',
+          color: 'var(--a-color-map-hint-text)',
+        }}
+      >
         Ctrl / ⌘ + 滚轮缩放 · 拖拽平移
       </div>
     </div>

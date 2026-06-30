@@ -12,6 +12,7 @@ export default defineConfig({
   content: {
     filesystem: ['src/**/*.{astro,vue,tsx,ts,js}'],
   },
+  dark: 'class',
   safelist: [
     'i-tabler-brand-github',
     'i-tabler-brand-x',
@@ -67,9 +68,12 @@ export default defineConfig({
   shortcuts: [
     {
       'card-modern':
-        'bg-white/80 backdrop-blur-sm rounded-2xl shadow-elegant hover:shadow-float transition-all duration-500 border border-white/20',
+        'bg-white/80 dark:bg-gray-900/70 backdrop-blur-sm rounded-2xl shadow-elegant hover:shadow-float transition-all duration-500 border border-white/20 dark:border-gray-700/40',
     },
-    { 'bg-gradient-primary': 'bg-gradient-to-br from-gray-50 via-white to-gray-50' },
+    {
+      'bg-gradient-primary':
+        'bg-gradient-to-br from-[var(--a-color-bg-gradient-from)] via-[var(--a-color-bg-gradient-via)] to-[var(--a-color-bg-gradient-to)]',
+    },
   ],
   transformers: [transformerDirectives(), transformerAttributifyJsx()],
   presets: [
