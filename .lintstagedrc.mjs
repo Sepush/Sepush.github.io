@@ -1,7 +1,12 @@
+import path from 'node:path';
+
 const fmtIgnoredPrefixes = ['src/content/'];
 
 const filterIgnoredFiles = (files) =>
-  files.filter((file) => !fmtIgnoredPrefixes.some((prefix) => file.startsWith(prefix)));
+  files.filter((file) => {
+    const relative = path.relative(process.cwd(), file);
+    return !fmtIgnoredPrefixes.some((prefix) => relative.startsWith(prefix));
+  });
 
 export default {
   '*.{js,jsx,ts,tsx,vue}': [
