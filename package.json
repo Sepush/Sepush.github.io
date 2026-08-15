@@ -53,18 +53,6 @@
   "simple-git-hooks": {
     "pre-commit": "$HOME/.vite-plus/bin/vp exec lint-staged"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
-      "vp lint --type-aware --tsconfig ./tsconfig.json --fix",
-      "vp fmt --write"
-    ],
-    "*.astro": [
-      "vp lint --type-aware --tsconfig ./tsconfig.json --fix"
-    ],
-    "*.{css,md,mdx,json,jsonc,yaml,yml,toml}": [
-      "vp fmt --write"
-    ]
-  },
   "devEngines": {
     "runtime": {
       "name": "node",
