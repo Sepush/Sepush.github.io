@@ -1,8 +1,9 @@
 # build output
+build/
 dist/
 
 # generated types
-.astro/
+.react-router/
 
 # dependencies
 node_modules/

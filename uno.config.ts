@@ -10,9 +10,8 @@ import {
 
 export default defineConfig({
   content: {
-    filesystem: ['src/**/*.{astro,vue,tsx,ts,js}'],
+    filesystem: ['app/**/*.{tsx,ts,js}'],
   },
-  dark: 'class',
   safelist: [
     'i-tabler-brand-github',
     'i-tabler-brand-x',
@@ -21,6 +20,14 @@ export default defineConfig({
     'i-tabler-link',
     'i-tabler-menu-2',
     'i-tabler-x',
+    'text-amber-600',
+    'text-blue-600',
+    'text-emerald-600',
+    'text-indigo-600',
+    'text-rose-600',
+    'text-cyan-600',
+    'text-violet-600',
+    'text-teal-600',
   ],
   theme: {
     colors: {
@@ -77,7 +84,7 @@ export default defineConfig({
   ],
   transformers: [transformerDirectives(), transformerAttributifyJsx()],
   presets: [
-    presetWind3(),
+    presetWind3({ dark: 'class' }),
     presetAttributify(),
     presetIcons({
       collections: {

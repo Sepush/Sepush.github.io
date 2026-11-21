@@ -34,16 +34,16 @@ jobs:
       - name: Install dependencies
         run: vp install --frozen-lockfile
 
-      - name: Check format and lint
-        run: vp run fmt:check && vp run lint
+      - name: Check types, format and lint
+        run: vp run typecheck && vp run fmt:check && vp run lint
 
-      - name: Build with Astro
+      - name: Build static React site
         run: vp run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./build/client
 
   deploy:
     environment:
