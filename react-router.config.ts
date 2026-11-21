@@ -3,5 +3,6 @@ import { getStaticContentPaths } from './app/lib/content-paths';
 
 export default {
   ssr: true,
+  routeDiscovery: { mode: 'initial' },
   prerender: getStaticContentPaths(),
 } satisfies Config;
