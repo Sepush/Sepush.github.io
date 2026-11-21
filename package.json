@@ -11,8 +11,8 @@
     "typecheck": "react-router typegen && tsc --noEmit",
     "fmt": "vp fmt --write .",
     "fmt:check": "vp fmt --check .",
-    "lint": "vp lint . --type-aware --tsconfig ./tsconfig.json",
-    "lint:fix": "vp lint . --type-aware --tsconfig ./tsconfig.json --fix"
+    "lint": "oxlint . --type-aware --tsconfig ./tsconfig.json",
+    "lint:fix": "oxlint . --type-aware --tsconfig ./tsconfig.json --fix"
   },
   "dependencies": {
     "@pika-lab/react": "0.0.1",
@@ -49,6 +49,7 @@
     "@unocss/preset-wind3": "^66.13.0",
     "@unocss/reset": "^66.13.0",
     "lint-staged": "^17.0.8",
+    "oxlint": "1.70.0",
     "playwright": "^1.61.1",
     "simple-git-hooks": "^2.13.1",
     "typescript": "^6.0.3",

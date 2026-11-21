@@ -18,7 +18,7 @@ Artea's personal blog for technical articles, notes, reading notes, and other wr
 - Vite and UnoCSS
 - `react-markdown` with unified/remark/rehype plugins
 - KaTeX for math and Shiki for code highlighting
-- Vite+ (`vp`) for formatting and linting
+- Vite+ (`vp`) for formatting and Oxlint for linting
 - pnpm 11.9.0 and Node 24.18.0
 
 React Router prerenders all published routes into static HTML and client-navigation data. It is not a single-file SPA. The build also creates `404.html` for GitHub Pages.

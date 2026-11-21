@@ -9,7 +9,7 @@ const filterIgnoredFiles = files =>
   });
 
 export default {
-  '*.{js,jsx,ts,tsx}': ['vp lint --type-aware --tsconfig ./tsconfig.json --fix', 'vp fmt --write'],
+  '*.{js,jsx,ts,tsx}': ['oxlint --type-aware --tsconfig ./tsconfig.json --fix', 'vp fmt --write'],
   '*.{css,md,mdx,json,jsonc,yaml,yml,toml}': files => {
     const filtered = filterIgnoredFiles(files);
     if (filtered.length === 0) return [];

@@ -11,4 +11,3 @@ if (!existsSync(source)) {
 }
 
 copyFileSync(source, path.join(client, '404.html'));
-console.log('Prepared GitHub Pages 404.html');
