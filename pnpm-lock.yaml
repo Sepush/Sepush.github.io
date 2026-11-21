@@ -111,6 +111,9 @@ importers:
       oxlint:
         specifier: 1.70.0
         version: 1.70.0(oxlint-tsgolint@0.23.0)(vite-plus@0.2.1(@types/node@24.19.2)(esbuild@0.28.1)(jiti@2.7.0)(typescript@6.0.3)(vite@8.3.8(@types/node@24.19.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(yaml@2.9.0))
+      oxlint-tsgolint:
+        specifier: 0.23.0
+        version: 0.23.0
       playwright:
         specifier: ^1.61.1
         version: 1.61.1
