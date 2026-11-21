@@ -20,7 +20,7 @@ export function contentSlug(file: string, collection: 'posts' | 'notes'): string
 }
 
 export function getStaticContentPaths(): string[] {
-  const paths = ['/', '/posts', '/notes', '/about', '/friends', '/404'];
+  const paths = ['/', '/posts', '/notes', '/about', '/friends', '/404', '/__spa-fallback.html'];
   for (const collection of ['posts', 'notes'] as const) {
     for (const file of markdownFiles(path.join(contentRoot, collection))) {
       const { data } = matter(readFileSync(file, 'utf8'));

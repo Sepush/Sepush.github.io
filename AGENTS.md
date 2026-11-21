@@ -21,7 +21,7 @@ Artea's personal blog for technical articles, notes, reading notes, and other wr
 - Vite+ (`vp`) for formatting and Oxlint for linting
 - pnpm 11.9.0 and Node 24.18.0
 
-React Router prerenders all published routes into static HTML and client-navigation data. It is not a single-file SPA. The build also creates `404.html` for GitHub Pages. Keep route discovery in `initial` mode because GitHub Pages cannot serve dynamic `/__manifest` requests.
+React Router prerenders all published routes into static HTML and client-navigation data. It is not a single-file SPA. The build also creates `404.html` from the route-agnostic SPA fallback for GitHub Pages; do not use the prerendered `/404` route as the fallback because its route-specific hydration data belongs only to that URL. Keep route discovery in `initial` mode because GitHub Pages cannot serve dynamic `/__manifest` requests.
 
 ## Structure
 
