@@ -1,96 +1,125 @@
-import { Button, Tooltip } from '@pika-lab/react';
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { Button, Tooltip, type ThemeMode } from '@pika-lab/react';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
+import { Monitor, Moon, Sun } from './icons';
 
 export type ThemePreference = 'light' | 'dark' | 'system';
-type ResolvedTheme = 'light' | 'dark';
 
-interface ThemeValue {
+interface ThemeContextValue {
   preference: ThemePreference;
-  resolved: ResolvedTheme;
+  resolved: ThemeMode;
+  hydrated: boolean;
   cycle: () => void;
 }
 
 const STORAGE_KEY = 'artea-theme';
-const ThemeContext = createContext<ThemeValue>({ preference: 'system', resolved: 'light', cycle: () => undefined });
 
-function systemTheme(): ResolvedTheme {
+/**
+ * Runs synchronously in `<head>` before first paint so Pika tokens (`data-p-theme-mode`)
+ * and native form/scrollbar colors match the stored preference without flashing.
+ */
+export const THEME_BOOTSTRAP_SCRIPT = `(function(){try{var s=localStorage.getItem('${STORAGE_KEY}');var pref=s==='light'||s==='dark'?s:'system';var mode=pref==='system'?(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):pref;var root=document.documentElement;root.dataset.pThemeMode=mode;root.dataset.blogThemePref=pref;root.classList.toggle('dark',mode==='dark');root.style.colorScheme=mode}catch(e){}})();`;
+
+const ThemeContext = createContext<ThemeContextValue>({
+  preference: 'system',
+  resolved: 'light',
+  hydrated: false,
+  cycle: () => undefined,
+});
+
+function getSystemTheme(): ThemeMode {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function storedPreference(): ThemePreference {
-  const value = localStorage.getItem(STORAGE_KEY);
-  return value === 'light' || value === 'dark' ? value : 'system';
+function readStoredPreference(): ThemePreference {
+  try {
+    const value = window.localStorage.getItem(STORAGE_KEY);
+    return value === 'light' || value === 'dark' ? value : 'system';
+  } catch {
+    return 'system';
+  }
 }
 
-function applyDocumentTheme(theme: ResolvedTheme) {
-  document.documentElement.classList.toggle('dark', theme === 'dark');
-  document.dispatchEvent(new CustomEvent('artea-theme-change', { detail: { theme } }));
+function applyDocumentTheme(preference: ThemePreference, mode: ThemeMode) {
+  const root = document.documentElement;
+  root.dataset.pThemeMode = mode;
+  root.dataset.blogThemePref = preference;
+  root.classList.toggle('dark', mode === 'dark');
+  root.style.colorScheme = mode;
+  document.dispatchEvent(new CustomEvent('artea-theme-change', { detail: { theme: mode, preference } }));
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [preference, setPreference] = useState<ThemePreference>('system');
-  const [resolved, setResolved] = useState<ResolvedTheme>('light');
+  const [resolved, setResolved] = useState<ThemeMode>('light');
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const update = () => {
-      const nextPreference = storedPreference();
-      const nextResolved = nextPreference === 'system' ? systemTheme() : nextPreference;
+    const sync = () => {
+      const nextPreference = readStoredPreference();
+      const nextResolved = nextPreference === 'system' ? getSystemTheme() : nextPreference;
       setPreference(nextPreference);
       setResolved(nextResolved);
-      applyDocumentTheme(nextResolved);
+      setHydrated(true);
+      applyDocumentTheme(nextPreference, nextResolved);
     };
-    update();
+    sync();
     const media = window.matchMedia('(prefers-color-scheme: dark)');
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
+    media.addEventListener('change', sync);
+    return () => media.removeEventListener('change', sync);
   }, []);
 
-  const cycle = () => {
-    const next = preference === 'light' ? 'dark' : preference === 'dark' ? 'system' : 'light';
-    const root = document.documentElement;
-    root.classList.add('is-transitioning');
-    window.requestAnimationFrame(() => {
-      if (next === 'system') localStorage.removeItem(STORAGE_KEY);
-      else localStorage.setItem(STORAGE_KEY, next);
-      const nextResolved = next === 'system' ? systemTheme() : next;
-      setPreference(next);
-      setResolved(nextResolved);
-      applyDocumentTheme(nextResolved);
-      window.setTimeout(() => root.classList.remove('is-transitioning'), 220);
-    });
-  };
+  const cycle = useCallback(() => {
+    const nextPreference: ThemePreference =
+      preference === 'light' ? 'dark' : preference === 'dark' ? 'system' : 'light';
+    try {
+      if (nextPreference === 'system') window.localStorage.removeItem(STORAGE_KEY);
+      else window.localStorage.setItem(STORAGE_KEY, nextPreference);
+    } catch {
+      // Theme still applies for the active session when storage is unavailable.
+    }
+    const nextResolved = nextPreference === 'system' ? getSystemTheme() : nextPreference;
+    setPreference(nextPreference);
+    setResolved(nextResolved);
+    applyDocumentTheme(nextPreference, nextResolved);
+  }, [preference]);
 
-  return <ThemeContext.Provider value={{ preference, resolved, cycle }}>{children}</ThemeContext.Provider>;
+  return <ThemeContext.Provider value={{ preference, resolved, hydrated, cycle }}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {
   return useContext(ThemeContext);
 }
 
-const icons = {
-  light: 'i-tabler-sun',
-  dark: 'i-tabler-moon',
-  system: 'i-tabler-device-desktop',
-} as const;
-
-const labels = {
+const themeLabels: Record<ThemePreference, string> = {
   light: '浅色模式',
   dark: '深色模式',
   system: '跟随系统',
-} as const;
+};
+
+function ThemeIcon({ preference }: { preference: ThemePreference }) {
+  switch (preference) {
+    case 'light':
+      return <Sun aria-hidden='true' size={16} strokeWidth={1.75} />;
+    case 'dark':
+      return <Moon aria-hidden='true' size={16} strokeWidth={1.75} />;
+    case 'system':
+      return <Monitor aria-hidden='true' size={16} strokeWidth={1.75} />;
+  }
+}
 
 export function ThemeToggle() {
   const { preference, cycle } = useTheme();
+  const label = themeLabels[preference];
   return (
-    <Tooltip content={`当前：${labels[preference]}（点击切换）`}>
+    <Tooltip content={`主题：${label}（点击切换）`}>
       <Button
         attrType='button'
         quaternary
-        circle
         size='small'
-        aria-label={`切换主题，当前${labels[preference]}`}
+        className='blog-nav__icon-button'
+        aria-label={`切换主题，当前${label}`}
         onClick={cycle}
-        icon={<span className={`${icons[preference]} text-lg`} />}
+        icon={<ThemeIcon preference={preference} />}
       />
     </Tooltip>
   );

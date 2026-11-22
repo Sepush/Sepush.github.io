@@ -1,6 +1,6 @@
 # Artea Blog
 
-Artea's personal blog, built with React 19, React Router, Pika, TypeScript, and UnoCSS. Markdown is rendered through a unified/remark/rehype pipeline with GFM, KaTeX, Shiki, heading anchors, and Pika components.
+Artea's personal blog, built with React 19, React Router, and Pika (`@pika-lab/react`). Markdown is rendered natively through `@pika-lab/react/markdown` with GFM, GitHub alerts, KaTeX math, Shiki code highlighting, and synchronized heading anchors.
 
 ## Commands
 

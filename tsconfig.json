@@ -14,15 +14,8 @@
     "noUncheckedIndexedAccess": true,
     "moduleDetection": "force",
     "rootDirs": [".", ".react-router/types"],
-    "types": ["node", "vite/client", "@unocss/preset-attributify"]
+    "types": ["node", "vite/client"]
   },
-  "include": [
-    "app/**/*",
-    "scripts/**/*",
-    ".react-router/types/**/*",
-    "react-router.config.ts",
-    "vite.config.ts",
-    "uno.config.ts"
-  ],
+  "include": ["app/**/*", "scripts/**/*", ".react-router/types/**/*", "react-router.config.ts", "vite.config.ts"],
   "exclude": ["build", "dist", "node_modules"]
 }

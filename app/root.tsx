@@ -1,40 +1,43 @@
-import { ConfigProvider, zhCN, type ThemeOverrides } from '@pika-lab/react';
+import { ConfigProvider, Layout as PikaLayout, LayoutContent, zhCN, type ComponentOptions } from '@pika-lab/react';
+import '@pika-lab/react/pika.css';
 import katex from 'katex';
-import { lazy, Suspense, type ReactNode } from 'react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from 'react-router';
-import '@unocss/reset/tailwind.css';
-import 'virtual:uno.css';
 import 'katex/dist/katex.min.css';
-import '../src/styles/global.css';
-import '../src/styles/markdown.css';
-import { ClientOnly } from './components/client-only';
-import { LivingTree } from './components/living-tree';
+import type { ReactNode } from 'react';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from 'react-router';
+import { RouterLink } from './components/router-link';
+import { SiteFooter } from './components/site-footer';
 import { SiteHeader } from './components/site-header';
-import { ThemeProvider, useTheme } from './components/theme';
+import { THEME_BOOTSTRAP_SCRIPT, ThemeProvider } from './components/theme';
+import { getSearchIndex } from './lib/content.server';
 import { highlighter } from './lib/highlighter';
+import './styles/site.css';
 
-const TravelMap = lazy(() => import('./components/travel-map'));
-
-const themeOverrides: ThemeOverrides = {
-  '--p-seed-primary': '#5a936f',
+const componentOptions: ComponentOptions = {
+  Link: { as: RouterLink },
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem('artea-theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})();`;
+export function loader() {
+  return { searchEntries: getSearchIndex() };
+}
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang='zh-CN'>
+    <html lang='zh-CN' suppressHydrationWarning>
       <head>
         <meta charSet='UTF-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
         <link rel='icon' type='image/svg+xml' href='/avatar.svg' />
         <link rel='preconnect' href='https://fonts.googleapis.com' />
         <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <link
+          rel='stylesheet'
+          href='https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&family=Inter:wght@400;500;600;700&display=swap'
+        />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
         <Meta />
         <Links />
       </head>
-      <body className='min-h-screen bg-gradient-primary text-gray-900 dark:text-gray-100 font-sans antialiased'>
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -43,47 +46,18 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
-function SiteShell() {
-  const { pathname } = useLocation();
-  const home = pathname === '/';
-  return (
-    <>
-      {home ? (
-        <div id='travel-map-bg' aria-hidden='true'>
-          <div className='travel-map-mask' />
-          <div className='travel-map-stage'>
-            <ClientOnly>
-              <Suspense fallback={null}>
-                <TravelMap />
-              </Suspense>
-            </ClientOnly>
-          </div>
-        </div>
-      ) : (
-        <LivingTree />
-      )}
-      <div className='flex flex-col min-h-screen relative z-10 pointer-events-none'>
-        <SiteHeader />
-        <main className={`flex-1 relative ${home ? 'pointer-events-none' : 'pointer-events-auto'}`}>
-          <Outlet />
-        </main>
-      </div>
-    </>
-  );
-}
-
 function ConfiguredApp() {
-  const { resolved } = useTheme();
+  const { searchEntries } = useLoaderData<typeof loader>();
+
   return (
-    <ConfigProvider
-      locale={zhCN}
-      themeMode={resolved}
-      themeOverrides={themeOverrides}
-      highlighter={highlighter}
-      katex={katex}
-      className='min-h-screen'
-    >
-      <SiteShell />
+    <ConfigProvider abstract locale={zhCN} highlighter={highlighter} katex={katex} componentOptions={componentOptions}>
+      <PikaLayout className='blog-shell'>
+        <SiteHeader searchEntries={searchEntries} />
+        <LayoutContent as='main' nativeScrollbar className='blog-main'>
+          <Outlet />
+        </LayoutContent>
+        <SiteFooter />
+      </PikaLayout>
     </ConfigProvider>
   );
 }

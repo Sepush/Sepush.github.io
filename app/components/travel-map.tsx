@@ -1,25 +1,22 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import Map, { Marker } from 'react-map-gl/maplibre';
-import type { MapRef } from 'react-map-gl/maplibre';
+import { Tooltip } from '@pika-lab/react';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Map, { Marker, type MapRef } from 'react-map-gl/maplibre';
 import placesData from '../../src/data/travel/places.json';
+import { useTheme } from './theme';
 
 const INITIAL_VIEW = {
-  longitude: 40,
-  latitude: 25,
-  zoom: 1.4,
+  longitude: 108,
+  latitude: 34,
+  zoom: 2.2,
 } as const;
 
 const MAP_STYLE_LIGHT = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
 const MAP_STYLE_DARK = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
-const FLY_DURATION_MS = 3500;
-const FLY_DELAY_MS = 600;
-
-function isDocumentDark(): boolean {
-  if (typeof document === 'undefined') return false;
-  return document.documentElement.classList.contains('dark');
-}
+const INITIAL_FLY_DELAY_MS = 180;
+const INITIAL_FLY_DURATION_MS = 1100;
+const RESET_FLY_DURATION_MS = 750;
 
 const PLACE_BOUNDS = placesData.reduce(
   (acc, place) => ({
@@ -36,46 +33,31 @@ const FIT_BOUNDS: [[number, number], [number, number]] = [
   [PLACE_BOUNDS.maxLng, PLACE_BOUNDS.maxLat],
 ];
 
-type TravelMapGisProps = {
+function getFitPadding(): number {
+  return window.innerWidth < 640 ? 28 : 48;
+}
+
+interface TravelMapProps {
   className?: string;
   replayKey?: number;
-};
+}
 
-export default function TravelMapGis({ className = '', replayKey = 0 }: TravelMapGisProps) {
+export default function TravelMap({ className = '', replayKey = 0 }: TravelMapProps) {
+  const { resolved, hydrated } = useTheme();
   const mapRef = useRef<MapRef>(null);
-  const [markersVisible, setMarkersVisible] = useState(false);
+  const hasFittedRef = useRef(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isDark, setIsDark] = useState(isDocumentDark);
 
-  const runAnimation = useCallback(() => {
+  const fitPlaces = useCallback((duration: number) => {
     const map = mapRef.current?.getMap();
     if (!map) return;
-
-    setMarkersVisible(false);
-
-    // Reset to world view first (useful for replay)
-    map.jumpTo({
-      center: [INITIAL_VIEW.longitude, INITIAL_VIEW.latitude],
-      zoom: INITIAL_VIEW.zoom,
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const padding = getFitPadding();
+    map.fitBounds(FIT_BOUNDS, {
+      padding,
+      duration: prefersReducedMotion ? 0 : duration,
+      essential: true,
     });
-
-    const timer = setTimeout(() => {
-      map.fitBounds(FIT_BOUNDS, {
-        padding: { top: 80, bottom: 80, left: 80, right: 80 },
-        duration: FLY_DURATION_MS,
-        essential: true,
-      });
-    }, FLY_DELAY_MS);
-
-    const onMoveEnd = () => {
-      setMarkersVisible(true);
-    };
-    void map.once('moveend', onMoveEnd);
-
-    return () => {
-      clearTimeout(timer);
-      map.off('moveend', onMoveEnd);
-    };
   }, []);
 
   const handleLoad = useCallback(() => {
@@ -84,39 +66,25 @@ export default function TravelMapGis({ className = '', replayKey = 0 }: TravelMa
 
   useEffect(() => {
     if (!isLoaded) return undefined;
-    return runAnimation();
-  }, [isLoaded, replayKey, runAnimation]);
 
-  useEffect(() => {
-    setIsDark(isDocumentDark());
+    if (!hasFittedRef.current) {
+      hasFittedRef.current = true;
+      const timer = window.setTimeout(() => fitPlaces(INITIAL_FLY_DURATION_MS), INITIAL_FLY_DELAY_MS);
+      return () => window.clearTimeout(timer);
+    }
 
-    const onThemeChange = (): void => {
-      setIsDark(isDocumentDark());
-    };
+    fitPlaces(RESET_FLY_DURATION_MS);
+    return undefined;
+  }, [fitPlaces, isLoaded, replayKey]);
 
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mq.addEventListener('change', onThemeChange);
+  if (!hydrated) {
+    return <div className='blog-map-placeholder' />;
+  }
 
-    const observer = new MutationObserver(mutations => {
-      for (const mutation of mutations) {
-        if (mutation.attributeName === 'class') {
-          onThemeChange();
-        }
-      }
-    });
-    observer.observe(document.documentElement, { attributes: true });
-
-    document.addEventListener('artea-theme-change', onThemeChange);
-
-    return () => {
-      mq.removeEventListener('change', onThemeChange);
-      observer.disconnect();
-      document.removeEventListener('artea-theme-change', onThemeChange);
-    };
-  }, []);
+  const isDark = resolved === 'dark';
 
   return (
-    <div aria-hidden='true' className={`group relative isolate h-full w-full overflow-hidden ${className}`}>
+    <div className={`blog-travel-map ${className}`.trim()}>
       <Map
         ref={mapRef}
         initialViewState={INITIAL_VIEW}
@@ -130,33 +98,9 @@ export default function TravelMapGis({ className = '', replayKey = 0 }: TravelMa
         cooperativeGestures
         onLoad={handleLoad}
       >
-        <Markers visible={markersVisible} />
+        <Markers visible={isLoaded} />
       </Map>
-
-      {/* Subtle overlay to match the original aesthetic */}
-      <div
-        className='pointer-events-none absolute inset-0 z-10'
-        style={{
-          background:
-            'radial-gradient(circle at 50% 48%, var(--a-color-map-overlay-inner) 0%, var(--a-color-map-overlay-mid) 34%, var(--a-color-map-overlay-outer) 78%)',
-        }}
-      />
-      <div
-        className='pointer-events-none absolute inset-0 z-20'
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0) 28%, rgba(255, 255, 255, 0.005) 74%, rgba(255, 255, 255, 0.03) 100%)',
-        }}
-      />
-
-      {/* Interaction hint */}
-      <div
-        className='pointer-events-none absolute bottom-3 left-1/2 z-30 -translate-x-1/2 rounded-full px-3 py-1 text-xs opacity-0 shadow-sm backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100'
-        style={{
-          backgroundColor: 'var(--a-color-map-hint-bg)',
-          color: 'var(--a-color-map-hint-text)',
-        }}
-      >
+      <div className='blog-travel-map__hint' aria-hidden='true'>
         Ctrl / ⌘ + 滚轮缩放 · 拖拽平移
       </div>
     </div>
@@ -168,29 +112,16 @@ function Markers({ visible }: { visible: boolean }) {
     <>
       {placesData.map((place, index) => (
         <Marker key={`${place.name}-${index}`} longitude={place.lng} latitude={place.lat} anchor='center'>
-          <div
-            className='relative flex items-center justify-center transition-opacity duration-500 ease-out'
-            style={{ opacity: visible ? 1 : 0 }}
-          >
-            <div
-              className='absolute rounded-full'
-              style={{
-                width: '2.25rem',
-                height: '2.25rem',
-                backgroundColor: 'var(--a-color-accent)',
-                opacity: 0.18,
-                filter: 'blur(6px)',
-              }}
-            />
-            <div
-              className='relative rounded-full border-2 border-white/90'
-              style={{
-                width: '0.55rem',
-                height: '0.55rem',
-                backgroundColor: 'var(--a-color-accent)',
-              }}
-            />
-          </div>
+          <Tooltip content={place.name} placement='top'>
+            <button
+              type='button'
+              aria-label={`足迹：${place.name}`}
+              className={visible ? 'blog-map-pin blog-map-pin--visible' : 'blog-map-pin'}
+            >
+              <span className='blog-map-pin__halo' aria-hidden='true' />
+              <span className='blog-map-pin__dot' aria-hidden='true' />
+            </button>
+          </Tooltip>
         </Marker>
       ))}
     </>

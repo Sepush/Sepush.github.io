@@ -10,14 +10,14 @@ Artea's personal blog for technical articles, notes, reading notes, and other wr
 - Do not use `as any` or bypass type errors.
 - Keep components cohesive, reusable, and readable.
 - Keep styling simple. Do not add colorful gradients, hover scaling, or decorative effects.
+- Style exclusively with Pika design tokens (`--pw-alias-*`, `--p-*`) in `app/styles/site.css` — do not introduce Tailwind or UnoCSS utilities.
 
 ## Stack
 
 - React 19 and React Router framework mode
-- Pika `@pika-lab/react`, pinned to `0.0.1`
-- Vite and UnoCSS
-- `react-markdown` with unified/remark/rehype plugins
-- KaTeX for math and Shiki for code highlighting
+- Pika `@pika-lab/react` (pinned to `0.0.1`), including `@pika-lab/react/markdown` and `@pika-lab/react/shiki`
+- `lucide-react` for UI icons
+- KaTeX (`katex`) for math via Pika's `mathExtension` and `Equation`, and Shiki (`shiki`) for code highlighting via `ConfigProvider`
 - Vite+ (`vp`) for formatting and Oxlint for linting
 - pnpm 11.9.0 and Node 24.18.0
 
@@ -28,17 +28,17 @@ React Router prerenders all published routes into static HTML and client-navigat
 ```text
 app/
   components/       Shared React and Pika components
-  config/          Social and friend data
-  lib/             Content, formatting, headings, and highlighting
-  routes/          Route modules and page components
-  root.tsx         Document, providers, and shared shell
-  routes.ts        Route manifest
+  config/           Social and friend data
+  lib/              Content, formatting, Markdown helpers, and Shiki highlighter
+  routes/           Route modules and page components
+  styles/           Pure Pika token stylesheet (`site.css`)
+  root.tsx          Document, zero-flash theme bootstrap, ConfigProvider, and Layout shell
+  routes.ts         Route manifest
 src/
-  content/         Markdown posts, notes, about, and post images
-  data/travel/     Travel places
-  styles/          Global and Markdown styles
-public/            Static files copied without processing
-scripts/           Static deployment preparation
+  content/          Markdown posts, notes, about, and post images
+  data/travel/      Travel places
+public/             Static files copied without processing
+scripts/            Static deployment preparation
 ```
 
 ## Content rules
@@ -47,15 +47,13 @@ Posts live in `src/content/posts/**/*.md`; their URLs preserve the relative path
 
 Post frontmatter supports `title`, `description`, `pubDate`, `updatedDate`, `tags`, `draft`, and `author`. Note frontmatter supports `title`, `content`, `pubDate`, `mood`, `location`, `tags`, and `draft`. Dates are serialized as ISO strings and sorted descending.
 
-Development includes drafts and displays draft badges. Production excludes drafts from prerender paths, loader data, and generated content. Keep this behavior when changing the content layer.
+Development includes drafts and displays draft badges. Production excludes drafts from prerender paths, loader data, search index, and generated content. Keep this behavior when changing the content layer.
 
-Markdown uses `remark-gfm`, `remark-math`, `rehype-raw`, `rehype-katex`, and `rehype-slug`. Render elements through the Pika mappings in `app/components/markdown.tsx`. Relative post images must resolve through the Vite asset map rather than raw relative browser URLs. Table of contents entries and heading IDs must continue to share GitHub-compatible slugs.
-
-The content is author-owned and trusted. Review sanitization requirements before accepting outside contributions with raw HTML.
+Markdown renders directly through `@pika-lab/react/markdown` (`preset="document"`) with `gfmExtension`, `alertExtension`, and `mathExtension` (excluding chat reference extensions). Relative post images resolve through the Vite asset map in `app/components/markdown.tsx`. Heading extraction uses `@pika-lab/react/markdown`'s `extractHeadings` so table of contents entries and rendered heading IDs always stay in sync.
 
 ## UI behavior
 
-Use Pika components for shared controls, navigation, cards, tags, links, empty states, results, code, and document outlines. Keep the existing three-state theme cycle (`light -> dark -> system`) and the `artea-theme` storage key. Browser-only map and canvas behavior must remain hydration-safe.
+Use Pika components for shared controls, navigation, drawers, command palette search, cards, tags, avatars, links, empty states, results, code, markdown, timelines, page navigation, and document outlines (`Anchor` + responsive `Collapse`). Keep the three-state theme cycle (`light -> dark -> system`) and the `artea-theme` storage key, syncing `data-p-theme-mode` in `<head>` before first paint. Browser-only map behavior must remain hydration-safe.
 
 Preserve public URLs, nested post routes, the depth-three table of contents, social links, friend avatars, and the interactive travel map. Direct requests to every published route must work on GitHub Pages.
 

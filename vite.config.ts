@@ -1,9 +1,8 @@
 import { reactRouter } from '@react-router/dev/vite';
-import UnoCSS from 'unocss/vite';
 import { defineConfig } from 'vite-plus';
 
 export default defineConfig({
-  plugins: [reactRouter(), UnoCSS()],
+  plugins: [reactRouter()],
   ssr: {
     noExternal: ['@pika-lab/react'],
   },

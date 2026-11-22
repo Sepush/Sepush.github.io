@@ -1,122 +1,119 @@
-import { Button, LayoutHeader, Link } from '@pika-lab/react';
-import { useEffect, useRef, useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router';
+import {
+  Avatar,
+  Button,
+  Drawer,
+  DrawerContent,
+  LayoutHeader,
+  Menu,
+  type MenuLinkProps,
+  type MenuOption,
+} from '@pika-lab/react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router';
+import { arteaSocialLinks } from '../config/social';
+import type { SearchEntry } from '../lib/content.server';
+import { BookOpen, Home, Menu as MenuIcon, StickyNote, User, Users } from './icons';
+import { RouterLink } from './router-link';
+import { SiteSearch } from './site-search';
+import { SocialLinks } from './social-links';
 import { ThemeToggle } from './theme';
 
 const navItems = [
-  { name: 'Home', href: '/', icon: 'i-tabler-home' },
-  { name: 'Posts', href: '/posts', icon: 'i-tabler-article' },
-  { name: 'Notes', href: '/notes', icon: 'i-tabler-note' },
-  { name: 'About', href: '/about', icon: 'i-tabler-user' },
-  { name: 'Friends', href: '/friends', icon: 'i-tabler-users' },
+  { name: '首页', href: '/', icon: <Home aria-hidden='true' size={15} strokeWidth={1.75} /> },
+  { name: '文章', href: '/posts', icon: <BookOpen aria-hidden='true' size={15} strokeWidth={1.75} /> },
+  { name: '笔记', href: '/notes', icon: <StickyNote aria-hidden='true' size={15} strokeWidth={1.75} /> },
+  { name: '友人', href: '/friends', icon: <Users aria-hidden='true' size={15} strokeWidth={1.75} /> },
+  { name: '关于', href: '/about', icon: <User aria-hidden='true' size={15} strokeWidth={1.75} /> },
 ] as const;
 
-function active(pathname: string, href: string): boolean {
+function isRouteActive(pathname: string, href: string): boolean {
   return pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
 }
 
-export function SiteHeader() {
-  const { pathname } = useLocation();
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const headerRef = useRef<HTMLElement | null>(null);
+function activeNavKey(pathname: string): string | null {
+  const match = navItems.find(item => isRouteActive(pathname, item.href));
+  return match?.href ?? null;
+}
 
-  useEffect(() => setOpen(false), [pathname]);
+function renderMenuLink({ href, ...props }: MenuLinkProps) {
+  return <RouterLink href={href} {...props} />;
+}
+
+export function SiteHeader({ searchEntries }: { searchEntries: SearchEntry[] }) {
+  const { pathname } = useLocation();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const openDrawer = useCallback(() => setDrawerOpen(true), []);
+  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
+
   useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 10);
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, []);
-  useEffect(() => {
-    if (!open) return;
-    const close = (event: MouseEvent) => {
-      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) setOpen(false);
-    };
-    const escape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
-    };
-    document.addEventListener('click', close);
-    document.addEventListener('keydown', escape);
-    return () => {
-      document.removeEventListener('click', close);
-      document.removeEventListener('keydown', escape);
-    };
-  }, [open]);
+    closeDrawer();
+  }, [closeDrawer, pathname]);
+
+  const menuOptions = useMemo<MenuOption[]>(
+    () =>
+      navItems.map(item => ({
+        key: item.href,
+        label: item.name,
+        href: item.href,
+        icon: item.icon,
+      })),
+    [],
+  );
+
+  const activeKey = activeNavKey(pathname);
 
   return (
-    <LayoutHeader
-      ref={headerRef}
-      as='header'
-      position='sticky'
-      stickyOffset={0}
-      className={`w-full backdrop-blur-xl border-b border-white/20 dark:border-gray-700/30 z-50 pointer-events-auto transition-all duration-300 ${
-        scrolled ? 'bg-white/70 dark:bg-gray-900/80 shadow-sm' : 'bg-white/25 dark:bg-gray-900/40'
-      }`}
-    >
-      <div className='max-w-6xl mx-auto px-6 py-1.5'>
-        <div className='flex items-center justify-between'>
-          <Link as={RouterLink} to='/' underline='none' type='neutral' className='font-semibold text-base'>
-            Artea
-          </Link>
-          <div className='flex items-center gap-2'>
-            <nav aria-label='主导航' className='hidden md:flex items-center gap-2'>
-              {navItems.map(item => (
-                <Link
-                  key={item.href}
-                  as={RouterLink}
-                  to={item.href}
-                  underline='none'
-                  type={active(pathname, item.href) ? 'primary' : 'neutral'}
-                  aria-current={active(pathname, item.href) ? 'page' : undefined}
-                  className='flex items-center gap-1 px-2 py-1 text-sm rounded-md'
-                >
-                  <span className={`${item.icon} text-base`} />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </nav>
-            <div className='hidden md:block w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1' />
-            <ThemeToggle />
-            <div className='md:hidden'>
-              <Button
-                attrType='button'
-                quaternary
-                circle
-                size='small'
-                aria-label={open ? 'Close menu' : 'Open menu'}
-                aria-expanded={open}
-                aria-controls='mobile-menu'
-                onClick={() => setOpen(value => !value)}
-                icon={<span className={`${open ? 'i-tabler-x' : 'i-tabler-menu-2'} text-base`} />}
-              />
-            </div>
-          </div>
+    <LayoutHeader as='header' bordered position='sticky' stickyOffset={0} className='blog-header'>
+      <div className='blog-header__inner'>
+        <RouterLink href='/' className='blog-brand'>
+          <Avatar src='/avatar.svg' alt='Artea' size={26} round bordered />
+          <span className='blog-brand__name'>Artea</span>
+        </RouterLink>
+
+        <nav aria-label='主导航' className='blog-nav'>
+          {navItems.map(item => {
+            const current = isRouteActive(pathname, item.href);
+            return (
+              <RouterLink
+                key={item.href}
+                href={item.href}
+                aria-current={current ? 'page' : undefined}
+                className={current ? 'blog-nav__link blog-nav__link--current' : 'blog-nav__link'}
+              >
+                {item.name}
+              </RouterLink>
+            );
+          })}
+        </nav>
+
+        <div className='blog-header__tools'>
+          <SiteSearch entries={searchEntries} />
+          <ThemeToggle />
+          <Button
+            attrType='button'
+            quaternary
+            size='small'
+            className='blog-nav__icon-button blog-header__menu-btn'
+            aria-label='打开导航菜单'
+            aria-expanded={drawerOpen}
+            onClick={openDrawer}
+            icon={<MenuIcon aria-hidden='true' size={17} strokeWidth={1.75} />}
+          />
         </div>
       </div>
-      {open && (
-        <div
-          id='mobile-menu'
-          className='md:hidden bg-white/60 dark:bg-gray-900/80 backdrop-blur-md border-t border-white/20 dark:border-gray-700/30'
-        >
-          <nav aria-label='移动端导航' className='max-w-6xl mx-auto px-6 py-2 space-y-1'>
-            {navItems.map(item => (
-              <Link
-                key={item.href}
-                as={RouterLink}
-                to={item.href}
-                underline='none'
-                type={active(pathname, item.href) ? 'primary' : 'neutral'}
-                aria-current={active(pathname, item.href) ? 'page' : undefined}
-                className='flex items-center gap-2.5 px-3 py-2 text-sm rounded-md'
-              >
-                <span className={`${item.icon} text-base`} />
-                <span>{item.name}</span>
-              </Link>
-            ))}
-          </nav>
-        </div>
-      )}
+
+      <Drawer placement='right' width={268} show={drawerOpen} onUpdateShow={setDrawerOpen}>
+        <DrawerContent closable title='Artea' footer={<SocialLinks links={arteaSocialLinks} size='small' />}>
+          <Menu
+            aria-label='移动端导航'
+            className='blog-drawer-menu'
+            options={menuOptions}
+            value={activeKey}
+            renderLink={renderMenuLink}
+          />
+        </DrawerContent>
+      </Drawer>
     </LayoutHeader>
   );
 }

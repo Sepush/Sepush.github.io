@@ -1,6 +1,8 @@
-import { Button, Card, Heading } from '@pika-lab/react';
-import { Link as RouterLink, useLoaderData, type LoaderFunctionArgs, type MetaFunction } from 'react-router';
+import { Button, Card, Heading, Separator, Tag, Text } from '@pika-lab/react';
+import { useLoaderData, type LoaderFunctionArgs, type MetaFunction } from 'react-router';
+import { ArrowLeft, Calendar, Clock } from '../components/icons';
 import { MarkdownContent } from '../components/markdown';
+import { RouterLink } from '../components/router-link';
 import { TagGroup } from '../components/tag-group';
 import { getNote } from '../lib/content.server';
 import { formatDate, formatTime } from '../lib/format';
@@ -13,40 +15,63 @@ export function loader({ params }: LoaderFunctionArgs) {
 
 export const meta: MetaFunction<typeof loader> = ({ loaderData }) => [
   { title: `${loaderData?.note.title ?? '笔记'} - Artea` },
-  { name: 'description', content: '随笔笔记' },
+  { name: 'description', content: loaderData?.note.content ?? '随笔笔记' },
 ];
 
 export default function NotePage() {
   const { note } = useLoaderData<typeof loader>();
   return (
-    <div className='max-w-4xl mx-auto px-4 py-12'>
-      <nav className='mb-12'>
+    <div className='blog-container blog-container--narrow blog-page'>
+      <nav className='blog-back-nav' aria-label='返回导航'>
         <Button
           tag={RouterLink}
-          to='/notes'
+          href='/notes'
           quaternary
-          circle
           size='small'
-          aria-label='返回笔记列表'
-          icon={<span className='i-tabler-arrow-left text-lg' />}
-        />
+          icon={<ArrowLeft aria-hidden='true' size={15} strokeWidth={1.75} />}
+        >
+          返回笔记
+        </Button>
       </nav>
-      <Card tag='article' size='large' className='card-modern overflow-hidden'>
-        <header className='mb-6'>
-          <Heading level={1} className='text-3xl md:text-4xl mb-6 leading-tight'>
-            {note.title}
-          </Heading>
-          <div className='flex flex-wrap items-center gap-5 text-sm text-gray-600 dark:text-gray-400 mb-6'>
-            <time dateTime={note.pubDate}>{formatDate(note.pubDate)}</time>
-            {note.mood && <span>{note.mood}</span>}
-            {note.location && <span>{note.location}</span>}
-            <span>{formatTime(note.pubDate)}</span>
+
+      <Card tag='article' size='large'>
+        <header className='blog-article__header'>
+          <div className='blog-article__title-row'>
+            <Heading level={1} className='blog-article__title'>
+              {note.title}
+            </Heading>
+            {import.meta.env.DEV && note.draft ? (
+              <Tag size='small' type='warning'>
+                草稿
+              </Tag>
+            ) : null}
           </div>
-          <TagGroup tags={note.tags} showHash />
+          <div className='blog-article__meta'>
+            <span className='blog-meta-item'>
+              <Calendar aria-hidden='true' size={14} strokeWidth={1.75} />
+              <Text as='time' depth={3} className='blog-tabular-num'>
+                {formatDate(note.pubDate)}
+              </Text>
+            </span>
+            <span className='blog-meta-item'>
+              <Clock aria-hidden='true' size={14} strokeWidth={1.75} />
+              <Text depth={3} className='blog-tabular-num'>
+                {formatTime(note.pubDate)}
+              </Text>
+            </span>
+            {note.mood ? (
+              <Tag size='tiny' type='primary'>
+                {note.mood}
+              </Tag>
+            ) : null}
+            {note.location ? <Text depth={3}>{note.location}</Text> : null}
+          </div>
+          <TagGroup tags={note.tags} showHash size='small' />
         </header>
-        <div className='prose max-w-none'>
-          <MarkdownContent source={note.body} />
-        </div>
+
+        <Separator />
+
+        <MarkdownContent source={note.body} />
       </Card>
     </div>
   );

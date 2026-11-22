@@ -1,55 +1,84 @@
-import { Card, Link } from '@pika-lab/react';
-import { Link as RouterLink, useLoaderData, type MetaFunction } from 'react-router';
+import { Card, Eyebrow, Heading, Link, Paragraph, Tag, Text, Timeline, TimelineItem } from '@pika-lab/react';
+import { useLoaderData, type MetaFunction } from 'react-router';
 import { EmptyState } from '../components/empty-state';
+import { ArrowRight } from '../components/icons';
 import { TagGroup } from '../components/tag-group';
-import { getNotes } from '../lib/content.server';
-import { formatDate } from '../lib/format';
+import { getNoteSummaries } from '../lib/content.server';
+import { formatDate, formatTime } from '../lib/format';
 
 export const meta: MetaFunction = () => [{ title: '笔记 - Artea' }, { name: 'description', content: '笔记列表' }];
 
 export function loader() {
-  return { notes: getNotes() };
+  return { notes: getNoteSummaries() };
 }
 
 export default function Notes() {
   const { notes } = useLoaderData<typeof loader>();
+
   return (
-    <div className='max-w-4xl mx-auto px-6 py-12'>
+    <div className='blog-container blog-container--narrow blog-page'>
+      <header className='blog-page-header'>
+        <Eyebrow>NOTES</Eyebrow>
+        <div className='blog-page-header__row'>
+          <Heading level={1} className='blog-page-header__title'>
+            笔记
+          </Heading>
+          {notes.length > 0 ? (
+            <Text depth={3} className='blog-tabular-num'>
+              共 {notes.length} 条
+            </Text>
+          ) : null}
+        </div>
+        <Paragraph depth={2} className='blog-page-header__desc'>
+          简短想法、片段记录与不成文的日常备忘。
+        </Paragraph>
+      </header>
+
       {notes.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className='space-y-6'>
+        <Timeline>
           {notes.map(note => (
-            <Card key={note.slug} tag='article' size='small' hoverable>
-              <h2 className='text-xl font-semibold mb-3'>
-                <Link as={RouterLink} to={`/notes/${note.slug}`} underline='none' type='neutral'>
-                  {note.title}
-                </Link>
-              </h2>
-              {note.content && (
-                <p className='text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2'>{note.content}</p>
-              )}
-              <div className='flex flex-wrap items-center justify-between gap-3 text-sm pt-4'>
-                <div className='flex flex-wrap items-center gap-3'>
-                  <TagGroup tags={note.tags} />
-                  {note.mood && <span className='text-xs text-gray-500'>{note.mood}</span>}
-                  <time dateTime={note.pubDate} className='text-gray-500'>
-                    {formatDate(note.pubDate)}
-                  </time>
+            <TimelineItem key={note.slug} time={`${formatDate(note.pubDate)} ${formatTime(note.pubDate)}`}>
+              <Card tag='article' size='small' hoverable className='blog-note-card'>
+                <div className='blog-post-card__body'>
+                  <div className='blog-post-card__head'>
+                    <Heading level={3} className='blog-post-card__title'>
+                      <Link href={`/notes/${note.slug}`} type='neutral' underline='none'>
+                        {note.title}
+                      </Link>
+                    </Heading>
+                    {import.meta.env.DEV && note.draft ? (
+                      <Tag size='tiny' type='warning'>
+                        草稿
+                      </Tag>
+                    ) : null}
+                  </div>
+                  {note.excerpt ? (
+                    <Paragraph depth={2} className='blog-post-card__excerpt'>
+                      {note.excerpt}
+                    </Paragraph>
+                  ) : null}
+                  <div className='blog-post-card__footer'>
+                    <div className='blog-post-card__meta'>
+                      {note.mood ? (
+                        <Tag size='tiny' type='primary'>
+                          {note.mood}
+                        </Tag>
+                      ) : null}
+                      {note.location ? <Text depth={3}>{note.location}</Text> : null}
+                      <TagGroup tags={note.tags} showHash />
+                    </div>
+                    <Link href={`/notes/${note.slug}`} underline='none' className='blog-post-card__read'>
+                      <span>查看</span>
+                      <ArrowRight aria-hidden='true' size={13} strokeWidth={1.75} />
+                    </Link>
+                  </div>
                 </div>
-                <Link
-                  as={RouterLink}
-                  to={`/notes/${note.slug}`}
-                  underline='none'
-                  className='inline-flex items-center gap-1 text-sm'
-                >
-                  阅读笔记
-                  <span className='i-tabler-arrow-right text-xs' />
-                </Link>
-              </div>
-            </Card>
+              </Card>
+            </TimelineItem>
           ))}
-        </div>
+        </Timeline>
       )}
     </div>
   );

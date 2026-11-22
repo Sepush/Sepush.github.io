@@ -1,72 +1,128 @@
-import { Button, Heading, Paragraph } from '@pika-lab/react';
-import { Link as RouterLink, useLoaderData, type LoaderFunctionArgs, type MetaFunction } from 'react-router';
+import {
+  Button,
+  Heading,
+  PageNav,
+  Paragraph,
+  Separator,
+  Tag,
+  Text,
+  type PageNavLinkRenderProps,
+} from '@pika-lab/react';
+import { useLoaderData, type LoaderFunctionArgs, type MetaFunction } from 'react-router';
+import { ArrowLeft, Calendar, Clock } from '../components/icons';
 import { MarkdownContent } from '../components/markdown';
-import { XShare } from '../components/social-links';
-import { TableOfContents } from '../components/table-of-contents';
+import { RouterLink } from '../components/router-link';
+import { ArticleShare } from '../components/social-links';
+import { MobileTableOfContents, TableOfContents } from '../components/table-of-contents';
 import { TagGroup } from '../components/tag-group';
-import { getPost } from '../lib/content.server';
+import { getPostWithAdjacent } from '../lib/content.server';
 import { formatDate } from '../lib/format';
-import { extractHeadings } from '../lib/headings';
+import { extractPostHeadings } from '../lib/markdown';
 
 export function loader({ params }: LoaderFunctionArgs) {
   const slug = params['*'];
-  const post = slug ? getPost(slug) : undefined;
-  if (!post) throw new Response('Post not found', { status: 404 });
-  return { post, headings: extractHeadings(post.body) };
+  const result = slug ? getPostWithAdjacent(slug) : null;
+  if (!result) throw new Response('Post not found', { status: 404 });
+  return {
+    post: result.post,
+    prev: result.prev,
+    next: result.next,
+    headings: extractPostHeadings(result.post.body, 3),
+  };
 }
 
 export const meta: MetaFunction<typeof loader> = ({ loaderData }) => [
   { title: `${loaderData?.post.title ?? '文章'} - Artea` },
-  { name: 'description', content: loaderData?.post.description ?? "Artea's blog" },
+  { name: 'description', content: loaderData?.post.description ?? loaderData?.post.excerpt ?? "Artea's blog" },
 ];
 
+function renderPageNavLink({ href, ...props }: PageNavLinkRenderProps) {
+  return <RouterLink href={href} {...props} />;
+}
+
 export default function PostPage() {
-  const { post, headings } = useLoaderData<typeof loader>();
+  const { post, prev, next, headings } = useLoaderData<typeof loader>();
   const url = `https://sepush.github.io/posts/${post.slug}`;
+  const hasToc = headings.length > 0;
+
   return (
-    <div className='min-h-screen'>
-      <div className='max-w-4xl xl:max-w-5xl mx-auto px-4 sm:px-6 xl:pr-20 py-8 sm:py-12'>
-        <article className='min-w-0 overflow-hidden'>
-          <header className='flex flex-col gap-y-4'>
-            <nav>
-              <Button
-                tag={RouterLink}
-                to='/posts'
-                quaternary
-                circle
-                size='small'
-                aria-label='返回文章列表'
-                icon={<span className='i-tabler-arrow-left text-lg' />}
-              />
-            </nav>
-            <Heading level={1} className='text-2xl sm:text-4xl md:text-5xl leading-tight tracking-tight break-words'>
+    <div className={hasToc ? 'blog-container blog-article-layout' : 'blog-container blog-container--narrow blog-page'}>
+      <article className='blog-article'>
+        <nav className='blog-back-nav' aria-label='返回导航'>
+          <Button
+            tag={RouterLink}
+            href='/posts'
+            quaternary
+            size='small'
+            icon={<ArrowLeft aria-hidden='true' size={15} strokeWidth={1.75} />}
+          >
+            返回文章
+          </Button>
+        </nav>
+
+        <header className='blog-article__header'>
+          <div className='blog-article__title-row'>
+            <Heading level={1} className='blog-article__title'>
               {post.title}
             </Heading>
-            {post.description && (
-              <Paragraph className='text-lg sm:text-xl max-w-3xl' depth={2}>
-                {post.description}
-              </Paragraph>
-            )}
-            <div className='flex flex-wrap items-center gap-6 text-sm text-gray-500 dark:text-gray-500'>
-              <div className='flex items-center gap-2'>
-                <span className='i-tabler-calendar text-gray-400' />
-                <time dateTime={post.pubDate}>{formatDate(post.pubDate)}</time>
-              </div>
-              {post.updatedDate && <span>更新于 {formatDate(post.updatedDate)}</span>}
-            </div>
-            <TagGroup tags={post.tags} />
-          </header>
-          <div className='prose max-w-none min-w-0'>
-            <MarkdownContent source={post.body} postSlug={post.slug} />
+            {import.meta.env.DEV && post.draft ? (
+              <Tag size='small' type='warning'>
+                草稿
+              </Tag>
+            ) : null}
           </div>
-          <footer className='pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
-            <span className='text-sm text-gray-500 dark:text-gray-400'>
-              如果觉得这篇文章有点意思，欢迎分享给更多人！
+
+          {post.description ? (
+            <Paragraph depth={2} className='blog-article__lead'>
+              {post.description}
+            </Paragraph>
+          ) : null}
+
+          <div className='blog-article__meta'>
+            <span className='blog-meta-item'>
+              <Calendar aria-hidden='true' size={14} strokeWidth={1.75} />
+              <Text as='time' depth={3} className='blog-tabular-num'>
+                {formatDate(post.pubDate)}
+              </Text>
             </span>
-            <XShare title={post.title} url={url} />
-          </footer>
-        </article>
-      </div>
+            {post.updatedDate ? (
+              <Text depth={3} className='blog-tabular-num'>
+                更新于 {formatDate(post.updatedDate)}
+              </Text>
+            ) : null}
+            <span className='blog-meta-item'>
+              <Clock aria-hidden='true' size={14} strokeWidth={1.75} />
+              <Text depth={3} className='blog-tabular-num'>
+                约 {post.readingMinutes} 分钟阅读
+              </Text>
+            </span>
+          </div>
+
+          <TagGroup tags={post.tags} size='small' />
+        </header>
+
+        <MobileTableOfContents headings={headings} />
+
+        <Separator />
+
+        <div className='blog-article__body'>
+          <MarkdownContent source={post.body} postSlug={post.slug} />
+        </div>
+
+        <Separator />
+
+        {prev || next ? (
+          <div className='blog-article__nav'>
+            <PageNav prev={prev} next={next} prevLabel='上一篇' nextLabel='下一篇' renderLink={renderPageNavLink} />
+          </div>
+        ) : null}
+
+        <footer className='blog-article__footer'>
+          <Text depth={3}>如果觉得这篇文章有点意思，欢迎分享给更多人。</Text>
+          <ArticleShare title={post.title} url={url} />
+        </footer>
+      </article>
+
       <TableOfContents headings={headings} />
     </div>
   );
