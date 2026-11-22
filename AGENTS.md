@@ -53,7 +53,7 @@ Markdown renders directly through `@pika-lab/react/markdown` (`preset="document"
 
 ## UI behavior
 
-Use Pika components for shared controls, navigation, drawers, command palette search, cards, tags, avatars, links, empty states, results, code, markdown, timelines, page navigation, and document outlines (`Anchor` + responsive `Collapse`). Keep the three-state theme cycle (`light -> dark -> system`) and the `artea-theme` storage key, syncing `data-p-theme-mode` in `<head>` before first paint. Browser-only map behavior must remain hydration-safe.
+Use Pika components for shared controls, navigation, drawers, command palette search, cards, tags, avatars, links, empty states, results, code, markdown, timelines, page navigation, scroll containers (`ScrollArea` + `LayoutContent nativeScrollbar={false}`), and document outlines (desktop edge `Outline` + mobile `Collapse`/`Anchor`). The home route (`/`) uses a full-viewport (`100dvh`) interactive MapLibre travel map inspired by `hyoban.cc/trip/`, with Chinese vector basemap labels, teardrop markers, zoom-aware clustering, region route overlays, floating glass chrome, and a collapsible floating side panel / mobile bottom sheet backed by `ScrollArea`. Keep the three-state theme cycle (`light -> dark -> system`) and the `artea-theme` storage key, syncing `data-p-theme-mode` in `<head>` before first paint. Browser-only map behavior must remain hydration-safe.
 
 Preserve public URLs, nested post routes, the depth-three table of contents, social links, friend avatars, and the interactive travel map. Direct requests to every published route must work on GitHub Pages.
 

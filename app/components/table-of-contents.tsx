@@ -1,7 +1,16 @@
-import { Anchor, Collapse, CollapseItem, Eyebrow, type AnchorItem, type CollapseName } from '@pika-lab/react';
+import {
+  Anchor,
+  Collapse,
+  CollapseItem,
+  Outline,
+  type AnchorItem,
+  type CollapseName,
+  type OutlineItem,
+} from '@pika-lab/react';
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent, type TransitionEvent } from 'react';
 import { useLocation } from 'react-router';
 import type { HeadingItem } from '../lib/markdown';
+import { scrollToHash, useBlogScroller } from '../lib/scroller';
 
 function buildAnchorTree(headings: HeadingItem[]): AnchorItem[] {
   const roots: AnchorItem[] = [];
@@ -31,37 +40,46 @@ function buildAnchorTree(headings: HeadingItem[]): AnchorItem[] {
   return roots;
 }
 
-function scrollToHash(href: string) {
-  const id = decodeURIComponent(href.replace(/^#/, ''));
-  const target = document.getElementById(id);
-  if (!target) return;
-  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  window.history.pushState(null, '', `#${encodeURIComponent(id)}`);
+function buildOutlineItems(headings: HeadingItem[]): OutlineItem[] {
+  const minDepth = headings.reduce((min, heading) => Math.min(min, heading.depth), Infinity);
+  return headings.map(heading => {
+    const depth = Math.max(0, heading.depth - minDepth);
+    return {
+      key: heading.slug,
+      label: heading.text,
+      targetId: heading.slug,
+      depth,
+      emphasized: depth === 0,
+    };
+  });
 }
 
 const OUTLINE_BOUND = 24;
 
+/**
+ * Desktop article outline using Pika's compact edge tick rail (`Outline`).
+ * Stays unobtrusive along the right edge and expands into a floating jump card on hover or focus.
+ */
 export function TableOfContents({ headings }: { headings: HeadingItem[] }) {
   const { pathname } = useLocation();
-  const items = useMemo(() => buildAnchorTree(headings), [headings]);
+  const scroller = useBlogScroller();
+  const items = useMemo(() => buildOutlineItems(headings), [headings]);
 
   if (items.length === 0) return null;
 
   return (
-    <aside className='blog-toc' aria-label='文章目录'>
-      <div className='blog-toc__sticky'>
-        <Eyebrow className='blog-toc__title'>目录</Eyebrow>
-        <Anchor
-          key={pathname}
-          aria-label='文章目录'
-          bound={OUTLINE_BOUND}
-          className='blog-toc__anchor'
-          ignoreGap
-          items={items}
-          showBackground={false}
-        />
-      </div>
-    </aside>
+    <div className='blog-outline-rail'>
+      <Outline
+        key={pathname}
+        aria-label='文章大纲'
+        bound={OUTLINE_BOUND}
+        ignoreGap
+        items={items}
+        maxVisibleItems={12}
+        offsetTarget={scroller}
+        placement='right'
+      />
+    </div>
   );
 }
 
@@ -70,6 +88,7 @@ const CLOSE_FALLBACK_MS = 350;
 
 export function MobileTableOfContents({ headings }: { headings: HeadingItem[] }) {
   const { pathname } = useLocation();
+  const scroller = useBlogScroller();
   const items = useMemo(() => buildAnchorTree(headings), [headings]);
   const [expanded, setExpanded] = useState<CollapseName[]>([]);
   const pendingHref = useRef<string | null>(null);
@@ -121,6 +140,7 @@ export function MobileTableOfContents({ headings }: { headings: HeadingItem[] })
             className='blog-toc__anchor'
             ignoreGap
             items={items}
+            offsetTarget={scroller}
             showBackground={false}
           />
         </CollapseItem>

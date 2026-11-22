@@ -64,7 +64,7 @@ export function SiteHeader({ searchEntries }: { searchEntries: SearchEntry[] }) 
   const activeKey = activeNavKey(pathname);
 
   return (
-    <LayoutHeader as='header' bordered position='sticky' stickyOffset={0} className='blog-header'>
+    <LayoutHeader as='header' bordered className='blog-header'>
       <div className='blog-header__inner'>
         <RouterLink href='/' className='blog-brand'>
           <Avatar src='/avatar.svg' alt='Artea' size={26} round bordered />

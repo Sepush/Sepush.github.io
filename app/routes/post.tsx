@@ -43,10 +43,9 @@ function renderPageNavLink({ href, ...props }: PageNavLinkRenderProps) {
 export default function PostPage() {
   const { post, prev, next, headings } = useLoaderData<typeof loader>();
   const url = `https://sepush.github.io/posts/${post.slug}`;
-  const hasToc = headings.length > 0;
 
   return (
-    <div className={hasToc ? 'blog-container blog-article-layout' : 'blog-container blog-container--narrow blog-page'}>
+    <div className='blog-container blog-container--narrow blog-page'>
       <article className='blog-article'>
         <nav className='blog-back-nav' aria-label='返回导航'>
           <Button

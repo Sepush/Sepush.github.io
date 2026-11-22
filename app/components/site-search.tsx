@@ -2,6 +2,7 @@ import {
   CommandPalette,
   commandPaletteShortcutKeys,
   Kbd,
+  Tooltip,
   useCommandPaletteShortcut,
   type CommandPaletteGroup,
   type CommandPaletteItem,
@@ -17,7 +18,7 @@ import { useTheme } from './theme';
 const SHORTCUT = 'mod+k';
 const THEME_ACTION_KEY = 'action:cycle-theme';
 
-export function SiteSearch({ entries }: { entries: SearchEntry[] }) {
+export function SiteSearch({ entries, variant = 'bar' }: { entries: SearchEntry[]; variant?: 'bar' | 'icon' }) {
   const navigate = useNavigate();
   const { cycle } = useTheme();
   const [show, setShow] = useState(false);
@@ -154,17 +155,31 @@ export function SiteSearch({ entries }: { entries: SearchEntry[] }) {
 
   return (
     <>
-      <button
-        type='button'
-        aria-keyshortcuts='Meta+K Control+K'
-        aria-label='搜索文章与页面'
-        className='blog-search-trigger'
-        onClick={open}
-      >
-        <Search aria-hidden='true' size={14} strokeWidth={1.75} className='blog-search-trigger__icon' />
-        <span className='blog-search-trigger__placeholder'>搜索…</span>
-        <Kbd className='blog-search-trigger__kbd' keys={keys} separator='' size='small' />
-      </button>
+      {variant === 'icon' ? (
+        <Tooltip content={`搜索 (${keys.join(' ')})`}>
+          <button
+            type='button'
+            aria-keyshortcuts='Meta+K Control+K'
+            aria-label='搜索文章与页面'
+            className='trip-icon-pill'
+            onClick={open}
+          >
+            <Search aria-hidden='true' size={16} strokeWidth={1.75} />
+          </button>
+        </Tooltip>
+      ) : (
+        <button
+          type='button'
+          aria-keyshortcuts='Meta+K Control+K'
+          aria-label='搜索文章与页面'
+          className='blog-search-trigger'
+          onClick={open}
+        >
+          <Search aria-hidden='true' size={14} strokeWidth={1.75} className='blog-search-trigger__icon' />
+          <span className='blog-search-trigger__placeholder'>搜索…</span>
+          <Kbd className='blog-search-trigger__kbd' keys={keys} separator='' size='small' />
+        </button>
+      )}
       {mounted ? (
         <CommandPalette
           show={show}

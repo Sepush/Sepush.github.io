@@ -107,9 +107,18 @@ function ThemeIcon({ preference }: { preference: ThemePreference }) {
   }
 }
 
-export function ThemeToggle() {
+export function ThemeToggle({ variant = 'header' }: { variant?: 'header' | 'pill' }) {
   const { preference, cycle } = useTheme();
   const label = themeLabels[preference];
+  if (variant === 'pill') {
+    return (
+      <Tooltip content={`主题：${label}（点击切换）`}>
+        <button type='button' className='trip-icon-pill' aria-label={`切换主题，当前${label}`} onClick={cycle}>
+          <ThemeIcon preference={preference} />
+        </button>
+      </Tooltip>
+    );
+  }
   return (
     <Tooltip content={`主题：${label}（点击切换）`}>
       <Button
