@@ -2,7 +2,7 @@ allowBuilds:
   esbuild: true
   simple-git-hooks: true
 minimumReleaseAgeExclude:
-  - '@pika-lab/react@0.0.1'
+  - '@pika-lab/react@0.0.7'
 onlyBuiltDependencies:
   - esbuild
   - simple-git-hooks

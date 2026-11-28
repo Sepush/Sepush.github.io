@@ -15,7 +15,7 @@
     "lint:fix": "oxlint . --type-aware --tsconfig ./tsconfig.json --fix"
   },
   "dependencies": {
-    "@pika-lab/react": "0.0.1",
+    "@pika-lab/react": "0.0.7",
     "@react-router/dev": "8.5.2",
     "gray-matter": "^4.0.3",
     "isbot": "^5",
